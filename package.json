@@ -6,7 +6,7 @@
   "scripts": {
     "client-install": "cd client && npm install",
     "start": "node app.js",
-    "heroku-postbuild": "cd client && npm install",
+    "heroku-postbuild": "cd client && yarn install && yarn build",
     "start-client": "npm start --prefix client",
     "nodemon": "nodemon app.js",
     "concurrently": "concurrently \"npm run nodemon\" \"npm run start-client\""

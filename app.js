@@ -22,7 +22,7 @@ const app = express();
 // Body Parser Middleware
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, "client/public")));
+app.use(express.static(path.join(__dirname, "client/build")));
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -36,13 +36,12 @@ app.use((req, res, next) => {
   next();
 });
 
-app.get("/api", (req, res) => {
-  res.sendFile(path.join(__dirname, "/client/public/index.html"));
-  // res.send({ message: "welcome to api" });
-});
-
 app.use("/api/articles", articles);
 app.use("/api/users", users);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/build/index.html"));
+});
 
 app.listen(PORT, () => {
   console.log(`Server started at ${PORT}`);

@@ -2,7 +2,7 @@ import * as actionTypes from "./actionTypes";
 
 export const getAllArticles = () => {
   return (dispatch) => {
-    fetch("/articles", {
+    fetch("/api/articles", {
       method: "GET",
     })
       .then((res) => res.json())
@@ -14,7 +14,7 @@ export const getAllArticles = () => {
 
 export const getMyArticles = () => {
   return (dispatch) => {
-    fetch("/articles/myarticles", {
+    fetch("/api/articles/myarticles", {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwtToken"),
@@ -35,7 +35,7 @@ export const getMyArticles = () => {
 
 export const addArticle = (article) => {
   return (dispatch) => {
-    return fetch("/articles/add", {
+    return fetch("/api/articles/add", {
       method: "POST",
       body: JSON.stringify(article),
       headers: {
@@ -50,7 +50,7 @@ export const addArticle = (article) => {
 };
 export const updateArticle = (articleId, updatedArticle) => {
   return (dispatch) => {
-    return fetch("/articles/edit" + articleId, {
+    return fetch("/api/articles/edit" + articleId, {
       method: "POST",
       body: JSON.stringify(updatedArticle),
       headers: {
@@ -64,7 +64,7 @@ export const updateArticle = (articleId, updatedArticle) => {
 
 export const deleteArticle = (articleId) => {
   return (dispatch) => {
-    return fetch("/articles/delete/" + articleId, {
+    return fetch("/api/articles/delete/" + articleId, {
       headers: {
         Authorization: "Bearer " + localStorage.getItem("jwtToken"),
         "Content-Type": "application/json",

@@ -13,7 +13,7 @@ const options = (data) => {
 
 export const userSignUpRequest = (data) => {
   return (dispatch) => {
-    return fetch("/users/signup", {
+    return fetch("/api/users/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,7 +25,7 @@ export const userSignUpRequest = (data) => {
 
 export const userLoginRequest = (userLoginDetails) => {
   return (dispatch) => {
-    return fetch("/users/login", options(userLoginDetails))
+    return fetch("/api/users/login", options(userLoginDetails))
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
