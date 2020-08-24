@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "client-install": "cd client && npm install",
-    "node-start": "node app.js",
+    "start": "node app.js",
     "heroku-postbuild": "cd client && npm install",
     "start-client": "npm start --prefix client",
     "nodemon": "nodemon app.js",
