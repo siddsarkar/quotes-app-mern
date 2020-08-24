@@ -37,8 +37,8 @@ app.use((req, res, next) => {
 });
 
 app.get("/api", (req, res) => {
-  // res.sendFile(path.join(__dirname, "/client/public/index.html"));
-  res.send({ message: "welcome to api" });
+  res.sendFile(path.join(__dirname, "/client/public/index.html"));
+  // res.send({ message: "welcome to api" });
 });
 
 app.use("/api/articles", articles);
