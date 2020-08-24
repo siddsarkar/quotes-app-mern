@@ -4,5 +4,5 @@ const DB_PASSWORD = process.env.DB_PASSWORD;
 
 module.exports = {
   jwtSecret: JWTSECRET,
-  mongodburi: `mongodb+srv://user2:pass2@cluster0.hkoyx.mongodb.net/mern-app`,
+  mongodburi: `mongodb+srv://${DB_USERNAME}:${DB_PASSWORD}@cluster0.hkoyx.mongodb.net/mern-app`,
 };
