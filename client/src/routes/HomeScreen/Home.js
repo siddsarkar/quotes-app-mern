@@ -12,7 +12,7 @@ class ArticlesComponent extends Component {
   render() {
     return (
       <Container>
-        {this.props.articles.reverse().map((item) => {
+        {this.props.articles.map((item) => {
           return (
             <Card key={item._id} style={{ margin: 10 }}>
               <CardContent>
@@ -38,7 +38,6 @@ class ArticlesComponent extends Component {
 const mapStateToProps = (state) => {
   return {
     articles: state.articles.articles,
-    auth: state.isAuthenticated,
   };
 };
 

@@ -19,7 +19,9 @@ export const userSignUpRequest = (data) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(data),
-    });
+    })
+      .then((res) => res.json())
+      .then((res) => alert(res.message));
   };
 };
 
@@ -28,7 +30,7 @@ export const userLoginRequest = (userLoginDetails) => {
     return fetch("/api/users/login", options(userLoginDetails))
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
+        alert(res.message);
         const token = res.token;
         delete res.token;
         localStorage.setItem("jwtToken", token);

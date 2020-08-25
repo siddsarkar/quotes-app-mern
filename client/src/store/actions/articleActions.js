@@ -45,7 +45,7 @@ export const addArticle = (article) => {
       },
     })
       .then((res) => res.json())
-      .then((res) => console.log(res));
+      .then((res) => alert(res.message));
   };
 };
 export const updateArticle = (articleId, updatedArticle) => {
@@ -70,6 +70,8 @@ export const deleteArticle = (articleId) => {
         "Content-Type": "application/json",
       },
       method: "DELETE",
-    }).then((res) => res.json());
+    })
+      .then((res) => res.json())
+      .then((res) => alert(res.success));
   };
 };

@@ -7,9 +7,11 @@ import LoginComponent from "./routes/LoginScreen/Login";
 import MyArticlesComponent from "./routes/MyArticlesScreen/MyArticles";
 import AddArticleComponent from "./routes/AddArticle/AddArticle";
 import { connect } from "react-redux";
-import { userLogoutRequest } from "./store/actions/usersActions";
 
 function App(props) {
+  React.useEffect(() => {
+    console.log(localStorage.getItem("jwtToken"))
+  }, []);
   return (
     <Router>
       <div>
@@ -84,10 +86,5 @@ const mapStateToProps = (state) => {
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
-  return {
-    logout: () => dispatch(userLogoutRequest()),
-  };
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);
