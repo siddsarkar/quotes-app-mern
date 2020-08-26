@@ -11,6 +11,17 @@ export const getAllArticles = () => {
       );
   };
 };
+export const getSingleArticle = (id) => {
+  return (dispatch) => {
+    fetch("/api/articles/" + id, {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((res) =>
+        dispatch({ type: actionTypes.GOT_SINGLE_ARTICLE, article: res })
+      );
+  };
+};
 
 export const getMyArticles = () => {
   return (dispatch) => {
@@ -50,7 +61,7 @@ export const addArticle = (article) => {
 };
 export const updateArticle = (articleId, updatedArticle) => {
   return (dispatch) => {
-    return fetch("/api/articles/edit" + articleId, {
+    return fetch("/api/articles/edit/" + articleId, {
       method: "POST",
       body: JSON.stringify(updatedArticle),
       headers: {
@@ -58,7 +69,9 @@ export const updateArticle = (articleId, updatedArticle) => {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
-    }).then((res) => res.json());
+    })
+      .then((res) => res.json())
+      .then((res) => console.log(res));
   };
 };
 

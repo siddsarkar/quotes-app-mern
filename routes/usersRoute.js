@@ -58,8 +58,7 @@ router.post("/login", (req, res) => {
               id: user._id,
               username: user.username,
             },
-            config.jwtSecret,
-            { expiresIn: "1h" }
+            config.jwtSecret
           );
           res.json({ token, message: "Successfully Logged in!" });
         } else {

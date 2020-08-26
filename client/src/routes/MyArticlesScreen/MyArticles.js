@@ -7,13 +7,8 @@ import {
 import { Container, Card, Typography, Button } from "@material-ui/core";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Redirect,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import EditArticle from "./EditArticle";
 class MyArticlesComponent extends Component {
   componentDidMount() {
     this.props.initMyArticles();
@@ -21,6 +16,12 @@ class MyArticlesComponent extends Component {
   render() {
     return this.props.auth ? (
       <Router>
+        <Switch>
+          <Route
+            path="/edit/:id"
+            render={(props) => <EditArticle {...props} />}
+          />
+        </Switch>
         <Container>
           {this.props.myArticles.map((item) => {
             return (
@@ -35,10 +36,11 @@ class MyArticlesComponent extends Component {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Button variant="outlined" size="small">
-                    EDIT
-                  </Button>
-
+                  <Link to={"/edit/" + item._id}>
+                    <Button variant="outlined" size="small">
+                      EDIT
+                    </Button>
+                  </Link>
                   <Button
                     size="small"
                     onClick={() => this.props.deleteArticle(item._id)}
@@ -66,10 +68,6 @@ class MyArticlesComponent extends Component {
     );
   }
 }
-
-const EditComponent = () => {
-  return <div>hi</div>;
-};
 
 const mapStateToProps = (state) => {
   return {
