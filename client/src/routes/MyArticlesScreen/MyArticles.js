@@ -10,19 +10,27 @@ import CardContent from "@material-ui/core/CardContent";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import EditArticle from "./EditArticle";
 class MyArticlesComponent extends Component {
-  componentDidMount() {
+  getArticles = () => {
     this.props.initMyArticles();
+  };
+  componentDidMount() {
+    this.getArticles();
   }
   render() {
     return this.props.auth ? (
       <Router>
-        <Switch>
-          <Route
-            path="/edit/:id"
-            render={(props) => <EditArticle {...props} />}
-          />
-        </Switch>
         <Container>
+          <Switch>
+            <Route
+              path="/edit/:id"
+              render={(props) => (
+                <EditArticle
+                  getArticles={() => this.getArticles()}
+                  {...props}
+                />
+              )}
+            />
+          </Switch>
           {this.props.myArticles.map((item) => {
             return (
               <Card key={item._id} style={{ margin: 10 }}>
@@ -36,14 +44,19 @@ class MyArticlesComponent extends Component {
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Link to={"/edit/" + item._id}>
+                  <Link
+                    style={{ textDecoration: "none" }}
+                    to={"/edit/" + item._id}
+                  >
                     <Button variant="outlined" size="small">
                       EDIT
                     </Button>
                   </Link>
                   <Button
                     size="small"
-                    onClick={() => this.props.deleteArticle(item._id)}
+                    onClick={() =>
+                      this.props.deleteArticle(item._id, this.getArticles)
+                    }
                   >
                     <Typography color="textSecondary">DELETE</Typography>
                   </Button>
@@ -79,7 +92,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     initMyArticles: () => dispatch(getMyArticles()),
-    deleteArticle: (id) => dispatch(deleteArticle(id)),
+    deleteArticle: (id, callback) => dispatch(deleteArticle(id, callback)),
   };
 };
 export default connect(

@@ -9,9 +9,6 @@ import AddArticleComponent from "./routes/AddArticle/AddArticle";
 import { connect } from "react-redux";
 
 function App(props) {
-  React.useEffect(() => {
-    console.log(localStorage.getItem("jwtToken"))
-  }, []);
   return (
     <Router>
       <div>
@@ -43,7 +40,7 @@ function App(props) {
                 textDecoration: "none",
                 color: "whitesmoke",
               }}
-              to="/myArticles"
+              to="/myarticles"
             >
               <Typography>My Quotes</Typography>
             </Link>
@@ -85,6 +82,5 @@ const mapStateToProps = (state) => {
     isLoggedin: state.users.isAuthenticated,
   };
 };
-
 
 export default connect(mapStateToProps)(App);

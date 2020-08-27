@@ -21,11 +21,11 @@ export const userSignUpRequest = (data) => {
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
-      .then((res) => alert(res.message));
+      .then((res) => alert(res.message + "! Please Click Login"));
   };
 };
 
-export const userLoginRequest = (userLoginDetails) => {
+export const userLoginRequest = (userLoginDetails, callback) => {
   return (dispatch) => {
     return fetch("/api/users/login", options(userLoginDetails))
       .then((res) => res.json())
@@ -39,6 +39,7 @@ export const userLoginRequest = (userLoginDetails) => {
           authorizationToken: token,
           authenticatedUsername: jwt.decode(token).username,
         });
+        callback();
         return res;
       });
   };
@@ -47,4 +48,5 @@ export const userLoginRequest = (userLoginDetails) => {
 export const userLogoutRequest = () => (dispatch) => {
   localStorage.removeItem("jwtToken");
   dispatch({ type: actionTypes.USER_LOGGED_OUT });
+  alert("Succesfully Logged Out!");
 };

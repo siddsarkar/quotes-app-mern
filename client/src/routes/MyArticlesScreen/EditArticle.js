@@ -19,11 +19,9 @@ class EditArticle extends Component {
       author: this.props.article.author,
     });
   };
+
   componentDidMount() {
-    this.props.getSingle(this.props.match.params.id);
-    setTimeout(() => {
-      this.getFields();
-    }, 1000);
+    this.props.getSingle(this.props.match.params.id, this.getFields);
   }
   updateArticle = () => {
     const article = {
@@ -32,12 +30,13 @@ class EditArticle extends Component {
       title: this.state.title,
     };
     this.props.updateArticle(this.props.match.params.id, article);
+    this.props.getArticles();
   };
   render() {
     return (
       <Container style={{ padding: 20 }}>
         <Typography style={{ padding: 20, paddingLeft: 0 }} variant="h3">
-          Write Your Quote
+          Edit Your Quote
         </Typography>
         <form noValidate autoComplete="off">
           <TextField
@@ -77,7 +76,7 @@ class EditArticle extends Component {
           <br />
           <div style={{ padding: 20, paddingLeft: 0 }}>
             <Button variant="outlined" onClick={() => this.updateArticle()}>
-              Submit
+              Update
             </Button>
           </div>
         </form>
@@ -94,7 +93,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getSingle: (id) => dispatch(getSingleArticle(id)),
+    getSingle: (id, callback) => dispatch(getSingleArticle(id, callback)),
     updateArticle: (id, article) => dispatch(updateArticle(id, article)),
   };
 };

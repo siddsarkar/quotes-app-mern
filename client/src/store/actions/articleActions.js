@@ -11,15 +11,16 @@ export const getAllArticles = () => {
       );
   };
 };
-export const getSingleArticle = (id) => {
+export const getSingleArticle = (id, callback) => {
   return (dispatch) => {
     fetch("/api/articles/" + id, {
       method: "GET",
     })
       .then((res) => res.json())
-      .then((res) =>
-        dispatch({ type: actionTypes.GOT_SINGLE_ARTICLE, article: res })
-      );
+      .then((res) => {
+        dispatch({ type: actionTypes.GOT_SINGLE_ARTICLE, article: res });
+        callback();
+      });
   };
 };
 
@@ -35,7 +36,6 @@ export const getMyArticles = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res.articles);
         dispatch({
           type: actionTypes.GOT_MY_ARTICLES,
           myArticles: res.articles,
@@ -44,7 +44,7 @@ export const getMyArticles = () => {
   };
 };
 
-export const addArticle = (article) => {
+export const addArticle = (article, callback) => {
   return (dispatch) => {
     return fetch("/api/articles/add", {
       method: "POST",
@@ -56,7 +56,10 @@ export const addArticle = (article) => {
       },
     })
       .then((res) => res.json())
-      .then((res) => alert(res.message));
+      .then((res) => {
+        alert(res.message);
+        callback();
+      });
   };
 };
 export const updateArticle = (articleId, updatedArticle) => {
@@ -71,11 +74,11 @@ export const updateArticle = (articleId, updatedArticle) => {
       },
     })
       .then((res) => res.json())
-      .then((res) => console.log(res));
+      .then((res) => alert(res.success));
   };
 };
 
-export const deleteArticle = (articleId) => {
+export const deleteArticle = (articleId, callback) => {
   return (dispatch) => {
     return fetch("/api/articles/delete/" + articleId, {
       headers: {
@@ -85,6 +88,9 @@ export const deleteArticle = (articleId) => {
       method: "DELETE",
     })
       .then((res) => res.json())
-      .then((res) => alert(res.success));
+      .then((res) => {
+        alert(res.success);
+        callback();
+      });
   };
 };

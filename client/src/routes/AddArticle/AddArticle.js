@@ -23,7 +23,12 @@ class AddArticleComponent extends Component {
       body: this.state.body,
       title: this.state.title,
     };
-    this.props.addArticle(article);
+    this.props.addArticle(article, () => {
+      this.setState({
+        body: "",
+        title: "",
+      });
+    });
   };
   render() {
     return (
@@ -42,24 +47,22 @@ class AddArticleComponent extends Component {
           />
           <br />
           <TextField
+            value={this.state.title}
             style={{ marginBottom: 20 }}
             fullWidth
-            onKeyUp={(e) => {
-              e.preventDefault();
+            onChange={(e) => {
               this.setState({ title: e.target.value });
             }}
             placeholder="Title"
           />
           <br />
           <TextField
-            onKeyUp={(e) => {
-              e.preventDefault();
+            value={this.state.body}
+            onChange={(e) => {
               this.setState({ body: e.target.value });
             }}
             fullWidth
             placeholder="Body"
-            // id="outlined-multiline-static"
-            // label="Body"
             multiline
             rows={4}
             variant="outlined"
@@ -84,7 +87,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addArticle: (article) => dispatch(addArticle(article)),
+    addArticle: (article, callback) => dispatch(addArticle(article, callback)),
   };
 };
 

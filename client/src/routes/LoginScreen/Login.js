@@ -15,11 +15,17 @@ class LoginComponent extends Component {
   };
 
   componentDidMount = () => {
-    console.log(this.props.isLoggedin);
+    console.log("Logged In: " + this.props.isLoggedin);
   };
 
   loginHandler = () => {
-    this.props.loginRequest(this.state);
+    const details = {
+      username: this.state.username,
+      password: this.state.password,
+    };
+    this.props.loginRequest(details, () =>
+      this.setState({ name: "", username: "", password: "" })
+    );
   };
 
   logoutHandler = () => {
@@ -40,7 +46,8 @@ class LoginComponent extends Component {
   render() {
     const signupon = (
       <TextField
-        onKeyUp={(e) => this.setState({ name: e.target.value })}
+        value={this.state.name}
+        onChange={(e) => this.setState({ name: e.target.value })}
         required
         id="standard-required"
         label="Name"
@@ -52,7 +59,8 @@ class LoginComponent extends Component {
       <Container style={{ padding: 20 }}>
         {this.state.signup ? signupon : ""}
         <TextField
-          onKeyUp={(e) => this.setState({ username: e.target.value })}
+          value={this.state.username}
+          onChange={(e) => this.setState({ username: e.target.value })}
           required
           id="standard-required"
           label="Username"
@@ -67,7 +75,8 @@ class LoginComponent extends Component {
           label="Password"
           type="password"
           autoComplete="current-password"
-          onKeyUp={(e) => this.setState({ password: e.target.value })}
+          value={this.state.password}
+          onChange={(e) => this.setState({ password: e.target.value })}
         />
         <br />
         <div style={{ marginTop: 20 }}>
@@ -105,8 +114,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loginRequest: (userLoginDetails) =>
-      dispatch(userLoginRequest(userLoginDetails)),
+    loginRequest: (userLoginDetails, callback) =>
+      dispatch(userLoginRequest(userLoginDetails, callback)),
     logoutRequest: () => dispatch(userLogoutRequest()),
     usersignup: (details) => dispatch(userSignUpRequest(details)),
   };
