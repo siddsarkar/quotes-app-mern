@@ -4,8 +4,11 @@ const bodyParser = require("body-parser");
 const path = require("path");
 require("dotenv").config();
 
+//routes import
 const articles = require("./routes/articlesRoute.js");
 const users = require("./routes/usersRoute.js");
+const comments = require("./routes/commentsRoute");
+
 const config = require("./config.js");
 const { error } = require("console");
 
@@ -38,10 +41,11 @@ app.use((req, res, next) => {
 
 app.use("/api/articles", articles);
 app.use("/api/users", users);
+app.use("/api/comments", comments);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/build/index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "client/build/index.html"));
+// });
 
 app.listen(PORT, () => {
   console.log(`Server started at ${PORT}`);

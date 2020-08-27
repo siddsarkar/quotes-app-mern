@@ -1,14 +1,15 @@
 import * as actionTypes from "./actionTypes";
 
-export const getAllArticles = () => {
+export const getAllArticles = (callback) => {
   return (dispatch) => {
     fetch("/api/articles", {
       method: "GET",
     })
       .then((res) => res.json())
-      .then((res) =>
-        dispatch({ type: actionTypes.GOT_ALL_ARTICLES, articles: res })
-      );
+      .then((res) => {
+        dispatch({ type: actionTypes.GOT_ALL_ARTICLES, articles: res });
+        callback();
+      });
   };
 };
 export const getSingleArticle = (id, callback) => {

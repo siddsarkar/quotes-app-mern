@@ -2,17 +2,21 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
+import "fontsource-roboto";
 import * as serviceWorker from "./serviceWorker";
+
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { createStore, applyMiddleware, combineReducers } from "redux";
+
+import commentsReducer from "./store/reducers/commentsReducer";
 import articlesReducer from "./store/reducers/articlesReducer";
 import usersReducer from "./store/reducers/usersReducer";
-import "fontsource-roboto";
 
 const rootReducer = combineReducers({
   articles: articlesReducer,
   users: usersReducer,
+  comments: commentsReducer,
 });
 const store = createStore(rootReducer, applyMiddleware(thunk));
 
