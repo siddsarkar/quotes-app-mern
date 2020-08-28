@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component } from "./node_modules/react";
 import { getSingleArticle } from "../../store/actions/articleActions";
 import {
   getCommentsForArticle,
@@ -10,8 +10,8 @@ import {
   CardContent,
   TextField,
   Button,
-} from "@material-ui/core";
-import { connect } from "react-redux";
+} from "./node_modules/@material-ui/core";
+import { connect } from "./node_modules/react-redux";
 
 class SingleArticle extends Component {
   state = {

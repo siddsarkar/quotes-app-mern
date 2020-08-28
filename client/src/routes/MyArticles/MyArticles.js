@@ -1,13 +1,23 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from "./node_modules/react";
+import { connect } from "./node_modules/react-redux";
 import {
   getMyArticles,
   deleteArticle,
 } from "../../store/actions/articleActions";
-import { Container, Card, Typography, Button } from "@material-ui/core";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import {
+  Container,
+  Card,
+  Typography,
+  Button,
+} from "./node_modules/@material-ui/core";
+import CardActions from "./node_modules/@material-ui/core/CardActions";
+import CardContent from "./node_modules/@material-ui/core/CardContent";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+} from "./node_modules/react-router-dom";
 import EditArticle from "./EditArticle";
 import {
   getMyComments,

@@ -1,7 +1,12 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from "./node_modules/react";
+import { connect } from "./node_modules/react-redux";
 import { addArticle } from "../../store/actions/articleActions";
-import { Container, TextField, Typography, Button } from "@material-ui/core";
+import {
+  Container,
+  TextField,
+  Typography,
+  Button,
+} from "./node_modules/@material-ui/core";
 
 class AddArticleScreen extends Component {
   state = {
