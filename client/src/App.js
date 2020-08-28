@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
-import AddArticle from "./Routes/AddArticle/AddArticle";
+import AddArticleScreen from "./Routes/AddArticle/AddArticle";
 import Articles from "./Routes/Articles/Articles";
 import Login from "./Routes/Login/Login.js";
 import MyArticles from "./Routes/MyArticles/MyArticles";
@@ -59,7 +59,7 @@ function App(props) {
 
       <Switch>
         <Route path="/article/:id" exact component={SingleArticle} />
-        <Route path="/addarticle" component={AddArticle} />
+        <Route path="/addarticle" component={AddArticleScreen} />
         <Route path="/myarticles" component={MyArticles} />
         <Route path="/login" component={Login} />
         <Route path="/" component={Articles} />

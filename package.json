@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
-  "engines": {
-    "node": "14.6.0"
-  },
   "scripts": {
     "start": "node app.js",
     "azure": "cd client && yarn install && yarn build",

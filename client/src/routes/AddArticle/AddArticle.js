@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { addArticle } from "../../store/actions/articleActions";
 import { Container, TextField, Typography, Button } from "@material-ui/core";
 
-class AddArticle extends Component {
+class AddArticleScreen extends Component {
   state = {
     author: "",
     body: "",
@@ -91,4 +91,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddArticle);
+export default connect(mapStateToProps, mapDispatchToProps)(AddArticleScreen);
