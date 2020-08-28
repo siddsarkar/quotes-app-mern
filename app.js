@@ -43,9 +43,9 @@ app.use("/api/articles", articles);
 app.use("/api/users", users);
 app.use("/api/comments", comments);
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "client/build/index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/build/index.html"));
+});
 
 app.listen(PORT, () => {
   console.log(`Server started at ${PORT}`);
