@@ -5,7 +5,7 @@ import { getCommentsForArticle } from "../../store/actions/commentActions";
 import { Container, Card, Typography, Button } from "@material-ui/core";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-class ArticlesComponent extends Component {
+class Articles extends Component {
   state = {
     isCommentOn: false,
     articles: [],
@@ -18,24 +18,42 @@ class ArticlesComponent extends Component {
     this.props.initArticles(this.gotArticles);
   };
 
-  // commentsHandler = (id, index) => {
-  //   this.props.getComments(id);
-  //   const articles = this.state.articles.map((item, j) => {
-  //     if (j === index) {
-  //       return {
-  //         ...item,
-  //         comments: this.props.comments,
-  //       };
-  //     } else {
-  //       return item;
-  //     }
-  //   });
-  //   console.log(articles);
-  //   this.setState({ articles: articles });
-  //   this.setState({ isCommentOn: true });
-  // };
+  commentsHandler = (id, index) => {
+    this.props.getComments(id);
+    const articles = this.state.articles.map((item, j) => {
+      if (j === index) {
+        return {
+          ...item,
+          comments: this.props.comments,
+        };
+      } else {
+        return item;
+      }
+    });
+    console.log(articles);
+    this.setState({ articles: articles });
+    this.setState({ isCommentOn: true });
+  };
 
   render() {
+    const comments = this.props.comments.map((item) => {
+      return (
+        <CardContent
+          style={{
+            padding: 10,
+            marginLeft: 20,
+            backgroundColor: "lightblue",
+          }}
+        >
+          <Typography variant="body2" component="p">
+            {item.comment}
+          </Typography>
+          <Typography variant="caption" color="textSecondary">
+            -{item.author}
+          </Typography>
+        </CardContent>
+      );
+    });
     return (
       <Container>
         {this.state.articles.map((item, index) => {
@@ -59,18 +77,7 @@ class ArticlesComponent extends Component {
                   Comments
                 </Button>
               </CardActions>
-              <CardContent style={{ marginLeft: 20 }}>
-                <Typography variant="body2" component="p">
-                  im a comment
-                </Typography>
-                <Typography
-                  variant="caption"
-                  color="textSecondary"
-                  gutterBottom
-                >
-                  -by me
-                </Typography>
-              </CardContent>
+              {this.state.isCommentOn ? comments : null}
             </Card>
           );
         })}
@@ -93,4 +100,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ArticlesComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(Articles);

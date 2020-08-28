@@ -6,7 +6,7 @@ import {
   userSignUpRequest,
 } from "../../store/actions/usersActions";
 import { Container, TextField, Button } from "@material-ui/core";
-class LoginComponent extends Component {
+class Login extends Component {
   state = {
     username: "",
     password: "",
@@ -121,4 +121,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

@@ -9,7 +9,7 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import EditArticle from "./EditArticle";
-class MyArticlesComponent extends Component {
+class MyArticles extends Component {
   getArticles = () => {
     this.props.initMyArticles();
   };
@@ -95,7 +95,4 @@ const mapDispatchToProps = (dispatch) => {
     deleteArticle: (id, callback) => dispatch(deleteArticle(id, callback)),
   };
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(MyArticlesComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(MyArticles);
