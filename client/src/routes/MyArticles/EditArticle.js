@@ -1,6 +1,11 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Container, TextField, Typography, Button } from "@material-ui/core";
+import React, { Component } from "./node_modules/react";
+import { connect } from "./node_modules/react-redux";
+import {
+  Container,
+  TextField,
+  Typography,
+  Button,
+} from "./node_modules/@material-ui/core";
 import {
   updateArticle,
   getSingleArticle,

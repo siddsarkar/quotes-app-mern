@@ -2,11 +2,11 @@ import React from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
-import AddArticleScreen from "./Routes/AddArticle/AddArticleScreen";
-import Articles from "./Routes/Articles/Articles";
-import Login from "./Routes/Login/Login";
-import MyArticles from "./Routes/MyArticles/MyArticles";
-import SingleArticle from "./Routes/SingleArticle/SingleArticle";
+import AddArticleScreen from "./routes/AddArticle/AddArticleScreen";
+import Articles from "./routes/Articles/Articles";
+import Login from "./routes/Login/Login";
+import MyArticles from "./routes/MyArticles/MyArticles";
+import SingleArticle from "./routes/SingleArticle/SingleArticle";
 
 function App(props) {
   return (

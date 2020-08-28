@@ -1,11 +1,16 @@
-import React, { Component } from "react";
-import { connect } from "react-redux";
+import React, { Component } from "./node_modules/react";
+import { connect } from "./node_modules/react-redux";
 import { getAllArticles } from "../../store/actions/articleActions";
 import { getCommentsForArticle } from "../../store/actions/commentActions";
-import { Container, Card, Typography, Button } from "@material-ui/core";
-import CardActions from "@material-ui/core/CardActions";
-import { Link } from "react-router-dom";
-import CardContent from "@material-ui/core/CardContent";
+import {
+  Container,
+  Card,
+  Typography,
+  Button,
+} from "./node_modules/@material-ui/core";
+import CardActions from "./node_modules/@material-ui/core/CardActions";
+import { Link } from "./node_modules/react-router-dom";
+import CardContent from "./node_modules/@material-ui/core/CardContent";
 class Articles extends Component {
   state = {
     isCommentOn: false,
