@@ -4,6 +4,7 @@ import { getAllArticles } from "../../store/actions/articleActions";
 import { getCommentsForArticle } from "../../store/actions/commentActions";
 import { Container, Card, Typography, Button } from "@material-ui/core";
 import CardActions from "@material-ui/core/CardActions";
+import { Link } from "react-router-dom";
 import CardContent from "@material-ui/core/CardContent";
 class Articles extends Component {
   state = {
@@ -69,13 +70,14 @@ class Articles extends Component {
               </CardContent>
               <CardActions>
                 <Button size="small">- {item.author}</Button>
-                <Button
-                  onClick={() => this.commentsHandler(item._id, index)}
-                  size="small"
-                  variant="outlined"
-                >
-                  Comments
-                </Button>
+                <Link to={"/article/" + item._id}>
+                  <Button
+                    // onClick={() => this.commentsHandler(item._id, index)}
+                    size="small"
+                  >
+                    View Comments
+                  </Button>
+                </Link>
               </CardActions>
               {this.state.isCommentOn ? comments : null}
             </Card>

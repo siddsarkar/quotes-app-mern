@@ -15,6 +15,11 @@ const CommentSchema = mongoose.Schema({
     required: true,
     ref: "Article",
   },
+  authorId: {
+    type: ObjectId,
+    required: true,
+    ref: "User",
+  },
   comment: {
     type: String,
     required: true,
@@ -55,8 +60,8 @@ router.post("/add/:articleId", isAuthenticated, (req, res) => {
   const articleId = req.params.articleId;
   const comment = req.body.comment;
   const author = req.body.author;
-
-  const commentBody = { articleId, comment, author };
+  const authorId = req.authorId;
+  const commentBody = { articleId, comment, author, authorId };
 
   const newComment = new Comment({
     ...commentBody,
@@ -78,6 +83,20 @@ router.get("/get/:articleId", (req, res) => {
     else {
       res.json(comments);
     }
+  });
+});
+
+router.delete("/delete/:commentId", isAuthenticated, (req, res) => {
+  Comment.remove({ _id: req.params.commentId }, (err) => {
+    res.json({ message: "comment deleted" });
+  });
+});
+
+router.get("/mycomments", isAuthenticated, (req, res) => {
+  const authorId = req.authorId;
+  Comment.find({ authorId }, (err, mycomments) => {
+    if (err) return err;
+    res.json({ mycomments });
   });
 });
 

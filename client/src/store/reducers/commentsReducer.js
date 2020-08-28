@@ -3,6 +3,7 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   comments: [],
   allComments: [],
+  myComments: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -16,6 +17,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         allComments: action.allComments,
+      };
+    case actionTypes.GOT_MY_COMMENTS:
+      return {
+        ...state,
+        myComments: action.myComments,
       };
     default:
       return state;

@@ -9,9 +9,14 @@ import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import EditArticle from "./EditArticle";
+import {
+  getMyComments,
+  deleteComment,
+} from "../../store/actions/commentActions";
 class MyArticles extends Component {
   getArticles = () => {
     this.props.initMyArticles();
+    this.props.getMyComments();
   };
   componentDidMount() {
     this.getArticles();
@@ -36,9 +41,8 @@ class MyArticles extends Component {
               <Card key={item._id} style={{ margin: 10 }}>
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
-                    {item.title}
+                    [Post@{item.addedOn}] {item.title}
                   </Typography>
-                  <Typography variant="h5" component="h2"></Typography>
                   <Typography variant="body2" component="p">
                     {item.body}
                   </Typography>
@@ -64,6 +68,36 @@ class MyArticles extends Component {
               </Card>
             );
           })}
+          {/* comments */}
+          {this.props.myComments.length
+            ? this.props.myComments.map((comment) => {
+                return (
+                  <Card key={comment._id} style={{ margin: 10 }}>
+                    <CardContent>
+                      <Typography color="textSecondary" gutterBottom>
+                        [Comment@{comment.addedOn}]
+                      </Typography>
+                      <Typography variant="body2" component="p">
+                        {comment.comment}
+                      </Typography>
+                    </CardContent>
+                    <CardActions>
+                      <Button
+                        variant="outlined"
+                        onClick={() =>
+                          this.props.deleteComment(
+                            comment._id,
+                            this.getArticles
+                          )
+                        }
+                      >
+                        <Typography color="textSecondary">DELETE</Typography>
+                      </Button>
+                    </CardActions>
+                  </Card>
+                );
+              })
+            : null}
         </Container>
       </Router>
     ) : (
@@ -84,6 +118,7 @@ class MyArticles extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    myComments: state.comments.myComments,
     myArticles: state.articles.myArticles,
     auth: state.users.isAuthenticated,
   };
@@ -93,6 +128,8 @@ const mapDispatchToProps = (dispatch) => {
   return {
     initMyArticles: () => dispatch(getMyArticles()),
     deleteArticle: (id, callback) => dispatch(deleteArticle(id, callback)),
+    getMyComments: (callback) => dispatch(getMyComments(callback)),
+    deleteComment: (id, callback) => dispatch(deleteComment(id, callback)),
   };
 };
 export default connect(mapStateToProps, mapDispatchToProps)(MyArticles);

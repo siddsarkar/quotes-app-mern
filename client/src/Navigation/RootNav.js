@@ -3,12 +3,18 @@ import { connect } from "react-redux";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 //routes
-import { Login, Articles, MyArticles, AddArticle } from "../Routes/index";
+import {
+  Login,
+  Articles,
+  MyArticles,
+  AddArticle,
+  SingleArticle,
+} from "../Routes/index";
 
 const RootNav = (props) => {
   return (
     <Router>
-      <AppBar position="sticky">
+      <AppBar position="static">
         <Toolbar variant="dense">
           <Link
             style={{
@@ -38,7 +44,7 @@ const RootNav = (props) => {
             }}
             to="/myarticles"
           >
-            <Typography>My Quotes</Typography>
+            <Typography>Activity</Typography>
           </Link>
           <Link
             style={{
@@ -55,6 +61,7 @@ const RootNav = (props) => {
       </AppBar>
 
       <Switch>
+        <Route path="/article/:id" exact component={SingleArticle} />
         <Route path="/addarticle" component={AddArticle} />
         <Route path="/myarticles" component={MyArticles} />
         <Route path="/login" component={Login} />
