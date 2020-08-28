@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { AppBar, Toolbar, Typography } from "@material-ui/core";
 import AddArticleScreen from "./Routes/AddArticle/AddArticle";
 import Articles from "./Routes/Articles/Articles";
-import Login from "./Routes/Login/Login.js";
+import Login from "./Routes/Login/Login";
 import MyArticles from "./Routes/MyArticles/MyArticles";
 import SingleArticle from "./Routes/SingleArticle/SingleArticle";
 
