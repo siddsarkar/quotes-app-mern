@@ -1,11 +1,11 @@
-import React, { Component } from "./node_modules/react";
-import { connect } from "./node_modules/react-redux";
+import React, { Component } from "react";
+import { connect } from "react-redux";
 import {
   userLoginRequest,
   userLogoutRequest,
   userSignUpRequest,
 } from "../../store/actions/usersActions";
-import { Container, TextField, Button } from "./node_modules/@material-ui/core";
+import { Container, TextField, Button } from "@material-ui/core";
 class Login extends Component {
   state = {
     username: "",

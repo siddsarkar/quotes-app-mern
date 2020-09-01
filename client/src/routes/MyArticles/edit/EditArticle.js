@@ -1,45 +1,42 @@
-import React, { Component } from "./node_modules/react";
-import { connect } from "./node_modules/react-redux";
-import { addArticle } from "../../store/actions/articleActions";
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Container, TextField, Typography, Button } from "@material-ui/core";
 import {
-  Container,
-  TextField,
-  Typography,
-  Button,
-} from "./node_modules/@material-ui/core";
+  updateArticle,
+  getSingleArticle,
+} from "../../../store/actions/articleActions";
 
-class AddArticleScreen extends Component {
+class EditArticle extends Component {
   state = {
-    author: "",
     body: "",
     title: "",
+    author: "",
   };
-
-  getAuthorname = () => {
-    this.setState({ author: this.props.authenticatedUsername });
+  getFields = () => {
+    this.setState({
+      body: this.props.article.body,
+      title: this.props.article.title,
+      author: this.props.article.author,
+    });
   };
 
   componentDidMount() {
-    this.getAuthorname();
+    this.props.getSingle(this.props.match.params.id, this.getFields);
   }
-  addArticle = () => {
+  updateArticle = () => {
     const article = {
       author: this.state.author,
       body: this.state.body,
       title: this.state.title,
     };
-    this.props.addArticle(article, () => {
-      this.setState({
-        body: "",
-        title: "",
-      });
-    });
+    this.props.updateArticle(this.props.match.params.id, article);
+    this.props.getArticles();
   };
   render() {
     return (
       <Container style={{ padding: 20 }}>
         <Typography style={{ padding: 20, paddingLeft: 0 }} variant="h3">
-          Write Your Quote
+          Edit Your Quote
         </Typography>
         <form noValidate autoComplete="off">
           <TextField
@@ -47,11 +44,12 @@ class AddArticleScreen extends Component {
             fullWidth
             value={this.state.author}
             id="standard-basic"
-            label="Author"
+            placeholder="Author"
             disabled
           />
           <br />
           <TextField
+            type="text"
             value={this.state.title}
             style={{ marginBottom: 20 }}
             fullWidth
@@ -62,20 +60,23 @@ class AddArticleScreen extends Component {
           />
           <br />
           <TextField
+            type="text"
             value={this.state.body}
             onChange={(e) => {
               this.setState({ body: e.target.value });
             }}
             fullWidth
             placeholder="Body"
+            // id="outlined-multiline-static"
+            // label="Body"
             multiline
             rows={4}
             variant="outlined"
           />
           <br />
           <div style={{ padding: 20, paddingLeft: 0 }}>
-            <Button variant="outlined" onClick={() => this.addArticle()}>
-              Submit
+            <Button variant="outlined" onClick={() => this.updateArticle()}>
+              Update
             </Button>
           </div>
         </form>
@@ -86,14 +87,15 @@ class AddArticleScreen extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    authenticatedUsername: state.users.authenticatedUsername,
+    article: state.articles.article,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    addArticle: (article, callback) => dispatch(addArticle(article, callback)),
+    getSingle: (id, callback) => dispatch(getSingleArticle(id, callback)),
+    updateArticle: (id, article) => dispatch(updateArticle(id, article)),
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddArticleScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(EditArticle);
