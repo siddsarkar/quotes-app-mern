@@ -8,6 +8,7 @@ require("dotenv").config();
 const articles = require("./routes/articlesRoute.js");
 const users = require("./routes/usersRoute.js");
 const comments = require("./routes/commentsRoute");
+const likes = require("./routes/likesRoute");
 
 const config = require("./config.js");
 const { error } = require("console");
@@ -39,6 +40,7 @@ app.use((req, res, next) => {
   next();
 });
 
+app.use("/api/likes", likes);
 app.use("/api/articles", articles);
 app.use("/api/users", users);
 app.use("/api/comments", comments);
