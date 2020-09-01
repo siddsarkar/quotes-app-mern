@@ -2,13 +2,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getAllArticles } from "../../store/actions/articleActions";
 import { getCommentsForArticle } from "../../store/actions/commentActions";
-import { Container, Card, Typography, Button } from "@material-ui/core";
+import { Container, Card, Typography, Button, Paper } from "@material-ui/core";
 import CardActions from "@material-ui/core/CardActions";
 import { Link } from "react-router-dom";
 import CardContent from "@material-ui/core/CardContent";
+import MyCard from "../../components/Card";
 class Articles extends Component {
   state = {
-    isCommentOn: false,
     articles: [],
   };
 
@@ -37,51 +37,10 @@ class Articles extends Component {
   };
 
   render() {
-    const comments = this.props.comments.map((item) => {
-      return (
-        <CardContent
-          style={{
-            padding: 10,
-            marginLeft: 20,
-            backgroundColor: "lightblue",
-          }}
-        >
-          <Typography variant="body2" component="p">
-            {item.comment}
-          </Typography>
-          <Typography variant="caption" color="textSecondary">
-            -{item.author}
-          </Typography>
-        </CardContent>
-      );
-    });
     return (
-      <Container>
+      <Container maxWidth="lg">
         {this.state.articles.map((item, index) => {
-          return (
-            <Card key={item._id} style={{ margin: 10 }}>
-              <CardContent>
-                <Typography color="textSecondary" gutterBottom>
-                  {item.title}
-                </Typography>
-                <Typography variant="body2" component="p">
-                  {item.body}
-                </Typography>
-              </CardContent>
-              <CardActions>
-                <Button size="small">- {item.author}</Button>
-                <Link to={"/article/" + item._id}>
-                  <Button
-                    // onClick={() => this.commentsHandler(item._id, index)}
-                    size="small"
-                  >
-                    View Comments
-                  </Button>
-                </Link>
-              </CardActions>
-              {this.state.isCommentOn ? comments : null}
-            </Card>
-          );
+          return <MyCard item={item} />;
         })}
       </Container>
     );

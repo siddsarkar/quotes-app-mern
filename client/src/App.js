@@ -11,7 +11,7 @@ import SingleArticle from "./routes/SingleArticle";
 function App(props) {
   return (
     <Router>
-      <AppBar position="static">
+      <AppBar position="sticky">
         <Toolbar variant="dense">
           <Link
             style={{
@@ -21,7 +21,7 @@ function App(props) {
             }}
             to="/"
           >
-            <Typography>Quotes</Typography>
+            <Typography variant="inherit">QUOTES</Typography>
           </Link>
           <Link
             style={{
@@ -31,7 +31,7 @@ function App(props) {
             }}
             to="/addarticle"
           >
-            <Typography>Write</Typography>
+            <Typography variant="inherit">WRITE</Typography>
           </Link>
           <Link
             style={{
@@ -41,7 +41,7 @@ function App(props) {
             }}
             to="/myarticles"
           >
-            <Typography>Activity</Typography>
+            <Typography variant="inherit">ACTIVITY</Typography>
           </Link>
           <Link
             style={{
@@ -52,7 +52,9 @@ function App(props) {
             }}
             to="/login"
           >
-            <Typography>{props.isLoggedin ? "LOGOUT" : "LOGIN"}</Typography>
+            <Typography variant="inherit">
+              {props.isLoggedin ? "LOGOUT" : "LOGIN"}
+            </Typography>
           </Link>
         </Toolbar>
       </AppBar>
