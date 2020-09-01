@@ -16,10 +16,6 @@ const LikeSchema = mongoose.Schema({
     required: true,
     ref: "Article",
   },
-  like: {
-    type: Boolean,
-    required: true,
-  },
   addedOn: {
     type: Date,
     default: Date.now,
@@ -49,26 +45,51 @@ const isAuthenticated = (req, res, next) => {
 };
 
 router.post("/like/:articleId", isAuthenticated, (req, res) => {
-  console.log(req.authorId);
-  // const articleId = req.params.articleId;
-  // const authorId = req.authorId;
-  // const isLiked = req.body.isLiked;
+  const articleId = req.params.articleId;
+  const authorId = req.authorId;
 
-  // const likeBody = { articleId: articleId, like: like };
+  const doStuff = (len) => {
+    console.log(len);
+  };
 
-  // const newLike = new Like({
-  //   authorId: new Object(authorId),
-  //   articleId: new Object(articleId),
-  //   like: isLiked,
-  // });
+  Like.find({ articleId, authorId }, (err, item) => {
+    if (err) return err;
+    doStuff(item.length);
+  });
 
-  // newLike.save((err) => {
-  //   if (err) return err;
-  //   else {
-  //     res.json({ message: "liked post" });
-  //   }
-  // });
-  res.json({ message: "ji" });
+  // if (condition === null) {
+  //   const newLike = new Like({
+  //     authorId: new Object(authorId),
+  //     articleId: new Object(articleId),
+  //   });
+
+  //   newLike.save((err) => {
+  //     if (err) return err;
+  //     else {
+  //       res.json({ message: "liked" });
+  //     }
+  //   });
+  // } else {
+  //   Like.find({ articleId, authorId }, (err, item) => {
+  //     if (err) throw err;
+  //     else {
+  //       Like.findOneAndRemove({ _id: item._id }, (err) => {
+  //         if (err) return err;
+  //         res.json({ message: "unliked" });
+  //       });
+  //     }
+  //   });
+  // }
+});
+
+router.get("/:articleId", (req, res) => {
+  const articleId = req.params.articleId;
+  Like.find({ articleId }, (err, item) => {
+    if (err) throw err;
+    else {
+      res.json(item);
+    }
+  });
 });
 
 module.exports = router;
