@@ -6,10 +6,10 @@ import CardContent from "@material-ui/core/CardContent";
 
 export default function MyCard({ item }) {
   return (
-    <Card elevation="5" key={item._id} style={{ margin: 10 }}>
+    <Card elevation={5} style={{ margin: 10 }}>
       <CardContent>
         <Link style={{ textDecoration: "none" }} to={"/article/" + item._id}>
-          <Typography variant="h5" color="primary" gutterBottom>
+          <Typography variant="h5" color="textPrimary" gutterBottom>
             {item.title}
           </Typography>
         </Link>
@@ -28,7 +28,7 @@ export default function MyCard({ item }) {
           </Button>
         </Link>
         <Button
-          color="textSecondary"
+          color="secondary"
           style={{ right: 10, position: "absolute" }}
           size="small"
         >

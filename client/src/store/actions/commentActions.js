@@ -12,7 +12,6 @@ export const getCommentsForArticle = (articleId) => {
           type: actionTypes.GOT_COMMENTS_FOR_ARTICLE,
           comments: res,
         });
-        console.log(res);
       });
   };
 };
@@ -48,7 +47,6 @@ export const getMyComments = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         dispatch({
           type: actionTypes.GOT_MY_COMMENTS,
           myComments: res.mycomments,

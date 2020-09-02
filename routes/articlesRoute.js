@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config");
 
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Schema.Types.ObjectId;
+const ObjectId = mongoose.Types.ObjectId;
 const Article = require("../models/articlesModel");
 
 const router = express.Router();
@@ -69,7 +69,7 @@ router.get("/:id", (req, res) => {
 });
 
 router.delete("/delete/:id", isAuthenticated, (req, res) => {
-  Article.remove({ _id: req.params.id }, (err) => {
+  Article.deleteOne({ _id: req.params.id }, (err) => {
     res.json({ success: "success" });
   });
 });

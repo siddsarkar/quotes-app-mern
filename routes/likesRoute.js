@@ -4,7 +4,7 @@ const config = require("../config");
 
 const mongoose = require("mongoose");
 const Like = require("../models/likesModel");
-const ObjectId = require("mongoose").Types.ObjectId;
+const ObjectId = mongoose.Types.ObjectId;
 
 const router = express.Router();
 

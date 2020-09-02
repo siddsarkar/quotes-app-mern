@@ -37,7 +37,7 @@ class Articles extends Component {
     return (
       <Container maxWidth="lg">
         {this.state.articles.map((item, index) => {
-          return <MyCard item={item} />;
+          return <MyCard key={item._id} item={item} />;
         })}
       </Container>
     );

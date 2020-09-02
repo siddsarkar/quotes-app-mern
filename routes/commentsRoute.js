@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 const config = require("../config");
 
 const mongoose = require("mongoose");
-const ObjectId = mongoose.Schema.Types.ObjectId;
+const ObjectId = mongoose.Types.ObjectId;
 const Comment = require("../models/commentsModel");
 const router = express.Router();
 
@@ -60,7 +60,7 @@ router.get("/get/:articleId", (req, res) => {
 });
 
 router.delete("/delete/:commentId", isAuthenticated, (req, res) => {
-  Comment.remove({ _id: req.params.commentId }, (err) => {
+  Comment.deleteOne({ _id: req.params.commentId }, (err) => {
     res.json({ message: "comment deleted" });
   });
 });
