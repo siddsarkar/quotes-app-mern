@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Card, Typography, Button } from "@material-ui/core";
+import { Card, Typography, Button } from "@material-ui/core";
 import CardActions from "@material-ui/core/CardActions";
 import { Link } from "react-router-dom";
 import CardContent from "@material-ui/core/CardContent";
@@ -32,7 +32,7 @@ export default function MyCard({ item }) {
           style={{ right: 10, position: "absolute" }}
           size="small"
         >
-          Like {" (7)"}
+          Like
         </Button>
       </CardActions>
     </Card>

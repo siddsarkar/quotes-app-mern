@@ -1,26 +1,9 @@
 const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
 const config = require("../config");
 
-const UserSchema = mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-  },
-  username: {
-    type: String,
-    unique: true,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-});
-
-const User = mongoose.model("User", UserSchema);
+const User = require("../models/usersModel");
 const router = express.Router();
 
 router.post("/signup", (req, res) => {

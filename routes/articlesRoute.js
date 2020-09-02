@@ -1,36 +1,11 @@
 const express = require("express");
 const jwt = require("jsonwebtoken");
-const mongoose = require("mongoose");
 const config = require("../config");
 
+const mongoose = require("mongoose");
 const ObjectId = mongoose.Schema.Types.ObjectId;
+const Article = require("../models/articlesModel");
 
-const ArticleSchema = mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  author: {
-    type: String,
-    required: true,
-  },
-  authorId: {
-    type: ObjectId,
-    required: true,
-    ref: "User",
-  },
-  body: {
-    type: String,
-    required: true,
-  },
-  addedOn: {
-    type: Date,
-    default: Date.now,
-    required: true,
-  },
-});
-
-const Article = mongoose.model("Article", ArticleSchema);
 const router = express.Router();
 
 const isAuthenticated = (req, res, next) => {

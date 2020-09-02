@@ -2,10 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getAllArticles } from "../../store/actions/articleActions";
 import { getCommentsForArticle } from "../../store/actions/commentActions";
-import { Container, Card, Typography, Button, Paper } from "@material-ui/core";
-import CardActions from "@material-ui/core/CardActions";
-import { Link } from "react-router-dom";
-import CardContent from "@material-ui/core/CardContent";
+import { Container } from "@material-ui/core";
 import MyCard from "../../components/Card";
 class Articles extends Component {
   state = {
