@@ -35,7 +35,7 @@ router.post("/add", isAuthenticated, (req, res) => {
 
   const newArticle = new Article({
     ...articleBody,
-    authorId: new Object(authorId),
+    authorId: new ObjectId(authorId),
   });
 
   newArticle.save((err) => {
@@ -84,7 +84,7 @@ router.post("/edit/:id", isAuthenticated, (req, res) => {
     title: req.body.title,
     author: req.body.author,
     body: req.body.body,
-    authorId: new Object(authorId),
+    authorId: new ObjectId(authorId),
   };
 
   Article.findByIdAndUpdate(req.params.id, updatedArticle, (err) => {

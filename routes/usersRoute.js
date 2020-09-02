@@ -7,13 +7,13 @@ const User = require("../models/usersModel");
 const router = express.Router();
 
 router.post("/signup", (req, res) => {
-  //create object as userinfo
   const name = req.body.name || "";
   const username = req.body.username || "";
   const password = req.body.password || "";
 
   const reqBody = { name, username, password };
   const newUser = new User(reqBody);
+
   //hash pass
   bcrypt.genSalt(10, async (err, salt) => {
     const hashedPass = await bcrypt.hash(newUser.password, salt);

@@ -33,8 +33,8 @@ router.post("/like/:articleId", isAuthenticated, (req, res) => {
   const doStuff = (item) => {
     if (item === null) {
       const newLike = new Like({
-        authorId: new Object(authorId),
-        articleId: new Object(articleId),
+        authorId: new ObjectId(authorId),
+        articleId: new ObjectId(articleId),
       });
 
       newLike.save((err) => {
