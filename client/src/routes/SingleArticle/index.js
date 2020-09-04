@@ -33,7 +33,7 @@ class SingleArticle extends Component {
 
   postComment = () => {
     const body = {
-      author: this.props.article.author,
+      author: this.props.username,
       comment: this.state.comment,
     };
     this.props.addComment(this.props.match.params.id, body, this.callback);
@@ -94,6 +94,7 @@ class SingleArticle extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    username: state.users.authenticatedUsername,
     article: state.articles.article,
     comments: state.comments.comments,
   };
