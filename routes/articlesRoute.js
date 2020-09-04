@@ -5,6 +5,7 @@ const config = require("../config");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const Article = require("../models/articlesModel");
+// const Like = require("../models/likesModel");
 
 const router = express.Router();
 
@@ -48,6 +49,14 @@ router.post("/add", isAuthenticated, (req, res) => {
 
 router.get("/", (req, res) => {
   Article.find({}, (err, articles) => {
+    // articles.map((article) => {
+    //   Like.find({ articleId: article._id }, (err, item) => {
+    //     if (err) throw err;
+    //     else {
+    //       console.log(item.length);
+    //     }
+    //   });
+    // });
     res.json(articles);
   });
 });
