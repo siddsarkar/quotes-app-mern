@@ -27,13 +27,6 @@ export default function MyCard({ item }) {
             View Comments
           </Button>
         </Link>
-        <Button
-          color="secondary"
-          style={{ right: 10, position: "absolute" }}
-          size="small"
-        >
-          Like
-        </Button>
       </CardActions>
     </Card>
   );

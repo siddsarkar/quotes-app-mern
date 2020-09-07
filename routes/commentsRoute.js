@@ -39,6 +39,7 @@ router.post("/add/:articleId", isAuthenticated, (req, res) => {
   const newComment = new Comment({
     ...commentBody,
     articleId: new ObjectId(articleId),
+    authorId: new ObjectId(authorId),
   });
 
   newComment.save((err) => {

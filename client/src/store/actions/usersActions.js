@@ -28,19 +28,28 @@ export const userSignUpRequest = (data) => {
 export const userLoginRequest = (userLoginDetails, callback) => {
   return (dispatch) => {
     return fetch("/api/users/login", options(userLoginDetails))
-      .then((res) => res.json())
       .then((res) => {
-        alert(res.message);
-        const token = res.token;
-        delete res.token;
-        localStorage.setItem("jwtToken", token);
-        dispatch({
-          type: actionTypes.USER_LOGGED_IN,
-          authorizationToken: token,
-          authenticatedUsername: jwt.decode(token).username,
-        });
-        callback();
-        return res;
+        if (res.status === 200) {
+          return res.json();
+        } else {
+          alert("Wrong username or password!");
+          callback();
+        }
+      })
+      .then((res) => {
+        if (res) {
+          alert(res.message);
+          const token = res.token;
+          delete res.token;
+          localStorage.setItem("jwtToken", token);
+          dispatch({
+            type: actionTypes.USER_LOGGED_IN,
+            authorizationToken: token,
+            authenticatedUsername: jwt.decode(token).username,
+          });
+          callback();
+          return res;
+        }
       });
   };
 };
