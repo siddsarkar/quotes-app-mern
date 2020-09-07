@@ -5,7 +5,7 @@ import {
   userLogoutRequest,
   userSignUpRequest,
 } from "../../store/actions/usersActions";
-import { Container, TextField, Button } from "@material-ui/core";
+import { Container, TextField, Button, Typography } from "@material-ui/core";
 class Login extends Component {
   state = {
     username: "",
@@ -56,52 +56,69 @@ class Login extends Component {
       />
     );
     return (
-      <Container style={{ padding: 20 }}>
-        {this.state.signup ? signupon : ""}
-        <TextField
-          value={this.state.username}
-          onChange={(e) => this.setState({ username: e.target.value })}
-          required
-          id="standard-required"
-          label="Username"
-          fullWidth
-          style={{ marginBottom: 20 }}
-        />
-        <br />
-        <TextField
-          fullWidth
-          required
-          id="standard-password-input"
-          label="Password"
-          type="password"
-          autoComplete="current-password"
-          value={this.state.password}
-          onChange={(e) => this.setState({ password: e.target.value })}
-        />
-        <br />
-        <div style={{ marginTop: 20 }}>
-          <Button variant="outlined" onClick={() => this.loginHandler()}>
-            Login
-          </Button>
-        </div>
-        <div style={{ marginTop: 20 }}>
-          <Button variant="outlined" onClick={() => this.logoutHandler()}>
-            Logout
-          </Button>
-        </div>
-        <div style={{ marginTop: 20 }}>
-          <Button
-            variant="outlined"
-            onClick={
-              this.state.signup
-                ? () => this.signupHandler()
-                : () => this.showSignUP()
-            }
-          >
-            Signup
-          </Button>
-        </div>
-      </Container>
+      <div
+        style={{
+          position: "relative",
+          height: "100%",
+        }}
+      >
+        <Container style={{ padding: 20 }}>
+          {this.state.signup ? signupon : ""}
+          <TextField
+            value={this.state.username}
+            onChange={(e) => this.setState({ username: e.target.value })}
+            required
+            id="standard-required"
+            label="Username"
+            fullWidth
+            style={{ marginBottom: 20 }}
+          />
+          <br />
+          <TextField
+            fullWidth
+            required
+            id="standard-password-input"
+            label="Password"
+            type="password"
+            autoComplete="current-password"
+            value={this.state.password}
+            onChange={(e) => this.setState({ password: e.target.value })}
+          />
+          <br />
+          {this.props.isLoggedin ? (
+            <div style={{ marginTop: 20 }}>
+              <Button variant="outlined" onClick={() => this.logoutHandler()}>
+                Logout
+              </Button>
+            </div>
+          ) : (
+            <div>
+              <div style={{ marginTop: 20 }}>
+                <Button variant="outlined" onClick={() => this.loginHandler()}>
+                  Login
+                </Button>
+              </div>
+              <div style={{ marginTop: 20 }}>
+                <Button
+                  variant="outlined"
+                  onClick={
+                    this.state.signup
+                      ? () => this.signupHandler()
+                      : () => this.showSignUP()
+                  }
+                >
+                  Signup
+                </Button>
+              </div>
+            </div>
+          )}
+          <div style={{ marginTop: 20, textAlign: "center" }}>
+            <Typography color="textSecondary" variant="caption">
+              Copyright@2020_Siddhartha_Sarkar
+            </Typography>
+          </div>
+        </Container>
+      </div>
     );
   }
 }

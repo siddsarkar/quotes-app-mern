@@ -42,7 +42,9 @@ class SingleArticle extends Component {
   render() {
     return (
       <Container>
-        <Typography variant="h3">{this.props.article.title}</Typography>
+        <Typography style={{ marginTop: 20 }} variant="h3">
+          {this.props.article.title}
+        </Typography>
         <Typography variant="body1">{this.props.article.body}</Typography>
         <Typography
           color="textSecondary"

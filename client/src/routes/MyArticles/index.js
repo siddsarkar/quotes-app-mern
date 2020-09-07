@@ -38,7 +38,10 @@ class MyArticles extends Component {
           </Switch>
           {this.props.myArticles.map((item) => {
             return (
-              <Card key={item._id} style={{ margin: 10 }}>
+              <Card
+                key={item._id}
+                style={{ backgroundColor: "azure", margin: 10 }}
+              >
                 <CardContent>
                   <Typography color="textSecondary" gutterBottom>
                     [Post@{item.addedOn}] {item.title}
@@ -72,7 +75,10 @@ class MyArticles extends Component {
           {this.props.myComments.length
             ? this.props.myComments.map((comment) => {
                 return (
-                  <Card key={comment._id} style={{ margin: 10 }}>
+                  <Card
+                    key={comment._id}
+                    style={{ backgroundColor: "beige", margin: 10 }}
+                  >
                     <CardContent>
                       <Typography color="textSecondary" gutterBottom>
                         [Comment@{comment.addedOn}]

@@ -22,7 +22,10 @@ export default function MyCard({ item }) {
         <Button color="primary" size="small">
           - {item.author}
         </Button>
-        <Link style={{ textDecoration: "none" }} to={"/article/" + item._id}>
+        <Link
+          style={{ textDecoration: "none", right: 10, position: "absolute" }}
+          to={"/article/" + item._id}
+        >
           <Button size="small" color="secondary">
             View Comments
           </Button>

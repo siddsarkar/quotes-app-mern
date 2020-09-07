@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getAllArticles } from "../../store/actions/articleActions";
 import { getCommentsForArticle } from "../../store/actions/commentActions";
-import { Container } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import MyCard from "../../components/Card";
 class Articles extends Component {
   state = {
@@ -35,11 +35,23 @@ class Articles extends Component {
 
   render() {
     return (
-      <Container maxWidth="lg">
-        {this.state.articles.map((item, index) => {
-          return <MyCard key={item._id} item={item} />;
-        })}
-      </Container>
+      <div
+        style={{
+          position: "relative",
+          height: "100%",
+        }}
+      >
+        <Container maxWidth="lg">
+          {this.state.articles.map((item, index) => {
+            return <MyCard key={item._id} item={item} />;
+          })}
+        </Container>
+        <div style={{ margin: 10, textAlign: "center" }}>
+          <Typography color="textSecondary" variant="caption">
+            Copyright@2020_Siddhartha Sarkar
+          </Typography>
+        </div>
+      </div>
     );
   }
 }
