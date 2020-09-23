@@ -1,29 +1,12 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
-const config = require("../config");
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const Comment = require("../models/commentsModel");
+const { json } = require("body-parser");
 const router = express.Router();
 
-//middleware
-const isAuthenticated = (req, res, next) => {
-  const authorizationHeader = req.headers["authorization"];
-  const authorizationToken = authorizationHeader.split(" ")[1];
-  if (authorizationToken) {
-    jwt.verify(authorizationToken, config.jwtSecret, (err, decoded) => {
-      if (err) {
-        res.sendStatus(401);
-      } else {
-        req.authorId = decoded.id;
-        next();
-      }
-    });
-  } else {
-    res.sendStatus(403);
-  }
-};
+const isAuthenticated = require("../utils/auth");
 
 router.get("/", (req, res) => {
   res.json({ message: "wlcome to comments" });

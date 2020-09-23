@@ -4,7 +4,13 @@ import {
   getMyArticles,
   deleteArticle,
 } from "../../store/actions/articleActions";
-import { Container, Card, Typography, Button } from "@material-ui/core";
+import {
+  Container,
+  Card,
+  Typography,
+  Button,
+  Divider,
+} from "@material-ui/core";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -36,6 +42,7 @@ class MyArticles extends Component {
               )}
             />
           </Switch>
+          {/* posts */}
           {this.props.myArticles.map((item) => {
             return (
               <Card

@@ -15,25 +15,13 @@ class Articles extends Component {
   gotArticles = () => {
     this.setState({ articles: this.props.articles });
   };
-  componentDidMount = () => {
-    this.props.initArticles(this.gotArticles);
-  };
 
-  commentsHandler = (id, index) => {
-    this.props.getComments(id);
-    const articles = this.state.articles.map((item, j) => {
-      if (j === index) {
-        return {
-          ...item,
-          comments: this.props.comments,
-        };
-      } else {
-        return item;
-      }
-    });
-    console.log(articles);
-    this.setState({ articles: articles });
-    this.setState({ isCommentOn: true });
+  uef = () => {
+    const id = this.props.match.params.authorId;
+    this.props.getautthorarticles(id, this.gotArticles);
+  };
+  componentDidMount = () => {
+    this.uef();
   };
 
   render() {
@@ -44,6 +32,11 @@ class Articles extends Component {
           height: "100%",
         }}
       >
+        <div style={{ margin: 10, textAlign: "center" }}>
+          <Typography color="textSecondary" variant="caption">
+            Showing articles by {this.props.match.params.authorId}
+          </Typography>
+        </div>
         <Container maxWidth="lg">
           {this.state.articles.map((item, index) => {
             return <MyCard key={item._id} item={item} />;
@@ -62,15 +55,12 @@ class Articles extends Component {
 const mapStateToProps = (state) => {
   return {
     articles: state.articles.articles,
-    comments: state.comments.comments,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    initArticles: (callback) => dispatch(getAllArticles(callback)),
-    getComments: (id) => dispatch(getCommentsForArticle(id)),
-    getautthorarticles: (id) => dispatch(getArticleByAuthor(id)),
+    getautthorarticles: (id, cb) => dispatch(getArticleByAuthor(id, cb)),
   };
 };
 

@@ -25,6 +25,20 @@ export const getSingleArticle = (id, callback) => {
   };
 };
 
+export const getArticleByAuthor = (authorid, cb) => {
+  return (dispatch) => {
+    fetch("/api/articles/" + authorid + "/articles", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then(({ articles }) => {
+        dispatch({ type: actionTypes.GOT_ALL_ARTICLES, articles: articles });
+        console.log(articles);
+        cb();
+      });
+  };
+};
+
 export const getMyArticles = () => {
   return (dispatch) => {
     fetch("/api/articles/myarticles", {

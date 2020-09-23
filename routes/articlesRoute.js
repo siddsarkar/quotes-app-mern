@@ -1,6 +1,4 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
-const config = require("../config");
 
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
@@ -9,22 +7,7 @@ const Article = require("../models/articlesModel");
 
 const router = express.Router();
 
-const isAuthenticated = (req, res, next) => {
-  const authorizationHeader = req.headers["authorization"];
-  const authorizationToken = authorizationHeader.split(" ")[1];
-  if (authorizationToken) {
-    jwt.verify(authorizationToken, config.jwtSecret, (err, decoded) => {
-      if (err) {
-        res.sendStatus(401);
-      } else {
-        req.authorId = decoded.id;
-        next();
-      }
-    });
-  } else {
-    res.sendStatus(403);
-  }
-};
+const isAuthenticated = require("../utils/auth");
 
 router.post("/add", isAuthenticated, (req, res) => {
   const title = req.body.title || "";
@@ -49,14 +32,6 @@ router.post("/add", isAuthenticated, (req, res) => {
 
 router.get("/", (req, res) => {
   Article.find({}, (err, articles) => {
-    // articles.map((article) => {
-    //   Like.find({ articleId: article._id }, (err, item) => {
-    //     if (err) throw err;
-    //     else {
-    //       console.log(item.length);
-    //     }
-    //   });
-    // });
     res.json(articles);
   });
 });
@@ -74,6 +49,14 @@ router.get("/:id", (req, res) => {
   Article.findById({ _id: id }, (err, article) => {
     if (err) throw err;
     res.json(article);
+  });
+});
+
+router.get("/:authorId/articles", (req, res) => {
+  const authorId = req.params.authorId;
+  Article.find({ authorId }, (err, articles) => {
+    if (err) throw err;
+    res.json({ articles });
   });
 });
 

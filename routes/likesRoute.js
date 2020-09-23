@@ -1,6 +1,4 @@
 const express = require("express");
-const jwt = require("jsonwebtoken");
-const config = require("../config");
 
 const mongoose = require("mongoose");
 const Like = require("../models/likesModel");
@@ -8,23 +6,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 const router = express.Router();
 
-//middleware
-const isAuthenticated = (req, res, next) => {
-  const authorizationHeader = req.headers["authorization"];
-  const authorizationToken = authorizationHeader.split(" ")[1];
-  if (authorizationToken) {
-    jwt.verify(authorizationToken, config.jwtSecret, (err, decoded) => {
-      if (err) {
-        res.sendStatus(401);
-      } else {
-        req.authorId = decoded.id;
-        next();
-      }
-    });
-  } else {
-    res.sendStatus(403);
-  }
-};
+const isAuthenticated = require("../utils/auth");
 
 router.post("/like/:articleId", isAuthenticated, (req, res) => {
   const articleId = req.params.articleId;

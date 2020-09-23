@@ -17,7 +17,12 @@ const MONGODB_URI = config.mongodburi;
 const PORT = process.env.PORT || 5000;
 mongoose.connect(
   MONGODB_URI,
-  { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
+  {
+    useFindAndModify: false,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true,
+  },
   (err) => console.log("MongoDB Connected", err)
 );
 

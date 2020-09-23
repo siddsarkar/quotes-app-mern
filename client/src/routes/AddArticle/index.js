@@ -33,6 +33,15 @@ class AddArticleScreen extends Component {
   render() {
     return (
       <Container style={{ padding: 20 }}>
+        {this.props.auth ? (
+          ""
+        ) : (
+          <div style={{ margin: 10, textAlign: "center" }}>
+            <Typography color="textSecondary" variant="h4">
+              Login to write
+            </Typography>
+          </div>
+        )}
         <Typography style={{ padding: 20, paddingLeft: 0 }} variant="h3">
           Write Your Quote
         </Typography>
@@ -42,7 +51,7 @@ class AddArticleScreen extends Component {
             fullWidth
             value={this.state.author}
             id="standard-basic"
-            label="Author"
+            label="Your Username"
             disabled
           />
           <br />
@@ -54,6 +63,7 @@ class AddArticleScreen extends Component {
               this.setState({ title: e.target.value });
             }}
             placeholder="Title"
+            disabled={this.props.auth ? false : true}
           />
           <br />
           <TextField
@@ -66,14 +76,24 @@ class AddArticleScreen extends Component {
             multiline
             rows={4}
             variant="outlined"
+            disabled={this.props.auth ? false : true}
           />
           <br />
           <div style={{ padding: 20, paddingLeft: 0 }}>
-            <Button variant="outlined" onClick={() => this.addArticle()}>
+            <Button
+              disabled={this.props.auth ? false : true}
+              variant="outlined"
+              onClick={() => this.addArticle()}
+            >
               Submit
             </Button>
           </div>
         </form>
+        <div style={{ margin: 10, textAlign: "center" }}>
+          <Typography color="textSecondary" variant="caption">
+            Copyright@2020_Siddhartha Sarkar
+          </Typography>
+        </div>
       </Container>
     );
   }
@@ -82,6 +102,7 @@ class AddArticleScreen extends Component {
 const mapStateToProps = (state) => {
   return {
     authenticatedUsername: state.users.authenticatedUsername,
+    auth: state.users.isAuthenticated,
   };
 };
 

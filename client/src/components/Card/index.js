@@ -19,9 +19,11 @@ export default function MyCard({ item }) {
         </Typography>
       </CardContent>
       <CardActions style={{ position: "relative" }}>
-        <Button color="primary" size="small">
-          - {item.author}
-        </Button>
+        <Link to={"/article/" + item.authorId + "/articles"}>
+          <Button color="primary" size="small">
+            - {item.author}
+          </Button>
+        </Link>
         <Link
           style={{ textDecoration: "none", right: 10, position: "absolute" }}
           to={"/article/" + item._id}

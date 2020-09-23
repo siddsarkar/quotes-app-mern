@@ -7,6 +7,7 @@ import Articles from "./routes/Articles";
 import Login from "./routes/Login";
 import MyArticles from "./routes/MyArticles";
 import SingleArticle from "./routes/SingleArticle";
+import getArticleAuthor from "./routes/AuthorArticles";
 
 function App(props) {
   return (
@@ -60,6 +61,11 @@ function App(props) {
       </AppBar>
 
       <Switch>
+        <Route
+          path="/article/:authorId/articles"
+          exact
+          component={getArticleAuthor}
+        />
         <Route path="/article/:id" exact component={SingleArticle} />
         <Route path="/addarticle" component={AddArticleScreen} />
         <Route path="/myarticles" component={MyArticles} />

@@ -10,16 +10,21 @@ import {
   CardContent,
   TextField,
   Button,
+  CircularProgress,
+  LinearProgress,
 } from "@material-ui/core";
 import { connect } from "react-redux";
 
 class SingleArticle extends Component {
   state = {
     comment: "",
+    isLoading: true,
+    commentsLoading: true,
   };
+  cb = () => this.setState({ commentsLoading: false });
   callback = () => {
-    this.props.getComments(this.props.match.params.id);
-    this.setState({ comment: "" });
+    this.props.getComments(this.props.match.params.id, this.cb);
+    this.setState({ comment: "", isLoading: false });
   };
 
   uef = () => {
@@ -40,7 +45,19 @@ class SingleArticle extends Component {
   };
 
   render() {
-    return (
+    return this.state.isLoading ? (
+      <Container
+        maxWidth={false}
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Container>
+    ) : (
       <Container>
         <Typography style={{ marginTop: 20 }} variant="h3">
           {this.props.article.title}
@@ -56,18 +73,22 @@ class SingleArticle extends Component {
         <hr />
         <Typography variant="h4">Comments</Typography>
         <CardContent>
-          {this.props.comments.length
-            ? this.props.comments.map((item) => {
-                return (
-                  <div key={item._id}>
-                    <Typography variant="h6">{item.comment}</Typography>
-                    <Typography variant="subtitle1" color="textSecondary">
-                      - {item.author}
-                    </Typography>
-                  </div>
-                );
-              })
-            : "no comments yet"}
+          {this.state.commentsLoading ? (
+            <LinearProgress />
+          ) : this.props.comments.length ? (
+            this.props.comments.map((item) => {
+              return (
+                <div key={item._id}>
+                  <Typography variant="h6">{item.comment}</Typography>
+                  <Typography variant="subtitle1" color="textSecondary">
+                    - {item.author}
+                  </Typography>
+                </div>
+              );
+            })
+          ) : (
+            "no comments yet"
+          )}
           <TextField
             type="text"
             onChange={(e) => this.setState({ comment: e.target.value })}
@@ -105,7 +126,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToprops = (dispatch) => {
   return {
     getArticle: (id, callback) => dispatch(getSingleArticle(id, callback)),
-    getComments: (id) => dispatch(getCommentsForArticle(id)),
+    getComments: (id, cb) => dispatch(getCommentsForArticle(id, cb)),
     addComment: (articleId, body, callback) =>
       dispatch(addComment(articleId, body, callback)),
   };

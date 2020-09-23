@@ -1,7 +1,7 @@
 import * as actionTypes from "./actionTypes";
 
 // const getAllComments
-export const getCommentsForArticle = (articleId) => {
+export const getCommentsForArticle = (articleId, cb) => {
   return (dispatch) => {
     fetch("/api/comments/get/" + articleId, {
       method: "GET",
@@ -12,6 +12,7 @@ export const getCommentsForArticle = (articleId) => {
           type: actionTypes.GOT_COMMENTS_FOR_ARTICLE,
           comments: res,
         });
+        cb();
       });
   };
 };
