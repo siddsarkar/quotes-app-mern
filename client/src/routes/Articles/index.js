@@ -5,46 +5,34 @@ import {
   getArticleByAuthor,
 } from "../../store/actions/articleActions";
 import { getCommentsForArticle } from "../../store/actions/commentActions";
-import { Container, Typography } from "@material-ui/core";
+import { Container, Paper, Typography } from "@material-ui/core";
 import MyCard from "../../components/Card";
+import Loader from "../../components/Loader";
 class Articles extends Component {
   state = {
     articles: [],
+    isLoading: true,
   };
 
   gotArticles = () => {
-    this.setState({ articles: this.props.articles });
+    this.setState({ articles: this.props.articles, isLoading: false });
   };
   componentDidMount = () => {
     this.props.initArticles(this.gotArticles);
   };
 
-  commentsHandler = (id, index) => {
-    this.props.getComments(id);
-    const articles = this.state.articles.map((item, j) => {
-      if (j === index) {
-        return {
-          ...item,
-          comments: this.props.comments,
-        };
-      } else {
-        return item;
-      }
-    });
-    console.log(articles);
-    this.setState({ articles: articles });
-    this.setState({ isCommentOn: true });
-  };
-
   render() {
-    return (
-      <div
+    return this.state.isLoading ? (
+      <Loader />
+    ) : (
+      <Paper
         style={{
           position: "relative",
           height: "100%",
+          borderRadius: 0,
         }}
       >
-        <Container maxWidth="lg">
+        <Container maxWidth="md" style={{ padding: 10 }}>
           {this.state.articles.map((item, index) => {
             return <MyCard key={item._id} item={item} />;
           })}
@@ -54,7 +42,7 @@ class Articles extends Component {
             Copyright@2020_Siddhartha Sarkar
           </Typography>
         </div>
-      </div>
+      </Paper>
     );
   }
 }

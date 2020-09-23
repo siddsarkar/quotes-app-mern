@@ -1,7 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { AppBar, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { GitHub } from "@material-ui/icons";
+
 import AddArticleScreen from "./routes/AddArticle";
 import Articles from "./routes/Articles";
 import Login from "./routes/Login";
@@ -57,6 +59,15 @@ function App(props) {
               {props.isLoggedin ? "LOGOUT" : "LOGIN"}
             </Typography>
           </Link>
+          <IconButton
+            href="https://github.com/siddsarkar"
+            aria-label="account of current user"
+            aria-controls="menu-appbar"
+            aria-haspopup="true"
+            color="inherit"
+          >
+            <GitHub />
+          </IconButton>
         </Toolbar>
       </AppBar>
 

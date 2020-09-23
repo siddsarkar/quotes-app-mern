@@ -36,7 +36,7 @@ export const addComment = (articleId, body, callback) => {
   };
 };
 
-export const getMyComments = () => {
+export const getMyComments = (cb) => {
   return (dispatch) => {
     fetch("/api/comments/mycomments", {
       method: "GET",
@@ -52,6 +52,7 @@ export const getMyComments = () => {
           type: actionTypes.GOT_MY_COMMENTS,
           myComments: res.mycomments,
         });
+        cb();
       });
   };
 };

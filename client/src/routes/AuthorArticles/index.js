@@ -1,19 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  getAllArticles,
-  getArticleByAuthor,
-} from "../../store/actions/articleActions";
-import { getCommentsForArticle } from "../../store/actions/commentActions";
+import { getArticleByAuthor } from "../../store/actions/articleActions";
 import { Container, Typography } from "@material-ui/core";
 import MyCard from "../../components/Card";
+import Loader from "../../components/Loader";
 class Articles extends Component {
   state = {
     articles: [],
+    isloading: true,
   };
 
   gotArticles = () => {
-    this.setState({ articles: this.props.articles });
+    this.setState({ articles: this.props.articles, isloading: false });
   };
 
   uef = () => {
@@ -25,7 +23,9 @@ class Articles extends Component {
   };
 
   render() {
-    return (
+    return this.state.isloading ? (
+      <Loader />
+    ) : (
       <div
         style={{
           position: "relative",

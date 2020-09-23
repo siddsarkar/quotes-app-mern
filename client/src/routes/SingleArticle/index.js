@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { getSingleArticle } from "../../store/actions/articleActions";
+import { Link } from "react-router-dom";
 import {
   getCommentsForArticle,
   addComment,
@@ -10,10 +11,14 @@ import {
   CardContent,
   TextField,
   Button,
-  CircularProgress,
   LinearProgress,
+  Divider,
+  Grid,
+  Paper,
 } from "@material-ui/core";
 import { connect } from "react-redux";
+import Loader from "../../components/Loader";
+import { AccountCircle } from "@material-ui/icons";
 
 class SingleArticle extends Component {
   state = {
@@ -46,17 +51,7 @@ class SingleArticle extends Component {
 
   render() {
     return this.state.isLoading ? (
-      <Container
-        maxWidth={false}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <CircularProgress />
-      </Container>
+      <Loader />
     ) : (
       <Container>
         <Typography style={{ marginTop: 20 }} variant="h3">
@@ -70,7 +65,7 @@ class SingleArticle extends Component {
         >
           -{this.props.article.author}
         </Typography>
-        <hr />
+        <Divider />
         <Typography variant="h4">Comments</Typography>
         <CardContent>
           {this.state.commentsLoading ? (
@@ -78,12 +73,33 @@ class SingleArticle extends Component {
           ) : this.props.comments.length ? (
             this.props.comments.map((item) => {
               return (
-                <div key={item._id}>
-                  <Typography variant="h6">{item.comment}</Typography>
-                  <Typography variant="subtitle1" color="textSecondary">
-                    - {item.author}
-                  </Typography>
-                </div>
+                <Grid spacing={3} container key={item._id}>
+                  <Grid item>
+                    <Paper style={{ padding: 5 }}>
+                      <Typography
+                        color="textPrimary"
+                        variant="h6"
+                        style={{ marginLeft: 10, marginRight: 10 }}
+                      >
+                        {item.comment}
+                      </Typography>
+                      <Link
+                        style={{ textDecoration: "none" }}
+                        to={"/article/" + item.authorId + "/articles"}
+                      >
+                        <Button style={{ textTransform: "none" }}>
+                          <AccountCircle
+                            fontSize="small"
+                            style={{ marginRight: 2 }}
+                          />
+                          <Typography variant="caption" color="textSecondary">
+                            {item.author}
+                          </Typography>
+                        </Button>
+                      </Link>
+                    </Paper>
+                  </Grid>
+                </Grid>
               );
             })
           ) : (

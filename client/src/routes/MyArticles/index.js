@@ -4,13 +4,7 @@ import {
   getMyArticles,
   deleteArticle,
 } from "../../store/actions/articleActions";
-import {
-  Container,
-  Card,
-  Typography,
-  Button,
-  Divider,
-} from "@material-ui/core";
+import { Container, Card, Typography, Button } from "@material-ui/core";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
@@ -19,100 +13,108 @@ import {
   getMyComments,
   deleteComment,
 } from "../../store/actions/commentActions";
+import Loader from "../../components/Loader";
 class MyArticles extends Component {
+  state = {
+    isloading: true,
+  };
+  cb = () => this.setState({ isloading: false });
   getArticles = () => {
-    this.props.initMyArticles();
-    this.props.getMyComments();
+    this.props.getMyComments(this.cb);
   };
   componentDidMount() {
-    this.getArticles();
+    this.props.initMyArticles(this.getArticles);
   }
   render() {
     return this.props.auth ? (
-      <Router>
-        <Container>
-          <Switch>
-            <Route
-              path="/edit/:id"
-              render={(props) => (
-                <EditArticle
-                  getArticles={() => this.getArticles()}
-                  {...props}
-                />
-              )}
-            />
-          </Switch>
-          {/* posts */}
-          {this.props.myArticles.map((item) => {
-            return (
-              <Card
-                key={item._id}
-                style={{ backgroundColor: "azure", margin: 10 }}
-              >
-                <CardContent>
-                  <Typography color="textSecondary" gutterBottom>
-                    [Post@{item.addedOn}] {item.title}
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    {item.body}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                  <Link
-                    style={{ textDecoration: "none" }}
-                    to={"/edit/" + item._id}
-                  >
-                    <Button variant="outlined" size="small">
-                      EDIT
-                    </Button>
-                  </Link>
-                  <Button
-                    size="small"
-                    onClick={() =>
-                      this.props.deleteArticle(item._id, this.getArticles)
-                    }
-                  >
-                    <Typography color="textSecondary">DELETE</Typography>
-                  </Button>
-                </CardActions>
-              </Card>
-            );
-          })}
-          {/* comments */}
-          {this.props.myComments.length
-            ? this.props.myComments.map((comment) => {
-                return (
-                  <Card
-                    key={comment._id}
-                    style={{ backgroundColor: "beige", margin: 10 }}
-                  >
-                    <CardContent>
-                      <Typography color="textSecondary" gutterBottom>
-                        [Comment@{comment.addedOn}]
-                      </Typography>
-                      <Typography variant="body2" component="p">
-                        {comment.comment}
-                      </Typography>
-                    </CardContent>
-                    <CardActions>
-                      <Button
-                        variant="outlined"
-                        onClick={() =>
-                          this.props.deleteComment(
-                            comment._id,
-                            this.getArticles
-                          )
-                        }
-                      >
-                        <Typography color="textSecondary">DELETE</Typography>
+      this.state.isloading ? (
+        <Loader />
+      ) : (
+        <Router>
+          <Container>
+            <Switch>
+              <Route
+                path="/edit/:id"
+                render={(props) => (
+                  <EditArticle
+                    getArticles={() => this.getArticles()}
+                    {...props}
+                  />
+                )}
+              />
+            </Switch>
+            {/* posts */}
+            {this.props.myArticles.map((item) => {
+              return (
+                <Card
+                  key={item._id}
+                  style={{ backgroundColor: "azure", margin: 10 }}
+                >
+                  <CardContent>
+                    <Typography color="textSecondary" gutterBottom>
+                      [Post@{item.addedOn}] {item.title}
+                    </Typography>
+                    <Typography variant="body2" component="p">
+                      {item.body}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      to={"/edit/" + item._id}
+                    >
+                      <Button variant="outlined" size="small">
+                        EDIT
                       </Button>
-                    </CardActions>
-                  </Card>
-                );
-              })
-            : null}
-        </Container>
-      </Router>
+                    </Link>
+                    <Button
+                      size="small"
+                      onClick={() =>
+                        this.props.deleteArticle(item._id, this.getArticles)
+                      }
+                    >
+                      <Typography color="textSecondary">DELETE</Typography>
+                    </Button>
+                  </CardActions>
+                </Card>
+              );
+            })}
+            {/* comments */}
+            {this.props.myComments.length
+              ? this.props.myComments.map((comment) => {
+                  return (
+                    <Card
+                      key={comment._id}
+                      style={{ backgroundColor: "beige", margin: 10 }}
+                    >
+                      <CardContent>
+                        <Typography color="textSecondary" gutterBottom>
+                          [Comment@{comment.addedOn}]
+                        </Typography>
+                        <Typography variant="body2" component="p">
+                          {comment.comment}
+                        </Typography>
+                      </CardContent>
+                      <CardActions>
+                        <Button
+                          variant="outlined"
+                          onClick={() =>
+                            this.props.deleteComment(
+                              comment._id,
+                              this.getArticles
+                            )
+                          }
+                        >
+                          <Typography color="textSecondary">DELETE</Typography>
+                        </Button>
+                      </CardActions>
+                    </Card>
+                  );
+                })
+              : null}
+          </Container>
+        </Router>
+      )
     ) : (
       <Container
         style={{
@@ -139,9 +141,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    initMyArticles: () => dispatch(getMyArticles()),
+    initMyArticles: (cb) => dispatch(getMyArticles(cb)),
+    getMyComments: (cb) => dispatch(getMyComments(cb)),
     deleteArticle: (id, callback) => dispatch(deleteArticle(id, callback)),
-    getMyComments: (callback) => dispatch(getMyComments(callback)),
     deleteComment: (id, callback) => dispatch(deleteComment(id, callback)),
   };
 };

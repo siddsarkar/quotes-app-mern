@@ -5,6 +5,10 @@ import App from "./App";
 import "fontsource-roboto";
 import * as serviceWorker from "./serviceWorker";
 
+//theme
+import { ThemeProvider } from "@material-ui/core/styles";
+import { theme } from "./theme/theme";
+
 import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { createStore, applyMiddleware, combineReducers } from "redux";
@@ -23,7 +27,9 @@ const store = createStore(rootReducer, applyMiddleware(thunk));
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")

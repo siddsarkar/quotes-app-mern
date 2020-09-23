@@ -33,13 +33,12 @@ export const getArticleByAuthor = (authorid, cb) => {
       .then((res) => res.json())
       .then(({ articles }) => {
         dispatch({ type: actionTypes.GOT_ALL_ARTICLES, articles: articles });
-        console.log(articles);
         cb();
       });
   };
 };
 
-export const getMyArticles = () => {
+export const getMyArticles = (cb) => {
   return (dispatch) => {
     fetch("/api/articles/myarticles", {
       method: "GET",
@@ -55,6 +54,7 @@ export const getMyArticles = () => {
           type: actionTypes.GOT_MY_ARTICLES,
           myArticles: res.articles,
         });
+        cb();
       });
   };
 };
