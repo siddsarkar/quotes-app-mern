@@ -57,14 +57,24 @@ class SingleArticle extends Component {
         <Typography style={{ marginTop: 20 }} variant="h3">
           {this.props.article.title}
         </Typography>
-        <Typography variant="body1">{this.props.article.body}</Typography>
-        <Typography
-          color="textSecondary"
-          variant="body2"
-          style={{ marginTop: 10 }}
-        >
-          -{this.props.article.author}
+        <Typography variant="body1" style={{ marginLeft: 5 }}>
+          {this.props.article.body}
         </Typography>
+        <Link
+          style={{ textDecoration: "none" }}
+          to={"/article/" + this.props.article.authorId + "/articles"}
+        >
+          <Button
+            color="primary"
+            size="small"
+            style={{ textTransform: "none", marginTop: 5, marginBottom: 5 }}
+          >
+            <AccountCircle fontSize="small" style={{ marginRight: 2 }} />
+            <Typography variant="caption" color="primary">
+              {this.props.article.author}
+            </Typography>
+          </Button>
+        </Link>
         <Divider />
         <Typography variant="h4">Comments</Typography>
         <CardContent>

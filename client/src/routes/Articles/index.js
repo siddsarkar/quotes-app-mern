@@ -5,7 +5,7 @@ import {
   getArticleByAuthor,
 } from "../../store/actions/articleActions";
 import { getCommentsForArticle } from "../../store/actions/commentActions";
-import { Container, Paper, Typography } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import MyCard from "../../components/Card";
 import Loader from "../../components/Loader";
 class Articles extends Component {
@@ -25,7 +25,8 @@ class Articles extends Component {
     return this.state.isLoading ? (
       <Loader />
     ) : (
-      <Paper
+      <Container
+        maxWidth={false}
         style={{
           position: "relative",
           height: "100%",
@@ -42,7 +43,7 @@ class Articles extends Component {
             Copyright@2020_Siddhartha Sarkar
           </Typography>
         </div>
-      </Paper>
+      </Container>
     );
   }
 }
