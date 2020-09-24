@@ -25,15 +25,8 @@ class Articles extends Component {
     return this.state.isLoading ? (
       <Loader />
     ) : (
-      <Container
-        maxWidth={false}
-        style={{
-          position: "relative",
-          height: "100%",
-          borderRadius: 0,
-        }}
-      >
-        <Container maxWidth="md" style={{ padding: 10 }}>
+      <>
+        <Container maxWidth="lg" style={{ padding: 10 }}>
           {this.state.articles.map((item, index) => {
             return <MyCard key={item._id} item={item} />;
           })}
@@ -43,7 +36,7 @@ class Articles extends Component {
             Copyright@2020_Siddhartha Sarkar
           </Typography>
         </div>
-      </Container>
+      </>
     );
   }
 }

@@ -54,10 +54,10 @@ class SingleArticle extends Component {
       <Loader />
     ) : (
       <Container>
-        <Typography style={{ marginTop: 20 }} variant="h3">
+        <Typography style={{ marginTop: 20 }} variant="h3" gutterBottom>
           {this.props.article.title}
         </Typography>
-        <Typography variant="body1" style={{ marginLeft: 5 }}>
+        <Typography variant="body1" style={{ marginLeft: 5 }} gutterBottom>
           {this.props.article.body}
         </Typography>
         <Link
@@ -113,29 +113,46 @@ class SingleArticle extends Component {
               );
             })
           ) : (
-            "no comments yet"
+            <Typography variant="body1">no comments yet</Typography>
           )}
-          <TextField
-            type="text"
-            onChange={(e) => this.setState({ comment: e.target.value })}
-            fullWidth
-            value={this.state.comment}
-            style={{ paddingTop: 20, borderRadius: 0 }}
-            placeholder="Write your comment here"
-            multiline
-            // rows={2}
-            variant="standard"
-          />
-          <Button
-            size="small"
-            style={{ borderTopLeftRadius: 0, borderTopRightRadius: 0 }}
-            onClick={() => this.postComment()}
-            color="primary"
-            variant="contained"
-          >
-            Post Comment
-          </Button>
         </CardContent>
+        {this.props.auth ? (
+          <CardContent>
+            <TextField
+              type="text"
+              onChange={(e) => this.setState({ comment: e.target.value })}
+              fullWidth
+              value={this.state.comment}
+              // style={{ paddingTop: 20, borderRadius: 0 }}
+              placeholder="Write your comment here"
+              multiline
+              // rows={2}
+              variant="standard"
+            />
+            <Button
+              size="medium"
+              style={{
+                borderTopLeftRadius: 0,
+                borderTopRightRadius: 0,
+              }}
+              onClick={() => this.postComment()}
+              color="primary"
+              variant="contained"
+            >
+              Post Comment
+            </Button>
+          </CardContent>
+        ) : (
+          <CardContent>
+            <Typography
+              color="textSecondary"
+              variant="body1"
+              style={{ textAlign: "center" }}
+            >
+              Login to Write a comment
+            </Typography>
+          </CardContent>
+        )}
       </Container>
     );
   }
@@ -146,6 +163,7 @@ const mapStateToProps = (state) => {
     username: state.users.authenticatedUsername,
     article: state.articles.article,
     comments: state.comments.comments,
+    auth: state.users.isAuthenticated,
   };
 };
 

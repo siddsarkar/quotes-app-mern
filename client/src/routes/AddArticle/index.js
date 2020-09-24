@@ -1,7 +1,14 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { addArticle } from "../../store/actions/articleActions";
-import { Container, TextField, Typography, Button } from "@material-ui/core";
+import {
+  Container,
+  TextField,
+  Typography,
+  Button,
+  Grid,
+} from "@material-ui/core";
+import { AccountCircle } from "@material-ui/icons";
 
 class AddArticleScreen extends Component {
   state = {
@@ -33,27 +40,33 @@ class AddArticleScreen extends Component {
   render() {
     return (
       <Container style={{ padding: 20 }}>
-        {this.props.auth ? (
-          ""
-        ) : (
-          <div style={{ margin: 10, textAlign: "center" }}>
-            <Typography color="textSecondary" variant="h4">
-              Login to write
-            </Typography>
-          </div>
+        {this.props.auth ? null : (
+          <Typography
+            color="textSecondary"
+            variant="h4"
+            style={{ textAlign: "left" }}
+          >
+            Login to Write!
+          </Typography>
         )}
         <Typography style={{ padding: 20, paddingLeft: 0 }} variant="h3">
           Write Your Quote
         </Typography>
         <form noValidate autoComplete="off">
-          <TextField
-            style={{ marginBottom: 20 }}
-            fullWidth
-            value={this.state.author}
-            id="standard-basic"
-            label="Your Username"
-            disabled
-          />
+          <Grid container spacing={1} alignItems="flex-end">
+            <Grid item>
+              <AccountCircle />
+            </Grid>
+            <Grid item>
+              <TextField
+                value={this.state.author}
+                id="standard-basic"
+                label="Username"
+                disabled
+              />
+            </Grid>
+          </Grid>
+
           <br />
           <TextField
             value={this.state.title}

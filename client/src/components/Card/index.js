@@ -7,27 +7,25 @@ import { Visibility, AccountCircle } from "@material-ui/icons";
 
 export default function MyCard({ item }) {
   return (
-    <Card elevation={5} style={{ margin: 10 }}>
+    <Card elevation={5} style={{ marginBottom: 10 }}>
       <Link style={{ textDecoration: "none" }} to={"/article/" + item._id}>
-        <CardContent>
+        <CardContent style={{ paddingBottom: 0 }}>
           <Typography variant="h5" color="textPrimary" gutterBottom>
             {item.title}
           </Typography>
-
-          <Typography variant="body2" color="textPrimary" component="p">
+          <Typography variant="body2" color="textPrimary">
             {item.body}
           </Typography>
-        </CardContent>
+        </CardContent>{" "}
       </Link>
-
-      <CardActions style={{ position: "relative" }}>
+      <CardActions>
         <Link
           style={{ textDecoration: "none" }}
           to={"/article/" + item.authorId + "/articles"}
         >
           <Button
             style={{ textTransform: "none" }}
-            color="primary"
+            color="secondary"
             size="small"
           >
             <AccountCircle style={{ marginRight: 5 }} />
@@ -46,6 +44,9 @@ export default function MyCard({ item }) {
             <Typography>Comments</Typography>
           </Button>
         </Link>
+        {/* <IconButton style={{ margin: 0 }}>
+          <Star />
+        </IconButton> */}
       </CardActions>
     </Card>
   );
