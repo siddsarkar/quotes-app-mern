@@ -8,6 +8,7 @@ const Article = require("../models/articlesModel");
 const router = express.Router();
 
 const isAuthenticated = require("../utils/auth");
+const paginatedResponse = require("../utils/pagination");
 
 router.post("/add", isAuthenticated, (req, res) => {
   const title = req.body.title || "";
@@ -32,20 +33,8 @@ router.post("/add", isAuthenticated, (req, res) => {
 
 router.get("/", (req, res) => {
   Article.find({}, (err, articles) => {
-    const pageCount = Math.ceil(articles.length / 10);
-    let page = parseInt(req.query.p);
-    if (!page) {
-      page = 1;
-    }
-    if (page > pageCount) {
-      page = pageCount;
-    }
-    res.json({
-      page: page,
-      pageCount: pageCount,
-      posts: articles.slice(page * 10 - 10, page * 10),
-    });
-    // res.json(articles);
+    let paginated = paginatedResponse(articles, req.query.p);
+    res.json({ paginated });
   });
 });
 
