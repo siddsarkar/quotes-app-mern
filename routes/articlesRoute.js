@@ -32,7 +32,20 @@ router.post("/add", isAuthenticated, (req, res) => {
 
 router.get("/", (req, res) => {
   Article.find({}, (err, articles) => {
-    res.json(articles);
+    const pageCount = Math.ceil(articles.length / 10);
+    let page = parseInt(req.query.p);
+    if (!page) {
+      page = 1;
+    }
+    if (page > pageCount) {
+      page = pageCount;
+    }
+    res.json({
+      page: page,
+      pageCount: pageCount,
+      posts: articles.slice(page * 10 - 10, page * 10),
+    });
+    // res.json(articles);
   });
 });
 

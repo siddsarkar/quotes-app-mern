@@ -4,6 +4,7 @@ const initialState = {
   articles: [],
   myArticles: [],
   article: {},
+  pages: 0,
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,6 +13,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         articles: action.articles,
+        pages: action.pages,
       };
     case actionTypes.GOT_MY_ARTICLES:
       return {
