@@ -26,7 +26,7 @@ class Articles extends Component {
       <Loader />
     ) : (
       <>
-        <Container maxWidth="lg" style={{ padding: 10 }}>
+        <Container maxWidth="md" style={{ padding: 10 }}>
           {this.state.articles.map((item, index) => {
             return <MyCard key={item._id} item={item} />;
           })}
