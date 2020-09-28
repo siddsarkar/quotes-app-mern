@@ -33,8 +33,9 @@ router.post("/add", isAuthenticated, (req, res) => {
 
 router.get("/", (req, res) => {
   Article.find({}, (err, articles) => {
+    if (err) throw err;
     let paginated = paginatedResponse(articles, req.query.p);
-    res.json({ paginated });
+    res.json(paginated);
   });
 });
 
