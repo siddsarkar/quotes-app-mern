@@ -108,7 +108,7 @@ class SingleArticle extends Component {
               this.props.like(this.props.article._id, this.likeCallback)
             }
           >
-            <Typography>{this.state.isliked ? "Dislike" : "like"}</Typography>
+            <Typography>{this.state.isliked ? "Unlike" : "like"}</Typography>
           </Button>
           <Link
             style={{ textDecoration: "none" }}
