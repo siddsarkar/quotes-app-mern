@@ -103,13 +103,15 @@ class SingleArticle extends Component {
             </Button>
           </Link>
           <div style={{ flexGrow: 1 }} />
-          <Button
-            onClick={() =>
-              this.props.like(this.props.article._id, this.likeCallback)
-            }
-          >
-            <Typography>{this.state.isliked ? "Unlike" : "like"}</Typography>
-          </Button>
+          {this.props.auth ? (
+            <Button
+              onClick={() =>
+                this.props.like(this.props.article._id, this.likeCallback)
+              }
+            >
+              <Typography>{this.state.isliked ? "Unlike" : "like"}</Typography>
+            </Button>
+          ) : null}
           <Link
             style={{ textDecoration: "none" }}
             to={"/likes/" + this.props.article._id}

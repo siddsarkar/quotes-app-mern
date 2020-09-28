@@ -7,6 +7,7 @@ const { json } = require("body-parser");
 const router = express.Router();
 
 const isAuthenticated = require("../utils/auth");
+const Article = require("../models/articlesModel");
 
 router.get("/", (req, res) => {
   res.json({ message: "wlcome to comments" });
@@ -28,7 +29,19 @@ router.post("/add/:articleId", isAuthenticated, (req, res) => {
   newComment.save((err) => {
     if (err) return err;
     else {
-      res.json({ message: "comment added" });
+      Article.findById(articleId, (err, article) => {
+        if (err) return err;
+        Article.findByIdAndUpdate(
+          article._id,
+          {
+            commentsCount: article.commentsCount + 1,
+          },
+          (err) => {
+            if (err) return err;
+            res.json({ message: "comment added" });
+          }
+        );
+      });
     }
   });
 });
@@ -44,8 +57,24 @@ router.get("/get/:articleId", (req, res) => {
 });
 
 router.delete("/delete/:commentId", isAuthenticated, (req, res) => {
-  Comment.deleteOne({ _id: req.params.commentId }, (err) => {
-    res.json({ message: "comment deleted" });
+  Comment.findById(req.params.commentId, (err, comment) => {
+    if (err) return err;
+    Article.findById(comment.articleId, (err, article) => {
+      if (err) return err;
+      Article.findByIdAndUpdate(
+        article._id,
+        {
+          commentsCount: article.commentsCount - 1,
+        },
+        (err) => {
+          if (err) return err;
+          Comment.findByIdAndDelete(req.params.commentId, (err) => {
+            if (err) throw err;
+            res.json({ message: "comment deleted" });
+          });
+        }
+      );
+    });
   });
 });
 

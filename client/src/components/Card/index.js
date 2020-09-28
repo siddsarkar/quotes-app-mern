@@ -3,7 +3,7 @@ import { Card, Typography, Button } from "@material-ui/core";
 import CardActions from "@material-ui/core/CardActions";
 import { Link } from "react-router-dom";
 import CardContent from "@material-ui/core/CardContent";
-import { Visibility, AccountCircle, Favorite } from "@material-ui/icons";
+import { AccountCircle, Favorite, Comment } from "@material-ui/icons";
 import { connect } from "react-redux";
 import { likeArticle } from "../../store/actions/likesActions";
 class MyCard extends Component {
@@ -43,8 +43,8 @@ class MyCard extends Component {
             to={"/article/" + item._id}
           >
             <Button style={{ textTransform: "none" }}>
-              <Visibility style={{ marginRight: 5 }} />
-              <Typography>Comments</Typography>
+              <Comment style={{ marginRight: 5 }} />
+              <Typography>{item.commentsCount}</Typography>
             </Button>
           </Link>
           <Link style={{ textDecoration: "none" }} to={"/likes/" + item._id}>

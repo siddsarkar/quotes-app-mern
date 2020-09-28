@@ -20,7 +20,7 @@ class MyArticles extends Component {
     isloading: true,
   };
   callback = () => {
-    console.log("working");
+    console.log("Got likes, To implement Its deletion");
   };
   cb = () => this.setState({ isloading: false });
   getArticles = () => {

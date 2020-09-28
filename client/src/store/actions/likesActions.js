@@ -43,7 +43,6 @@ export const getMyLikes = (cb) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         dispatch({ type: actionTypes.GOT_MY_LIKES, myLikes: res });
         cb();
       });
