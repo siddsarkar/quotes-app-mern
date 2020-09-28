@@ -5,11 +5,11 @@ import {
   getArticleByAuthor,
 } from "../../store/actions/articleActions";
 import { getCommentsForArticle } from "../../store/actions/commentActions";
-import { Container, Typography } from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import MyCard from "../../components/Card";
 import Loader from "../../components/Loader";
+import Paginate from "../../components/Paginate/Paginate";
 
-import Pagination from "@material-ui/lab/Pagination";
 class Articles extends Component {
   state = {
     articles: [],
@@ -40,39 +40,19 @@ class Articles extends Component {
             return <MyCard key={item._id} item={item} />;
           })}
         </Container>
-        <div
-          style={{
-            margin: 10,
-            textAlign: "center",
-            display: "flex",
-            alignItems: "center",
-            flexDirection: "column",
+        <Paginate
+          count={this.state.pageCount}
+          page={this.state.page}
+          change={(e, page) => {
+            // e.preventDefault();
+            this.setState(
+              this.setState({ page: page, isLoading: true }),
+              () => {
+                this.props.initArticles(this.gotArticles, page);
+              }
+            );
           }}
-        >
-          <Pagination
-            hideNextButton
-            hidePrevButton
-            // hideNextButton={true}
-            count={this.state.pageCount}
-            page={this.state.page}
-            onChange={(e, page) => {
-              // e.preventDefault();
-              this.setState(
-                this.setState({ page: page, isLoading: true }),
-                () => {
-                  this.props.initArticles(this.gotArticles, page);
-                }
-              );
-            }}
-          />
-          <Typography
-            style={{ marginTop: 5 }}
-            color="textSecondary"
-            variant="caption"
-          >
-            Copyright@2020_Siddhartha Sarkar
-          </Typography>
-        </div>
+        />
       </>
     );
   }
