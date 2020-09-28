@@ -15,18 +15,47 @@ import {
   Divider,
   Grid,
   Paper,
+  CardActions,
 } from "@material-ui/core";
 import { connect } from "react-redux";
 import Loader from "../../components/Loader";
-import { AccountCircle } from "@material-ui/icons";
+import { AccountCircle, Favorite } from "@material-ui/icons";
+import {
+  getLikesForArticle,
+  likeArticle,
+} from "../../store/actions/likesActions";
 
 class SingleArticle extends Component {
   state = {
     comment: "",
     isLoading: true,
     commentsLoading: true,
+    likers: [],
+    likersLoading: true,
+    isliked: false,
   };
-  cb = () => this.setState({ commentsLoading: false });
+
+  likeCallback = () => {
+    this.setState({ isliked: !this.state.isliked });
+    this.props.likers(this.props.match.params.id, this.likersCb);
+  };
+  likersCb = () => {
+    this.setState(
+      this.setState({ likers: this.props.likersNames, likersLoading: false }),
+      () => {
+        for (let i = 0; i < this.state.likers.length; i++) {
+          if (this.state.likers[i].authorId === this.props.userId) {
+            this.setState({ isliked: true });
+          }
+        }
+      }
+    );
+  };
+  cb = () => {
+    this.setState({ commentsLoading: false });
+    this.props.likers(this.props.match.params.id, this.likersCb);
+  };
+
   callback = () => {
     this.props.getComments(this.props.match.params.id, this.cb);
     this.setState({ comment: "", isLoading: false });
@@ -60,21 +89,38 @@ class SingleArticle extends Component {
         <Typography variant="body1" style={{ marginLeft: 5 }} gutterBottom>
           {this.props.article.body}
         </Typography>
-        <Link
-          style={{ textDecoration: "none" }}
-          to={"/article/" + this.props.article.authorId + "/articles"}
-        >
-          <Button
-            color="primary"
-            size="small"
-            style={{ textTransform: "none", marginTop: 5, marginBottom: 5 }}
+        <CardActions>
+          <Link
+            style={{ textDecoration: "none" }}
+            to={"/article/" + this.props.article.authorId + "/articles"}
           >
-            <AccountCircle fontSize="small" style={{ marginRight: 2 }} />
-            <Typography variant="caption" color="primary">
-              {this.props.article.author}
-            </Typography>
+            <Button
+              color="primary"
+              style={{ textTransform: "none", marginTop: 5, marginBottom: 5 }}
+            >
+              <AccountCircle style={{ marginRight: 5 }} />
+              <Typography>{this.props.article.author}</Typography>
+            </Button>
+          </Link>
+          <div style={{ flexGrow: 1 }} />
+          <Button
+            onClick={() =>
+              this.props.like(this.props.article._id, this.likeCallback)
+            }
+          >
+            <Typography>{this.state.isliked ? "Dislike" : "like"}</Typography>
           </Button>
-        </Link>
+          <Link
+            style={{ textDecoration: "none" }}
+            to={"/likes/" + this.props.article._id}
+          >
+            <Button>
+              <Favorite style={{ marginRight: 5 }} />
+              <Typography>{this.state.likers.length}</Typography>
+            </Button>
+          </Link>
+        </CardActions>
+
         <Divider />
         <Typography variant="h4">Comments</Typography>
         <CardContent>
@@ -160,10 +206,12 @@ class SingleArticle extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    likersNames: state.likes.likes,
     username: state.users.authenticatedUsername,
     article: state.articles.article,
     comments: state.comments.comments,
     auth: state.users.isAuthenticated,
+    userId: state.users.userId,
   };
 };
 
@@ -173,6 +221,8 @@ const mapDispatchToprops = (dispatch) => {
     getComments: (id, cb) => dispatch(getCommentsForArticle(id, cb)),
     addComment: (articleId, body, callback) =>
       dispatch(addComment(articleId, body, callback)),
+    likers: (id, cb) => dispatch(getLikesForArticle(id, cb)),
+    like: (id, cb) => dispatch(likeArticle(id, cb)),
   };
 };
 

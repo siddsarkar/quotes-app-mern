@@ -16,11 +16,13 @@ import { createStore, applyMiddleware, combineReducers } from "redux";
 import commentsReducer from "./store/reducers/commentsReducer";
 import articlesReducer from "./store/reducers/articlesReducer";
 import usersReducer from "./store/reducers/usersReducer";
+import likesReducer from "./store/reducers/likesReducer";
 
 const rootReducer = combineReducers({
   articles: articlesReducer,
   users: usersReducer,
   comments: commentsReducer,
+  likes: likesReducer,
 });
 const store = createStore(rootReducer, applyMiddleware(thunk));
 

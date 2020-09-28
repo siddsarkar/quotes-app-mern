@@ -1,6 +1,7 @@
 const express = require("express");
 
 const mongoose = require("mongoose");
+const Article = require("../models/articlesModel");
 const Like = require("../models/likesModel");
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -18,17 +19,35 @@ router.post("/like/:articleId", isAuthenticated, (req, res) => {
         authorId: new ObjectId(authorId),
         articleId: new ObjectId(articleId),
       });
-
+      Article.findById(articleId, (err, item) => {
+        if (err) return;
+        Article.findByIdAndUpdate(
+          articleId,
+          { likesCount: item.likesCount + 1 },
+          (err) => {
+            if (err) throw err;
+            res.json({ message: "liked" });
+          }
+        );
+      });
       newLike.save((err) => {
         if (err) return err;
-        else {
-          res.json({ message: "liked" });
-        }
       });
     } else {
+      Article.findById(articleId, (err, item) => {
+        if (err) return;
+        Article.findByIdAndUpdate(
+          articleId,
+          { likesCount: item.likesCount - 1 },
+          (err) => {
+            if (err) throw err;
+            res.json({ message: "unliked" });
+          }
+        );
+      });
       Like.findByIdAndDelete(item._id, (err) => {
         if (err) return err;
-        res.json({ message: "unliked" });
+        // res.json({ message: "unliked" });
       });
     }
   };
@@ -39,12 +58,22 @@ router.post("/like/:articleId", isAuthenticated, (req, res) => {
   });
 });
 
-router.get("/:articleId", (req, res) => {
+router.get("/get/:articleId", (req, res) => {
   const articleId = req.params.articleId;
   Like.find({ articleId }, (err, item) => {
     if (err) throw err;
     else {
-      res.json(item.length);
+      res.json(item);
+    }
+  });
+});
+
+router.get("/mylikes", isAuthenticated, (req, res) => {
+  const authorId = req.authorId;
+  Like.find({ authorId }, (err, item) => {
+    if (err) throw err;
+    else {
+      res.json(item);
     }
   });
 });

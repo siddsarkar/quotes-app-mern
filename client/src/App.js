@@ -10,6 +10,7 @@ import Login from "./routes/Login";
 import MyArticles from "./routes/MyArticles";
 import SingleArticle from "./routes/SingleArticle";
 import getArticleAuthor from "./routes/AuthorArticles";
+import LikesPage from "./routes/Likes";
 
 function App(props) {
   return (
@@ -77,6 +78,7 @@ function App(props) {
           exact
           component={getArticleAuthor}
         />
+        <Route path="/likes/:id" exact component={LikesPage} />
         <Route path="/article/:id" exact component={SingleArticle} />
         <Route path="/addarticle" component={AddArticleScreen} />
         <Route path="/myarticles" component={MyArticles} />

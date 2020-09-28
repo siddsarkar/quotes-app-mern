@@ -17,6 +17,10 @@ const initialState = {
     validCredentials() === false
       ? ""
       : jwt.decode(localStorage.getItem("jwtToken")).username,
+  userId:
+    validCredentials() === false
+      ? ""
+      : jwt.decode(localStorage.getItem("jwtToken")).id,
 };
 
 const reducer = (state = initialState, action) => {

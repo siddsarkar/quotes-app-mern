@@ -14,13 +14,18 @@ import {
   deleteComment,
 } from "../../store/actions/commentActions";
 import Loader from "../../components/Loader";
+import { getMyLikes } from "../../store/actions/likesActions";
 class MyArticles extends Component {
   state = {
     isloading: true,
   };
+  callback = () => {
+    console.log("working");
+  };
   cb = () => this.setState({ isloading: false });
   getArticles = () => {
     this.props.getMyComments(this.cb);
+    this.props.getMylikes(this.callback);
   };
   componentDidMount() {
     this.props.initMyArticles(this.getArticles);
@@ -136,11 +141,13 @@ const mapStateToProps = (state) => {
     myComments: state.comments.myComments,
     myArticles: state.articles.myArticles,
     auth: state.users.isAuthenticated,
+    userId: state.users.userId,
   };
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    getMylikes: (cb) => dispatch(getMyLikes(cb)),
     initMyArticles: (cb) => dispatch(getMyArticles(cb)),
     getMyComments: (cb) => dispatch(getMyComments(cb)),
     deleteArticle: (id, callback) => dispatch(deleteArticle(id, callback)),

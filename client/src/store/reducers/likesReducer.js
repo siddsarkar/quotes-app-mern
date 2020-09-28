@@ -1,8 +1,8 @@
 import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
-  likes: 0,
-  allLikes: [],
+  likes: [],
+  myLikes: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -12,10 +12,10 @@ const reducer = (state = initialState, action) => {
         ...state,
         likes: action.likes,
       };
-    case actionTypes.GOT_ALL_LIKES:
+    case actionTypes.GOT_MY_LIKES:
       return {
         ...state,
-        allLikes: action.allLikes,
+        myLikes: action.myLikes,
       };
     default:
       return state;

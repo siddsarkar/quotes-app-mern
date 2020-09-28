@@ -19,7 +19,6 @@ class Articles extends Component {
   };
 
   gotArticles = () => {
-    console.log(this.props.pageCount);
     this.setState({
       articles: this.props.articles,
       pageCount: this.props.pageCount,

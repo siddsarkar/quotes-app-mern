@@ -7,7 +7,6 @@ export const getAllArticles = (callback, p) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
         dispatch({
           type: actionTypes.GOT_ALL_ARTICLES,
           articles: res.posts,
