@@ -4,14 +4,14 @@ import { getArticleByAuthor } from "../../store/actions/articleActions";
 import { Container, Typography } from "@material-ui/core";
 import MyCard from "../../components/Card";
 import Loader from "../../components/Loader";
-class Articles extends Component {
+class AuthorArticles extends Component {
+  mounted = false;
   state = {
-    articles: [],
     isloading: true,
   };
 
   gotArticles = () => {
-    this.setState({ articles: this.props.articles, isloading: false });
+    this.mounted && this.setState({ isloading: false });
   };
 
   uef = () => {
@@ -19,26 +19,27 @@ class Articles extends Component {
     this.props.getautthorarticles(id, this.gotArticles);
   };
   componentDidMount = () => {
+    this.mounted = true;
     this.uef();
   };
 
+  componentWillUnmount = () => {
+    this.mounted = false;
+  };
+
   render() {
+    const { articles } = this.props;
     return this.state.isloading ? (
       <Loader />
     ) : (
-      <div
-        style={{
-          position: "relative",
-          height: "100%",
-        }}
-      >
+      <>
         <div style={{ margin: 10, textAlign: "center" }}>
           <Typography color="textSecondary" variant="caption">
             Showing articles by {this.props.match.params.authorId}
           </Typography>
         </div>
         <Container maxWidth="lg">
-          {this.state.articles.map((item, index) => {
+          {articles.map((item, index) => {
             return <MyCard key={item._id} item={item} />;
           })}
         </Container>
@@ -47,7 +48,7 @@ class Articles extends Component {
             Copyright@2020_Siddhartha Sarkar
           </Typography>
         </div>
-      </div>
+      </>
     );
   }
 }
@@ -64,4 +65,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Articles);
+export default connect(mapStateToProps, mapDispatchToProps)(AuthorArticles);

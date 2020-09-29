@@ -2,33 +2,91 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import Loader from "../../components/Loader";
 import { getLikesForArticle } from "../../store/actions/likesActions";
-import { Typography } from "@material-ui/core";
+import {
+  Container,
+  Typography,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  ListItemSecondaryAction,
+} from "@material-ui/core";
+import { AccountCircle, Favorite } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 class LikesPage extends Component {
+  mounted = false;
   state = {
     loading: true,
-    likes: [],
   };
   cb = () => {
-    this.setState({ loading: false, likes: this.props.likes });
+    this.mounted && this.setState({ loading: false });
   };
   uef = () => {
     const articleId = this.props.match.params.id;
     this.props.likers(articleId, this.cb);
   };
 
-  componentDidMount = () => {
+  componentDidMount() {
+    this.mounted = true;
     this.uef();
-  };
+  }
+  componentWillUnmount() {
+    this.mounted = false;
+  }
   render() {
+    const { likes } = this.props;
     return this.state.loading ? (
       <Loader />
     ) : (
       <>
-        <Typography variant="h3">Liked By: </Typography>
-        {this.state.likes.map((item) => (
-          <Typography key={item.authorId}>{item.authorId}</Typography>
-        ))}
+        <div
+          style={{
+            margin: 10,
+            textAlign: "center",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <Typography color="textSecondary" variant="caption">
+            Likes on post {this.props.match.params.id}
+          </Typography>
+          <div style={{ display: "flex", flexDirection: "row", margin: 5 }}>
+            <Favorite fontSize="small" />
+            <Typography>{" " + likes.length}</Typography>
+          </div>
+        </div>
+        <Container>
+          <List>
+            {likes.map((value) => {
+              return (
+                <Link
+                  key={value.authorId}
+                  style={{ textDecoration: "none" }}
+                  to={"/article/" + value.authorId + "/articles"}
+                >
+                  <ListItem button>
+                    <ListItemAvatar>
+                      <AccountCircle color="secondary" />
+                    </ListItemAvatar>
+                    <ListItemText>
+                      <Typography color="textPrimary">
+                        {value.authorId}
+                      </Typography>
+                    </ListItemText>
+                    <ListItemSecondaryAction>
+                      <Typography variant="caption" color="textSecondary">
+                        {Date(value.addedOn).substring(0, 10)}
+                      </Typography>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </Link>
+              );
+            })}
+          </List>
+        </Container>
       </>
     );
   }

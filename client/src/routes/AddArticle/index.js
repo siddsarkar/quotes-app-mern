@@ -66,7 +66,6 @@ class AddArticleScreen extends Component {
               />
             </Grid>
           </Grid>
-
           <br />
           <TextField
             value={this.state.title}

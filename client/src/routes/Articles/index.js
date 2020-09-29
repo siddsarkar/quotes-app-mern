@@ -11,45 +11,52 @@ import Loader from "../../components/Loader";
 import Paginate from "../../components/Paginate/Paginate";
 
 class Articles extends Component {
+  mounted = false;
   state = {
-    articles: [],
     isLoading: true,
     page: 0,
     pageCount: 0,
   };
 
-  gotArticles = () => {
-    this.setState({
-      articles: this.props.articles,
-      pageCount: this.props.pageCount,
-      isLoading: false,
-    });
-  };
-  componentDidMount = () => {
-    this.props.initArticles(this.gotArticles, 1);
+  cb = () => {
+    this.mounted &&
+      this.setState({
+        pageCount: this.props.pageCount,
+        isLoading: false,
+      });
   };
 
+  componentDidMount() {
+    this.mounted = true;
+    this.props.initArticles(this.cb, 1);
+  }
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   render() {
+    const { articles } = this.props;
+    const { page, pageCount } = this.state;
     return this.state.isLoading ? (
       <Loader />
     ) : (
       <>
         <Container maxWidth="md" style={{ padding: 10 }}>
-          {this.state.articles.map((item, index) => {
+          {articles.map((item, index) => {
             return <MyCard key={item._id} item={item} />;
           })}
         </Container>
         <Paginate
-          count={this.state.pageCount}
-          page={this.state.page}
+          count={pageCount}
+          page={page}
           change={(e, page) => {
-            // e.preventDefault();
-            this.setState(
-              this.setState({ page: page, isLoading: true }),
-              () => {
-                this.props.initArticles(this.gotArticles, page);
-              }
-            );
+            this.mounted &&
+              this.setState(
+                this.setState({ page: page, isLoading: true }),
+                () => {
+                  this.props.initArticles(this.cb, page);
+                }
+              );
           }}
         />
       </>

@@ -33,6 +33,7 @@ class SingleArticle extends Component {
     likers: [],
     likersLoading: true,
     isliked: false,
+    disabled: true,
   };
 
   likeCallback = () => {
@@ -45,7 +46,9 @@ class SingleArticle extends Component {
       () => {
         for (let i = 0; i < this.state.likers.length; i++) {
           if (this.state.likers[i].authorId === this.props.userId) {
-            this.setState({ isliked: true });
+            this.setState({ isliked: true, disabled: false });
+          } else {
+            this.setState({ disabled: false });
           }
         }
       }
@@ -105,6 +108,7 @@ class SingleArticle extends Component {
           <div style={{ flexGrow: 1 }} />
           {this.props.auth ? (
             <Button
+              disabled={this.state.disabled}
               onClick={() =>
                 this.props.like(this.props.article._id, this.likeCallback)
               }
