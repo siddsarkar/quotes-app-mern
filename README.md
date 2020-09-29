@@ -22,7 +22,7 @@ Live at Heroku : [Take me there](https://quotes-app-mern.herokuapp.com/)
 - [ ] Profile view of author or user.
 - [ ] Themetoggle.
 
-  **_Have a suggestion? Create a Pull request and add here._**
+  _Have a suggestion? Create a Pull request and add here._
 
 #### Technologies used:
 
