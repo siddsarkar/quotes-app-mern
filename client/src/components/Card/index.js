@@ -37,7 +37,7 @@ class MyCard extends Component {
               size="small"
             >
               <AccountCircle style={{ marginRight: 5 }} />
-              <Typography variant="subtitle1"> {item.author}</Typography>
+              <Typography variant="subtitle1">{item.author}</Typography>
             </Button>
           </Link>
           <div style={{ flexGrow: 1 }} />
@@ -64,12 +64,8 @@ class MyCard extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  username: state.users.username,
-});
-
 const mapDispatchToProps = (dispatch) => ({
   like: (id) => dispatch(likeArticle(id)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MyCard);
+export default connect(mapDispatchToProps)(MyCard);

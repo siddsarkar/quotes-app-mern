@@ -1,76 +1,97 @@
 import React, { Component } from "react";
-import { getSingleArticle } from "../../store/actions/articleActions";
 import { Link } from "react-router-dom";
 import {
-  getCommentsForArticle,
-  addComment,
-} from "../../store/actions/commentActions";
-import {
-  Container,
   Typography,
   CardContent,
   TextField,
   Button,
   LinearProgress,
   Divider,
-  Grid,
-  Paper,
   CardActions,
+  CircularProgress,
+  List,
+  ListItemText,
+  ListItemAvatar,
+  ListItem,
+  Avatar,
 } from "@material-ui/core";
 import { connect } from "react-redux";
 import Loader from "../../components/Loader";
 import { AccountCircle, Favorite } from "@material-ui/icons";
+
 import {
   getLikesForArticle,
   likeArticle,
 } from "../../store/actions/likesActions";
+import {
+  getCommentsForArticle,
+  addComment,
+} from "../../store/actions/commentActions";
+import { getSingleArticle } from "../../store/actions/articleActions";
 
 class SingleArticle extends Component {
+  mounted = false;
   state = {
     comment: "",
-    isLoading: true,
+    pageLoaded: false,
+    likesLoading: true,
+    isLiked: false,
     commentsLoading: true,
-    likers: [],
-    likersLoading: true,
-    isliked: false,
-    disabled: true,
+    addCommentLoading: false,
   };
 
   likeCallback = () => {
-    this.setState({ isliked: !this.state.isliked });
-    this.props.likers(this.props.match.params.id, this.likersCb);
+    this.setState({ isLiked: !this.state.isliked });
   };
-  likersCb = () => {
-    this.setState(
-      this.setState({ likers: this.props.likersNames, likersLoading: false }),
-      () => {
-        for (let i = 0; i < this.state.likers.length; i++) {
-          if (this.state.likers[i].authorId === this.props.userId) {
-            this.setState({ isliked: true, disabled: false });
-          } else {
-            this.setState({ disabled: false });
-          }
-        }
+  getLikersCallback = () => {
+    for (let i = 0; i < this.props.likersNames.length; i++) {
+      if (this.props.likersNames[i].authorId === this.props.userId) {
+        this.mounted && this.setState({ isLiked: true, likesLoading: false });
       }
+    }
+    this.mounted && this.setState({ likesLoading: false });
+  };
+
+  getCommentsCallback = () => {
+    this.mounted && this.setState({ commentsLoading: false });
+  };
+
+  articleCallback = () => {
+    this.mounted &&
+      this.setState(
+        this.setState({
+          pageLoaded: true,
+          likesLoading: true,
+          commentsLoading: true,
+        }),
+        () => {
+          this.props.getLikers(
+            this.props.match.params.id,
+            this.getLikersCallback
+          );
+          this.props.getComments(
+            this.props.match.params.id,
+            this.getCommentsCallback
+          );
+        }
+      );
+  };
+
+  addCommentCallback = () => {
+    this.mounted && this.setState({ addCommentLoading: false, comment: "" });
+    this.props.getComments(
+      this.props.match.params.id,
+      this.getCommentsCallback
     );
-  };
-  cb = () => {
-    this.setState({ commentsLoading: false });
-    this.props.likers(this.props.match.params.id, this.likersCb);
-  };
-
-  callback = () => {
-    this.props.getComments(this.props.match.params.id, this.cb);
-    this.setState({ comment: "", isLoading: false });
-  };
-
-  uef = () => {
-    const articleId = this.props.match.params.id;
-    this.props.getArticle(articleId, this.callback);
   };
 
   componentDidMount() {
-    this.uef();
+    this.mounted = true;
+    const articleId = this.props.match.params.id;
+    this.props.getArticle(articleId, this.articleCallback);
+  }
+  componentWillUnmount() {
+    this.mounted = false;
   }
 
   postComment = () => {
@@ -78,96 +99,107 @@ class SingleArticle extends Component {
       author: this.props.username,
       comment: this.state.comment,
     };
-    this.props.addComment(this.props.match.params.id, body, this.callback);
+    this.mounted &&
+      this.setState(this.setState({ addCommentLoading: true }), () => {
+        this.props.addComment(
+          this.props.match.params.id,
+          body,
+          this.addCommentCallback
+        );
+      });
   };
 
   render() {
-    return this.state.isLoading ? (
-      <Loader />
-    ) : (
-      <Container>
-        <Typography style={{ marginTop: 20 }} variant="h3" gutterBottom>
-          {this.props.article.title}
-        </Typography>
-        <Typography variant="body1" style={{ marginLeft: 5 }} gutterBottom>
-          {this.props.article.body}
-        </Typography>
+    const { article } = this.props;
+    return this.state.pageLoaded ? (
+      <>
+        <CardContent>
+          <Typography color="textPrimary" variant="h3" gutterBottom>
+            {article.title}
+          </Typography>
+          <Typography color="textSecondary" variant="body1">
+            {article.body}
+          </Typography>
+        </CardContent>
         <CardActions>
           <Link
             style={{ textDecoration: "none" }}
-            to={"/article/" + this.props.article.authorId + "/articles"}
+            to={"/article/" + article.authorId + "/articles"}
           >
             <Button
               color="primary"
               style={{ textTransform: "none", marginTop: 5, marginBottom: 5 }}
             >
               <AccountCircle style={{ marginRight: 5 }} />
-              <Typography>{this.props.article.author}</Typography>
+              <Typography>{article.author}</Typography>
             </Button>
           </Link>
           <div style={{ flexGrow: 1 }} />
           {this.props.auth ? (
             <Button
-              disabled={this.state.disabled}
-              onClick={() =>
-                this.props.like(this.props.article._id, this.likeCallback)
-              }
+              disableElevation
+              disabled={this.state.likesLoading}
+              variant="contained"
+              onClick={() => this.props.like(article._id, this.likeCallback)}
+              style={{ position: "relative" }}
             >
-              <Typography>{this.state.isliked ? "Unlike" : "like"}</Typography>
+              {this.state.likesLoading && (
+                <CircularProgress size={24} style={{ position: "absolute" }} />
+              )}
+              <Typography>{this.state.isLiked ? "unlike" : "like"}</Typography>
             </Button>
           ) : null}
-          <Link
-            style={{ textDecoration: "none" }}
-            to={"/likes/" + this.props.article._id}
-          >
+          <Link style={{ textDecoration: "none" }} to={"/likes/" + article._id}>
             <Button>
               <Favorite style={{ marginRight: 5 }} />
-              <Typography>{this.state.likers.length}</Typography>
+              <Typography>{this.props.likersNames.length}</Typography>
             </Button>
           </Link>
         </CardActions>
-
-        <Divider />
-        <Typography variant="h4">Comments</Typography>
-        <CardContent>
-          {this.state.commentsLoading ? (
-            <LinearProgress />
-          ) : this.props.comments.length ? (
-            this.props.comments.map((item) => {
-              return (
-                <Grid spacing={3} container key={item._id}>
-                  <Grid item>
-                    <Paper style={{ padding: 5 }}>
-                      <Typography
-                        color="textPrimary"
-                        variant="h6"
-                        style={{ marginLeft: 10, marginRight: 10 }}
-                      >
-                        {item.comment}
-                      </Typography>
-                      <Link
-                        style={{ textDecoration: "none" }}
-                        to={"/article/" + item.authorId + "/articles"}
-                      >
-                        <Button style={{ textTransform: "none" }}>
-                          <AccountCircle
-                            fontSize="small"
-                            style={{ marginRight: 2 }}
-                          />
-                          <Typography variant="caption" color="textSecondary">
-                            {item.author}
-                          </Typography>
-                        </Button>
-                      </Link>
-                    </Paper>
-                  </Grid>
-                </Grid>
-              );
-            })
-          ) : (
-            <Typography variant="body1">no comments yet</Typography>
-          )}
+        <Divider variant="middle" />
+        <CardContent style={{ marginBottom: 0, paddingBottom: 0 }}>
+          <Typography variant="h5">Comments</Typography>
+          {this.state.commentsLoading && <LinearProgress />}
         </CardContent>
+        {this.state.commentsLoading ? null : this.props.comments.length ? (
+          this.props.comments.map((item) => {
+            return (
+              <List key={item._id}>
+                <ListItem alignItems="flex-start">
+                  <ListItemAvatar>
+                    <Link
+                      style={{ textDecoration: "none" }}
+                      to={"/article/" + item.authorId + "/articles"}
+                    >
+                      <Avatar>{item.author[0].toUpperCase()}</Avatar>
+                    </Link>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={item.comment}
+                    secondary={
+                      <>
+                        <Typography
+                          component="span"
+                          variant="body2"
+                          color="textPrimary"
+                        >
+                          {item.author}
+                        </Typography>{" "}
+                        {" - " + Date(item.addedOn).substring(0, 10)}
+                      </>
+                    }
+                  />
+                </ListItem>
+                <Divider variant="inset" component="li" />
+              </List>
+            );
+          })
+        ) : (
+          <CardContent>
+            <Typography color="textSecondary">No comments yet!</Typography>
+          </CardContent>
+        )}
+
         {this.props.auth ? (
           <CardContent>
             <TextField
@@ -175,7 +207,6 @@ class SingleArticle extends Component {
               onChange={(e) => this.setState({ comment: e.target.value })}
               fullWidth
               value={this.state.comment}
-              // style={{ paddingTop: 20, borderRadius: 0 }}
               placeholder="Write your comment here"
               multiline
               // rows={2}
@@ -186,12 +217,17 @@ class SingleArticle extends Component {
               style={{
                 borderTopLeftRadius: 0,
                 borderTopRightRadius: 0,
+                position: "relative",
               }}
-              onClick={() => this.postComment()}
+              disabled={this.state.addCommentLoading}
+              onClick={() => this.state.comment && this.postComment()}
               color="primary"
               variant="contained"
             >
               Post Comment
+              {this.state.addCommentLoading && (
+                <CircularProgress size={24} style={{ position: "absolute" }} />
+              )}
             </Button>
           </CardContent>
         ) : (
@@ -205,7 +241,9 @@ class SingleArticle extends Component {
             </Typography>
           </CardContent>
         )}
-      </Container>
+      </>
+    ) : (
+      <Loader />
     );
   }
 }
@@ -227,7 +265,7 @@ const mapDispatchToprops = (dispatch) => {
     getComments: (id, cb) => dispatch(getCommentsForArticle(id, cb)),
     addComment: (articleId, body, callback) =>
       dispatch(addComment(articleId, body, callback)),
-    likers: (id, cb) => dispatch(getLikesForArticle(id, cb)),
+    getLikers: (id, cb) => dispatch(getLikesForArticle(id, cb)),
     like: (id, cb) => dispatch(likeArticle(id, cb)),
   };
 };
