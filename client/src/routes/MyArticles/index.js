@@ -17,9 +17,8 @@ import {
   Paper,
   Tab,
   Tabs,
-  Box,
 } from "@material-ui/core";
-import { AccountCircle, Favorite } from "@material-ui/icons";
+import { AccountCircle } from "@material-ui/icons";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
