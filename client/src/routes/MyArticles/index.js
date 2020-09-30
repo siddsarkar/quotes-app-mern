@@ -210,7 +210,7 @@ class MyArticles extends Component {
             })
           ) : null}
         </TabPanel>
-      </Container>
+      </>
     ) : (
       <Container
         style={{
@@ -222,7 +222,7 @@ class MyArticles extends Component {
         <Typography variant="h3">
           Please login/sign-up to view your quotes
         </Typography>
-      </>
+      </Container>
     );
   }
 }
