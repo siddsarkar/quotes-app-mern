@@ -14,8 +14,8 @@ export default function Paginate(props) {
       }}
     >
       <Pagination
-        hideNextButton
-        hidePrevButton
+        //hideNextButton
+        //hidePrevButton
         count={props.count}
         page={props.page}
         onChange={props.change}
