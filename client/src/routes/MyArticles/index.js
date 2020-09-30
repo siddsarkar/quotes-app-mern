@@ -28,7 +28,6 @@ import {
   getMyComments,
   deleteComment,
 } from "../../store/actions/commentActions";
-import Loader from "../../components/Loader";
 import { getMyLikes } from "../../store/actions/likesActions";
 
 function TabPanel(props) {
