@@ -17,6 +17,7 @@ import {
   Tab,
   Tabs,
   LinearProgress,
+  Divider,
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 import CardActions from "@material-ui/core/CardActions";
@@ -46,23 +47,30 @@ function TabPanel(props) {
   );
 }
 class MyArticles extends Component {
+  mounted = false;
   state = {
-    isloading: true,
+    commentsLoading: true,
     likesLoading: true,
     postLoading: true,
     value: 0,
   };
-  callback = () => {
-    this.setState({ likesLoading: false });
-  };
-  cb = () => this.setState({ isloading: false });
+  getMylikesCallback = () =>
+    this.mounted && this.setState({ likesLoading: false });
+
+  getMyCommentsCallback = () =>
+    this.mounted && this.setState({ commentsLoading: false });
+
   getArticles = () => {
-    this.setState({ postLoading: false });
-    this.props.getMyComments(this.cb);
-    this.props.getMylikes(this.callback);
+    this.mounted && this.setState({ postLoading: false });
+    this.props.getMyComments(this.getMyCommentsCallback);
+    this.props.getMylikes(this.getMylikesCallback);
   };
   componentDidMount() {
+    this.mounted = true;
     this.props.initMyArticles(this.getArticles);
+  }
+  componentWillUnmount() {
+    this.mounted = false;
   }
   render() {
     const { likes } = this.props;
@@ -82,7 +90,7 @@ class MyArticles extends Component {
         <TabPanel value={this.state.value} index={0}>
           {/* posts */}
           {this.state.postLoading ? (
-            <LinearProgress />
+            <LinearProgress style={{ margin: 5 }} />
           ) : (
             <Router>
               <Switch>
@@ -138,7 +146,7 @@ class MyArticles extends Component {
           {/* likes */}
           <List>
             {this.state.likesLoading ? (
-              <Loader />
+              <LinearProgress style={{ margin: 5 }} />
             ) : (
               likes.map((value) => {
                 return (
@@ -162,6 +170,7 @@ class MyArticles extends Component {
                         </Typography>
                       </ListItemSecondaryAction>
                     </ListItem>
+                    <Divider />
                   </Link>
                 );
               })
@@ -170,8 +179,8 @@ class MyArticles extends Component {
         </TabPanel>
         <TabPanel value={this.state.value} index={2}>
           {/* comments */}
-          {this.state.postLoading ? (
-            <Loader />
+          {this.state.commentsLoading ? (
+            <LinearProgress style={{ margin: 5 }} />
           ) : this.props.myComments.length ? (
             this.props.myComments.map((comment) => {
               return (
