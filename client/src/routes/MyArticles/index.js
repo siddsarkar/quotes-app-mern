@@ -160,7 +160,7 @@ class MyArticles extends Component {
                       </ListItemAvatar>
                       <ListItemText>
                         <Typography color="textPrimary">
-                          {value.authorId}
+                          {value.articleId}
                         </Typography>
                       </ListItemText>
                       <ListItemSecondaryAction>
