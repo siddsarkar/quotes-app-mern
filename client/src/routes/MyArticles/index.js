@@ -74,7 +74,7 @@ class MyArticles extends Component {
   render() {
     const { likes } = this.props;
     return this.props.auth ? (
-      <Container maxWidth="md">
+      <>
         <Tabs
           value={this.state.value}
           onChange={(e, v) => this.setState({ value: v })}
@@ -222,7 +222,7 @@ class MyArticles extends Component {
         <Typography variant="h3">
           Please login/sign-up to view your quotes
         </Typography>
-      </Container>
+      </>
     );
   }
 }
