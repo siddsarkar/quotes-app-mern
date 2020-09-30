@@ -30,7 +30,7 @@ export const addComment = (articleId, body, callback) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        alert(res.message);
+        // alert(res.message);
         callback();
       });
   };

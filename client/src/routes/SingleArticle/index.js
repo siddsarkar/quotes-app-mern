@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import { connect } from "react-redux";
 import Loader from "../../components/Loader";
-import { AccountCircle, Favorite, ThumbUp } from "@material-ui/icons";
+import { AccountCircle, Favorite } from "@material-ui/icons";
 
 import {
   getLikesForArticle,
@@ -157,11 +157,7 @@ class SingleArticle extends Component {
               }
               style={{ position: "relative" }}
             >
-              {/* {this.state.likesLoading && (
-                <CircularProgress size={24} style={{ position: "absolute" }} />
-              )} */}
-              {/* <Typography>{this.state.isLiked ? "unlike" : "like"}</Typography> */}
-              <ThumbUp color={this.state.isLiked ? "secondary" : "primary"} />
+              <Typography>{this.state.isLiked ? "unlike" : "like"}</Typography>
             </Button>
           ) : null}
           <Link style={{ textDecoration: "none" }} to={"/likes/" + article._id}>

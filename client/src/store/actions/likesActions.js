@@ -12,7 +12,7 @@ export const likeArticle = (articleId, cb) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        alert(res.message);
+        // alert(res.message);
         cb();
       });
   };

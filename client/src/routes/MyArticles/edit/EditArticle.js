@@ -5,6 +5,7 @@ import {
   updateArticle,
   getSingleArticle,
 } from "../../../store/actions/articleActions";
+import { Link } from "react-router-dom";
 
 class EditArticle extends Component {
   state = {
@@ -78,6 +79,12 @@ class EditArticle extends Component {
             <Button variant="outlined" onClick={() => this.updateArticle()}>
               Update
             </Button>
+            <Link
+              to="/myarticles"
+              style={{ textDecoration: "none", marginLeft: 5 }}
+            >
+              <Button variant="outlined">Close</Button>
+            </Link>
           </div>
         </form>
       </Container>
