@@ -14,7 +14,7 @@ class Articles extends Component {
   mounted = false;
   state = {
     isLoading: true,
-    page: 0,
+    page: 1,
     pageCount: 0,
   };
 
