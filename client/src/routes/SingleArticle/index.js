@@ -17,7 +17,7 @@ import {
 } from "@material-ui/core";
 import { connect } from "react-redux";
 import Loader from "../../components/Loader";
-import { AccountCircle, Favorite } from "@material-ui/icons";
+import { AccountCircle, Favorite, ThumbUp } from "@material-ui/icons";
 
 import {
   getLikesForArticle,
@@ -39,9 +39,21 @@ class SingleArticle extends Component {
     commentsLoading: true,
     addCommentLoading: false,
   };
+  getLikersCallbackUpdate = () => {
+    return;
+  };
 
   likeCallback = () => {
-    this.setState({ isLiked: !this.state.isliked });
+    this.mounted &&
+      this.setState(
+        this.setState({ isLiked: !this.state.isLiked, likesLoading: false }),
+        () => {
+          this.props.getLikers(
+            this.props.match.params.id,
+            this.getLikersCallbackUpdate
+          );
+        }
+      );
   };
   getLikersCallback = () => {
     for (let i = 0; i < this.props.likersNames.length; i++) {
@@ -137,16 +149,19 @@ class SingleArticle extends Component {
           <div style={{ flexGrow: 1 }} />
           {this.props.auth ? (
             <Button
-              disableElevation
               disabled={this.state.likesLoading}
-              variant="contained"
-              onClick={() => this.props.like(article._id, this.likeCallback)}
+              onClick={() =>
+                this.setState(this.setState({ likesLoading: true }), () => {
+                  this.props.like(article._id, this.likeCallback);
+                })
+              }
               style={{ position: "relative" }}
             >
-              {this.state.likesLoading && (
+              {/* {this.state.likesLoading && (
                 <CircularProgress size={24} style={{ position: "absolute" }} />
-              )}
-              <Typography>{this.state.isLiked ? "unlike" : "like"}</Typography>
+              )} */}
+              {/* <Typography>{this.state.isLiked ? "unlike" : "like"}</Typography> */}
+              <ThumbUp color={this.state.isLiked ? "secondary" : "primary"} />
             </Button>
           ) : null}
           <Link style={{ textDecoration: "none" }} to={"/likes/" + article._id}>

@@ -7,7 +7,7 @@ export default function Loader() {
       maxWidth={false}
       style={{
         height: "100vh",
-        position: "absolute",
+        position: "relative",
         justifyContent: "center",
         display: "flex",
         alignItems: "center",

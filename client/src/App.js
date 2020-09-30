@@ -1,7 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  Button,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
 import { GitHub } from "@material-ui/icons";
 
 import AddArticleScreen from "./routes/AddArticle";
@@ -19,46 +25,53 @@ function App(props) {
         <Toolbar variant="dense">
           <Link
             style={{
-              marginRight: 10,
               textDecoration: "none",
-              color: "whitesmoke",
             }}
             to="/"
           >
-            <Typography variant="inherit">QUOTES</Typography>
+            <Button>
+              <Typography variant="inherit" style={{ color: "white" }}>
+                QUOTES
+              </Typography>
+            </Button>
           </Link>
           <Link
             style={{
-              marginRight: 10,
               textDecoration: "none",
-              color: "whitesmoke",
             }}
             to="/addarticle"
           >
-            <Typography variant="inherit">WRITE</Typography>
+            <Button>
+              <Typography variant="inherit" style={{ color: "white" }}>
+                WRITE
+              </Typography>
+            </Button>
           </Link>
           <Link
             style={{
-              marginRight: 10,
               textDecoration: "none",
-              color: "whitesmoke",
             }}
             to="/myarticles"
           >
-            <Typography variant="inherit">ACTIVITY</Typography>
+            <Button>
+              <Typography variant="inherit" style={{ color: "white" }}>
+                ACTIVITY
+              </Typography>
+            </Button>
           </Link>
           <Link
             style={{
               textDecoration: "none",
-              color: "whitesmoke",
               position: "absolute",
               right: 20,
             }}
             to="/login"
           >
-            <Typography variant="inherit">
-              {props.isLoggedin ? "LOGOUT" : "LOGIN"}
-            </Typography>
+            <Button>
+              <Typography style={{ color: "white" }} variant="inherit">
+                {props.isLoggedin ? "LOGOUT" : "LOGIN"}
+              </Typography>
+            </Button>
           </Link>
           <IconButton
             href="https://github.com/siddsarkar"

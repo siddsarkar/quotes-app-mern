@@ -11,7 +11,7 @@ const options = (data) => {
   };
 };
 
-export const userSignUpRequest = (data) => {
+export const userSignUpRequest = (data, cb) => {
   return (dispatch) => {
     return fetch("/api/users/signup", {
       method: "POST",
@@ -21,7 +21,10 @@ export const userSignUpRequest = (data) => {
       body: JSON.stringify(data),
     })
       .then((res) => res.json())
-      .then((res) => alert(res.message + "! Please Click Login"));
+      .then((res) => {
+        alert(res.message + "! Please Click Login");
+        cb();
+      });
   };
 };
 

@@ -14,9 +14,9 @@ import {
   ListItemAvatar,
   ListItemText,
   ListItemSecondaryAction,
-  Paper,
   Tab,
   Tabs,
+  LinearProgress,
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 import CardActions from "@material-ui/core/CardActions";
@@ -67,12 +67,12 @@ class MyArticles extends Component {
   render() {
     const { likes } = this.props;
     return this.props.auth ? (
-      <Paper>
+      <Container maxWidth="md">
         <Tabs
           value={this.state.value}
           onChange={(e, v) => this.setState({ value: v })}
-          indicatorColor="primary"
-          textColor="primary"
+          indicatorColor="secondary"
+          textColor="seconsary"
           centered
         >
           <Tab label="Posts" />
@@ -82,7 +82,7 @@ class MyArticles extends Component {
         <TabPanel value={this.state.value} index={0}>
           {/* posts */}
           {this.state.postLoading ? (
-            <Loader />
+            <LinearProgress />
           ) : (
             <Router>
               <Switch>
@@ -202,7 +202,7 @@ class MyArticles extends Component {
             })
           ) : null}
         </TabPanel>
-      </Paper>
+      </Container>
     ) : (
       <Container
         style={{
