@@ -39,6 +39,20 @@ router.get("/", (req, res) => {
   });
 });
 
+//* search feature */
+router.get("/search", (req, res) => {
+  let keyword = req.query.q;
+  Article.find({}, (err, articles) => {
+    if (err) throw err;
+    let matches = articles.filter((article) => {
+      const regex = new RegExp(`${keyword}`, "gi");
+      return article.title.match(regex) || article.body.match(regex);
+    });
+    let paginated = paginatedResponse(matches, req.query.p);
+    res.json(paginated);
+  });
+});
+
 router.get("/myarticles", isAuthenticated, (req, res) => {
   const authorId = req.authorId;
   Article.find({ authorId }, (err, articles) => {

@@ -50,8 +50,16 @@ app.use("/api/articles", articles);
 app.use("/api/users", users);
 app.use("/api/comments", comments);
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/build/index.html"));
+//* production/deployment
+
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "client/build/index.html"));
+// });
+
+//? development/testing
+
+app.get("/", (req, res) => {
+  res.json({ message: "welcome" });
 });
 
 app.listen(PORT, () => {
