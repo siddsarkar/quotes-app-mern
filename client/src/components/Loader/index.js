@@ -3,17 +3,17 @@ import React from "react";
 
 export default function Loader() {
   return (
-    <Container
-      maxWidth={false}
+    <div
       style={{
-        height: "100vh",
-        position: "relative",
-        justifyContent: "center",
+        position: "absolute",
         display: "flex",
+        justifyContent: "center",
         alignItems: "center",
+        top: "48vh",
+        left: "48vw",
       }}
     >
       <CircularProgress />
-    </Container>
+    </div>
   );
 }

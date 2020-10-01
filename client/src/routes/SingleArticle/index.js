@@ -129,7 +129,7 @@ class SingleArticle extends Component {
           <Typography color="textPrimary" variant="h3" gutterBottom>
             {article.title}
           </Typography>
-          <Typography color="textSecondary" variant="body1">
+          <Typography color="textPrimary" variant="body1">
             {article.body}
           </Typography>
         </CardContent>
@@ -196,7 +196,10 @@ class SingleArticle extends Component {
                         >
                           {item.author}
                         </Typography>{" "}
-                        {" - " + Date(item.addedOn).substring(0, 10)}
+                        {" - " +
+                          item.addedOn.split(".")[0].split("T")[1] +
+                          " - " +
+                          item.addedOn.split(".")[0].split("T")[0]}
                       </>
                     }
                   />

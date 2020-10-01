@@ -18,6 +18,9 @@ import {
   Tabs,
   LinearProgress,
   Divider,
+  Paper,
+  CircularProgress,
+  AppBar,
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 import CardActions from "@material-ui/core/CardActions";
@@ -29,6 +32,7 @@ import {
   deleteComment,
 } from "../../store/actions/commentActions";
 import { getMyLikes } from "../../store/actions/likesActions";
+import Loader from "../../components/Loader";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -41,7 +45,11 @@ function TabPanel(props) {
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
     >
-      {value === index && <Container>{children}</Container>}
+      {value === index && (
+        <Container maxWidth="md" style={{ padding: 10 }}>
+          {children}
+        </Container>
+      )}
     </div>
   );
 }
@@ -75,21 +83,23 @@ class MyArticles extends Component {
     const { likes } = this.props;
     return this.props.auth ? (
       <>
-        <Tabs
-          value={this.state.value}
-          onChange={(e, v) => this.setState({ value: v })}
-          indicatorColor="secondary"
-          textColor="secondary"
-          centered
-        >
-          <Tab label="Posts" />
-          <Tab label="Likes" />
-          <Tab label="Comments" />
-        </Tabs>
+        <AppBar position="sticky" style={{ backgroundColor: "white" }}>
+          <Tabs
+            value={this.state.value}
+            onChange={(e, v) => this.setState({ value: v })}
+            indicatorColor="secondary"
+            textColor="secondary"
+            centered
+          >
+            <Tab label="Posts" />
+            <Tab label="Comments" />
+            <Tab label="Likes" />
+          </Tabs>
+        </AppBar>
         <TabPanel value={this.state.value} index={0}>
           {/* posts */}
           {this.state.postLoading ? (
-            <LinearProgress style={{ margin: 5 }} />
+            <Loader />
           ) : (
             <Router>
               <Switch>
@@ -106,23 +116,31 @@ class MyArticles extends Component {
               {this.props.myArticles.map((item) => {
                 return (
                   <Card
+                    elevation={5}
                     key={item._id}
-                    style={{ backgroundColor: "azure", margin: 10 }}
+                    style={{ backgroundColor: "azure", marginBottom: 10 }}
                   >
                     <CardContent>
-                      <Typography color="textSecondary" gutterBottom>
-                        [Post@{item.addedOn}] {item.title}
+                      <Typography variant="body2" color="textSecondary">
+                        {item.addedOn.split(".")[0].split("T")[0] +
+                          " - " +
+                          item.addedOn.split(".")[0].split("T")[1]}
                       </Typography>
-                      <Typography variant="body2" component="p">
-                        {item.body}
+                      <Typography variant="h5" color="textPrimary" gutterBottom>
+                        {item.title}
                       </Typography>
+                      <Typography variant="body2">{item.body}</Typography>
                     </CardContent>
-                    <CardActions>
+                    <CardActions style={{ paddingTop: 0 }}>
                       <Link
                         style={{ textDecoration: "none" }}
                         to={"/edit/" + item._id}
                       >
-                        <Button variant="outlined" size="small">
+                        <Button
+                          variant="contained"
+                          disableElevation
+                          size="small"
+                        >
                           EDIT
                         </Button>
                       </Link>
@@ -142,10 +160,53 @@ class MyArticles extends Component {
           )}
         </TabPanel>
         <TabPanel value={this.state.value} index={1}>
+          {/* comments */}
+          {this.state.commentsLoading ? (
+            <Loader />
+          ) : this.props.myComments.length ? (
+            this.props.myComments.map((comment) => {
+              return (
+                <Card
+                  elevation={5}
+                  key={comment._id}
+                  style={{ backgroundColor: "lightcyan", marginBottom: 10 }}
+                >
+                  <CardContent>
+                    <Typography
+                      variant="body2"
+                      gutterBottom
+                      color="textSecondary"
+                    >
+                      {comment.addedOn.split(".")[0].split("T")[0] +
+                        " - " +
+                        comment.addedOn.split(".")[0].split("T")[1]}
+                    </Typography>
+                    <Typography variant="h6" color="textPrimary">
+                      {comment.comment}
+                    </Typography>
+                  </CardContent>
+                  <CardActions style={{ paddingTop: 0 }}>
+                    <Button
+                      variant="contained"
+                      disableElevation
+                      size="small"
+                      onClick={() =>
+                        this.props.deleteComment(comment._id, this.getArticles)
+                      }
+                    >
+                      <Typography color="textSecondary">DELETE</Typography>
+                    </Button>
+                  </CardActions>
+                </Card>
+              );
+            })
+          ) : null}
+        </TabPanel>
+        <TabPanel value={this.state.value} index={2}>
           {/* likes */}
           <List>
             {this.state.likesLoading ? (
-              <LinearProgress style={{ margin: 5 }} />
+              <Loader />
             ) : (
               likes.map((value) => {
                 return (
@@ -165,7 +226,7 @@ class MyArticles extends Component {
                       </ListItemText>
                       <ListItemSecondaryAction>
                         <Typography variant="caption" color="textSecondary">
-                          {Date(value.addedOn).substring(0, 10)}
+                          {value.addedOn.split(".")[0].split("T")[0]}
                         </Typography>
                       </ListItemSecondaryAction>
                     </ListItem>
@@ -175,40 +236,6 @@ class MyArticles extends Component {
               })
             )}
           </List>
-        </TabPanel>
-        <TabPanel value={this.state.value} index={2}>
-          {/* comments */}
-          {this.state.commentsLoading ? (
-            <LinearProgress style={{ margin: 5 }} />
-          ) : this.props.myComments.length ? (
-            this.props.myComments.map((comment) => {
-              return (
-                <Card
-                  key={comment._id}
-                  style={{ backgroundColor: "beige", margin: 10 }}
-                >
-                  <CardContent>
-                    <Typography color="textSecondary" gutterBottom>
-                      [Comment@{comment.addedOn}]
-                    </Typography>
-                    <Typography variant="body2" component="p">
-                      {comment.comment}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Button
-                      variant="outlined"
-                      onClick={() =>
-                        this.props.deleteComment(comment._id, this.getArticles)
-                      }
-                    >
-                      <Typography color="textSecondary">DELETE</Typography>
-                    </Button>
-                  </CardActions>
-                </Card>
-              );
-            })
-          ) : null}
         </TabPanel>
       </>
     ) : (
