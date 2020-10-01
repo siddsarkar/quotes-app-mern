@@ -16,10 +16,7 @@ import {
   ListItemSecondaryAction,
   Tab,
   Tabs,
-  LinearProgress,
   Divider,
-  Paper,
-  CircularProgress,
   AppBar,
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
