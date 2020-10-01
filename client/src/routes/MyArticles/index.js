@@ -116,7 +116,7 @@ class MyArticles extends Component {
               {this.props.myArticles.map((item) => {
                 return (
                   <Card
-                    elevation={5}
+                    elevation={3}
                     key={item._id}
                     style={{ backgroundColor: "azure", marginBottom: 10 }}
                   >
@@ -167,9 +167,9 @@ class MyArticles extends Component {
             this.props.myComments.map((comment) => {
               return (
                 <Card
-                  elevation={5}
+                  elevation={3}
                   key={comment._id}
-                  style={{ backgroundColor: "lightcyan", marginBottom: 10 }}
+                  style={{ backgroundColor: "bisque", marginBottom: 10 }}
                 >
                   <CardContent>
                     <Typography

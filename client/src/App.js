@@ -74,7 +74,7 @@ function App(props) {
             </Button>
           </Link>
           <IconButton
-            href="https://github.com/siddsarkar"
+            href="https://github.com/siddsarkar/quotes-app-mern"
             aria-label="account of current user"
             aria-controls="menu-appbar"
             aria-haspopup="true"
