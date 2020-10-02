@@ -92,7 +92,12 @@ function App(props) {
             }}
             to="/search"
           >
-            <IconButton color="inherit">
+            <IconButton
+              color="inherit"
+              aria-label="search"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+            >
               <Search />
             </IconButton>
           </Link>
