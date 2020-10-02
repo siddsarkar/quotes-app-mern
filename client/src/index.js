@@ -17,12 +17,14 @@ import commentsReducer from "./store/reducers/commentsReducer";
 import articlesReducer from "./store/reducers/articlesReducer";
 import usersReducer from "./store/reducers/usersReducer";
 import likesReducer from "./store/reducers/likesReducer";
+import searchReducer from "./store/reducers/searchReducer";
 
 const rootReducer = combineReducers({
   articles: articlesReducer,
   users: usersReducer,
   comments: commentsReducer,
   likes: likesReducer,
+  search: searchReducer,
 });
 const store = createStore(rootReducer, applyMiddleware(thunk));
 

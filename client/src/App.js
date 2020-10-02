@@ -7,8 +7,16 @@ import {
   IconButton,
   Toolbar,
   Typography,
+  Accordion,
+  AccordionSummary,
+  Collapse,
+  Paper,
+  AccordionDetails,
+  makeStyles,
+  fade,
+  InputBase,
 } from "@material-ui/core";
-import { GitHub } from "@material-ui/icons";
+import { GitHub, ExpandMore, Search } from "@material-ui/icons";
 
 import AddArticleScreen from "./routes/AddArticle";
 import Articles from "./routes/Articles";
@@ -17,6 +25,7 @@ import MyArticles from "./routes/MyArticles";
 import SingleArticle from "./routes/SingleArticle";
 import getArticleAuthor from "./routes/AuthorArticles";
 import LikesPage from "./routes/Likes";
+import SearchPage from "./routes/Search";
 
 function App(props) {
   return (
@@ -26,26 +35,24 @@ function App(props) {
           <Link
             style={{
               textDecoration: "none",
+              marginRight: 5,
             }}
             to="/"
           >
-            <Button>
-              <Typography variant="inherit" style={{ color: "white" }}>
-                QUOTES
-              </Typography>
-            </Button>
+            <Typography variant="inherit" style={{ color: "white" }}>
+              QUOTES
+            </Typography>
           </Link>
           <Link
             style={{
               textDecoration: "none",
+              marginRight: 5,
             }}
             to="/addarticle"
           >
-            <Button>
-              <Typography variant="inherit" style={{ color: "white" }}>
-                WRITE
-              </Typography>
-            </Button>
+            <Typography variant="inherit" style={{ color: "white" }}>
+              WRITE
+            </Typography>
           </Link>
           <Link
             style={{
@@ -53,11 +60,9 @@ function App(props) {
             }}
             to="/myarticles"
           >
-            <Button>
-              <Typography variant="inherit" style={{ color: "white" }}>
-                ACTIVITY
-              </Typography>
-            </Button>
+            <Typography variant="inherit" style={{ color: "white" }}>
+              ACTIVITY
+            </Typography>
           </Link>
           <Link
             style={{
@@ -67,21 +72,30 @@ function App(props) {
             }}
             to="/login"
           >
-            <Button>
-              <Typography style={{ color: "white" }} variant="inherit">
-                {props.isLoggedin ? "LOGOUT" : "LOGIN"}
-              </Typography>
-            </Button>
+            <Typography style={{ color: "white" }} variant="inherit">
+              {props.isLoggedin ? "LOGOUT" : "LOGIN"}
+            </Typography>
           </Link>
           <IconButton
             href="https://github.com/siddsarkar/quotes-app-mern"
-            aria-label="account of current user"
+            aria-label="Github repo"
             aria-controls="menu-appbar"
             aria-haspopup="true"
             color="inherit"
           >
             <GitHub />
           </IconButton>
+          <Link
+            style={{
+              textDecoration: "none",
+              color: "inherit",
+            }}
+            to="/search"
+          >
+            <IconButton color="inherit">
+              <Search />
+            </IconButton>
+          </Link>
         </Toolbar>
       </AppBar>
 
@@ -91,6 +105,7 @@ function App(props) {
           exact
           component={getArticleAuthor}
         />
+        <Route path="/search" exact component={SearchPage} />
         <Route path="/likes/:id" exact component={LikesPage} />
         <Route path="/article/:id" exact component={SingleArticle} />
         <Route path="/addarticle" component={AddArticleScreen} />

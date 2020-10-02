@@ -3,6 +3,9 @@ import Pagination from "@material-ui/lab/Pagination";
 import { Typography } from "@material-ui/core";
 
 export default function Paginate(props) {
+  React.useEffect(() => {
+    console.log(props.onlyFooter);
+  }, []);
   return (
     <div
       style={{
@@ -13,13 +16,15 @@ export default function Paginate(props) {
         flexDirection: "column",
       }}
     >
-      <Pagination
-        //hideNextButton
-        //hidePrevButton
-        count={props.count}
-        page={props.page}
-        onChange={props.change}
-      />
+      {props.onlyFooter === true ? null : (
+        <Pagination
+          //hideNextButton
+          //hidePrevButton
+          count={props.count}
+          page={props.page}
+          onChange={props.change}
+        />
+      )}
       <Typography
         style={{ marginTop: 5 }}
         color="textSecondary"
