@@ -51,14 +51,14 @@ app.use("/api/users", users);
 app.use("/api/comments", comments);
 
 //* production/deployment
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "client/build/index.html"));
-// });
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client/build/index.html"));
+});
 
 //? development/testing
-app.get("/", (req, res) => {
-  res.json({ message: "welcome" });
-});
+// app.get("/", (req, res) => {
+//   res.json({ message: "welcome" });
+// });
 
 app.listen(PORT, () => {
   console.log(`Server started at ${PORT}`);

@@ -1,22 +1,8 @@
 import React from "react";
 import { connect } from "react-redux";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import {
-  AppBar,
-  Button,
-  IconButton,
-  Toolbar,
-  Typography,
-  Accordion,
-  AccordionSummary,
-  Collapse,
-  Paper,
-  AccordionDetails,
-  makeStyles,
-  fade,
-  InputBase,
-} from "@material-ui/core";
-import { GitHub, ExpandMore, Search } from "@material-ui/icons";
+import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { GitHub, Search } from "@material-ui/icons";
 
 import AddArticleScreen from "./routes/AddArticle";
 import Articles from "./routes/Articles";
@@ -110,13 +96,13 @@ function App(props) {
           exact
           component={getArticleAuthor}
         />
-        <Route path="/search" exact component={SearchPage} />
+        <Route path="/search" component={SearchPage} />
         <Route path="/likes/:id" exact component={LikesPage} />
         <Route path="/article/:id" exact component={SingleArticle} />
         <Route path="/addarticle" component={AddArticleScreen} />
         <Route path="/myarticles" component={MyArticles} />
         <Route path="/login" component={Login} />
-        <Route path="/" component={Articles} />
+        <Route path="/" exact component={Articles} />
       </Switch>
     </Router>
   );

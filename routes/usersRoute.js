@@ -14,11 +14,9 @@ router.post("/signup", (req, res) => {
   const reqBody = { name, username, password };
   const newUser = new User(reqBody);
 
-  //hash pass
   bcrypt.genSalt(10, async (err, salt) => {
     const hashedPass = await bcrypt.hash(newUser.password, salt);
     newUser.password = hashedPass;
-    //save user to db
     newUser.save((err) => {
       if (err) return err;
       res.json({ message: "user registered" });
@@ -32,7 +30,6 @@ router.post("/login", (req, res) => {
   User.findOne({ username }, (err, user) => {
     if (err) return err;
     if (user) {
-      //check if password match
       bcrypt.compare(password, user.password, (err, isMatch) => {
         if (err) return err;
         if (isMatch) {
@@ -41,7 +38,10 @@ router.post("/login", (req, res) => {
               id: user._id,
               username: user.username,
             },
-            config.jwtSecret
+            config.jwtSecret,
+            {
+              expiresIn: "1h",
+            }
           );
           res.json({ token, message: "Successfully Logged in!" });
         } else {

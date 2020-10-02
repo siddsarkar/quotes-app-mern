@@ -1,23 +1,13 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import {
-  AppBar,
-  Button,
-  IconButton,
-  Toolbar,
-  Typography,
-  Accordion,
-  AccordionSummary,
   Collapse,
-  Paper,
-  AccordionDetails,
   makeStyles,
   fade,
   InputBase,
   Container,
 } from "@material-ui/core";
-import { GitHub, ExpandMore, Search } from "@material-ui/icons";
+import { Search } from "@material-ui/icons";
 
 import { getArticleBySearch } from "../../store/actions/searchActions";
 import MyCard from "../../components/Card";
@@ -71,10 +61,6 @@ function SearchPage(props) {
   const [checked, setChecked] = React.useState(false);
   const [query, setQuery] = React.useState("");
   const [page, setPage] = React.useState(1);
-
-  const handleChange = () => {
-    setChecked((prev) => !prev);
-  };
 
   const cb = () => console.log("object");
   const handleSubmit = (data) => {

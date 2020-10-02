@@ -3,9 +3,6 @@ import Pagination from "@material-ui/lab/Pagination";
 import { Typography } from "@material-ui/core";
 
 export default function Paginate(props) {
-  React.useEffect(() => {
-    console.log(props.onlyFooter);
-  }, []);
   return (
     <div
       style={{

@@ -13,38 +13,46 @@ router.post("/like/:articleId", isAuthenticated, (req, res) => {
   const articleId = req.params.articleId;
   const authorId = req.authorId;
 
+  const saveLike = () => {
+    const newLike = new Like({
+      authorId: new ObjectId(authorId),
+      articleId: new ObjectId(articleId),
+    });
+    newLike.save((err) => {
+      if (err) return err;
+      res.json({ message: "liked" });
+    });
+  };
+
+  const removeLike = (id) => {
+    Like.findByIdAndDelete(id, (err) => {
+      if (err) return err;
+      res.json({ message: "unliked" });
+    });
+  };
+
   const callback = (item) => {
     if (item === null) {
-      const newLike = new Like({
-        authorId: new ObjectId(authorId),
-        articleId: new ObjectId(articleId),
-      });
-      Article.findById(articleId, (err, item) => {
+      Article.findById(articleId, (err, article) => {
         if (err) return err;
         Article.findByIdAndUpdate(
           articleId,
-          { likesCount: item.likesCount + 1 },
+          { likesCount: article.likesCount + 1 },
           (err) => {
             if (err) return err;
-            newLike.save((err) => {
-              if (err) return err;
-              res.json({ message: "liked" });
-            });
+            saveLike();
           }
         );
       });
     } else {
-      Article.findById(articleId, (err, item) => {
+      Article.findById(articleId, (err, article) => {
         if (err) return err;
         Article.findByIdAndUpdate(
           articleId,
-          { likesCount: item.likesCount - 1 },
+          { likesCount: article.likesCount - 1 },
           (err) => {
             if (err) return err;
-            Like.findByIdAndDelete(item._id, (err) => {
-              if (err) return err;
-              res.json({ message: "unliked" });
-            });
+            removeLike(item._id);
           }
         );
       });
