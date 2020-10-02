@@ -3,7 +3,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
 const Article = require("../models/articlesModel");
-// const Like = require("../models/likesModel");
 
 const router = express.Router();
 

@@ -13,48 +13,47 @@ router.post("/like/:articleId", isAuthenticated, (req, res) => {
   const articleId = req.params.articleId;
   const authorId = req.authorId;
 
-  const doStuff = (item) => {
+  const callback = (item) => {
     if (item === null) {
       const newLike = new Like({
         authorId: new ObjectId(authorId),
         articleId: new ObjectId(articleId),
       });
       Article.findById(articleId, (err, item) => {
-        if (err) return;
+        if (err) return err;
         Article.findByIdAndUpdate(
           articleId,
           { likesCount: item.likesCount + 1 },
           (err) => {
-            if (err) throw err;
-            res.json({ message: "liked" });
+            if (err) return err;
+            newLike.save((err) => {
+              if (err) return err;
+              res.json({ message: "liked" });
+            });
           }
         );
       });
-      newLike.save((err) => {
-        if (err) return err;
-      });
     } else {
       Article.findById(articleId, (err, item) => {
-        if (err) return;
+        if (err) return err;
         Article.findByIdAndUpdate(
           articleId,
           { likesCount: item.likesCount - 1 },
           (err) => {
-            if (err) throw err;
-            res.json({ message: "unliked" });
+            if (err) return err;
+            Like.findByIdAndDelete(item._id, (err) => {
+              if (err) return err;
+              res.json({ message: "unliked" });
+            });
           }
         );
-      });
-      Like.findByIdAndDelete(item._id, (err) => {
-        if (err) return err;
-        // res.json({ message: "unliked" });
       });
     }
   };
 
   Like.findOne({ authorId, articleId }, (err, item) => {
     if (err) return err;
-    doStuff(item);
+    callback(item);
   });
 });
 

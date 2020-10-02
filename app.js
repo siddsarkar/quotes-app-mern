@@ -23,7 +23,7 @@ mongoose.connect(
     useUnifiedTopology: true,
     useCreateIndex: true,
   },
-  (err) => console.log("MongoDB Connected", err)
+  (err) => (err ? console.log(err) : console.log("MongoDB Connected"))
 );
 
 const app = express();
@@ -51,13 +51,11 @@ app.use("/api/users", users);
 app.use("/api/comments", comments);
 
 //* production/deployment
-
 // app.get("*", (req, res) => {
 //   res.sendFile(path.join(__dirname, "client/build/index.html"));
 // });
 
 //? development/testing
-
 app.get("/", (req, res) => {
   res.json({ message: "welcome" });
 });
