@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Collapse, InputBase, Container } from "@material-ui/core";
+import { InputBase, Container } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 
 import { getArticleBySearch } from "../../store/actions/searchActions";
