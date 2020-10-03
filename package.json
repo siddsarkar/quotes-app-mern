@@ -9,7 +9,7 @@
     "client": "cd client && yarn start",
     "server": "nodemon app.js",
     "concurrently": "concurrently  --names \"SERVER,CLIENT\" -c \"bgGreen.bold,bgMagenta.bold\" \"npm run start\" \"npm run client\"",
-    "concurrently-nodemon": "concurrently \"npm run server\" \"npm run client\""
+    "concurrently-nodemon": "concurrently  --names \"SERVER,CLIENT\" -c \"bgGreen.bold,bgMagenta.bold\" \"npm run server\" \"npm run client\""
   },
   "author": "Siddhartha Sarkar",
   "license": "ISC",
