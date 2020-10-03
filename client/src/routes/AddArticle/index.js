@@ -87,95 +87,98 @@ class AddArticleScreen extends Component {
         <Typography style={{ padding: 20, paddingLeft: 0 }} variant="h3">
           Write Your Quote
         </Typography>
-        <form noValidate autoComplete="off">
-          <Grid container spacing={1} alignItems="flex-end">
-            <Grid item>
-              <AccountCircle />
-            </Grid>
-            <Grid item>
-              <TextField
-                value={this.state.author}
-                id="standard-basic"
-                label="Username"
-                disabled
-              />
-            </Grid>
+        <Grid container spacing={1} alignItems="flex-end">
+          <Grid item>
+            <AccountCircle />
           </Grid>
-          <br />
-          <TextField
-            value={this.state.title}
-            style={{ marginBottom: 20 }}
-            fullWidth
-            onChange={(e) => {
-              this.setState({ title: e.target.value });
-            }}
-            placeholder="Title"
+          <Grid item>
+            <TextField
+              value={this.state.author}
+              id="standard-basic"
+              label="Username"
+              disabled
+            />
+          </Grid>
+        </Grid>
+        <br />
+        <TextField
+          value={this.state.title}
+          style={{ marginBottom: 20 }}
+          fullWidth
+          onChange={(e) => {
+            this.setState({ title: e.target.value });
+          }}
+          placeholder="Title"
+          disabled={this.props.auth ? false : true}
+        />
+        <br />
+        <TextField
+          value={this.state.body}
+          onChange={(e) => {
+            this.setState({ body: e.target.value });
+          }}
+          fullWidth
+          placeholder="Body"
+          multiline
+          rows={4}
+          variant="outlined"
+          disabled={this.props.auth ? false : true}
+        />
+        <br />
+        <br />
+
+        <FormControl
+          disabled={this.props.auth ? false : true}
+          required
+          error={error}
+          component="fieldset"
+        >
+          <FormLabel component="legend">Tags</FormLabel>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={love}
+                  onChange={this.handleChange}
+                  name="love"
+                />
+              }
+              label="Love"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={inspiration}
+                  onChange={this.handleChange}
+                  name="inspiration"
+                />
+              }
+              label="Inspiration"
+            />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={travel}
+                  onChange={this.handleChange}
+                  name="travel"
+                />
+              }
+              label="Travel"
+            />
+          </FormGroup>
+          <FormHelperText>Pick at least one tag!</FormHelperText>
+        </FormControl>
+
+        <br />
+        <div style={{ padding: 20, paddingLeft: 0 }}>
+          <Button
             disabled={this.props.auth ? false : true}
-          />
-          <br />
-          <TextField
-            value={this.state.body}
-            onChange={(e) => {
-              this.setState({ body: e.target.value });
-            }}
-            fullWidth
-            placeholder="Body"
-            multiline
-            rows={4}
             variant="outlined"
-            disabled={this.props.auth ? false : true}
-          />
-          <br />
-          <br />
-
-          <FormControl required error={error} component="fieldset">
-            <FormLabel component="legend">Tags</FormLabel>
-            <FormGroup>
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={love}
-                    onChange={this.handleChange}
-                    name="love"
-                  />
-                }
-                label="Love"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={inspiration}
-                    onChange={this.handleChange}
-                    name="inspiration"
-                  />
-                }
-                label="Inspiration"
-              />
-              <FormControlLabel
-                control={
-                  <Checkbox
-                    checked={travel}
-                    onChange={this.handleChange}
-                    name="travel"
-                  />
-                }
-                label="Travel"
-              />
-            </FormGroup>
-            <FormHelperText>Pick at least one tag!</FormHelperText>
-          </FormControl>
-
-          <br />
-          <div style={{ padding: 20, paddingLeft: 0 }}>
-            <Button
-              disabled={this.props.auth ? false : true}
-              variant="outlined"
-              onClick={() => this.addArticle()}
-            >
-              Submit
-            </Button>
-          </div>
-        </form>
+            onClick={() => this.addArticle()}
+          >
+            Submit
+          </Button>
+        </div>
         <div style={{ margin: 10, textAlign: "center" }}>
           <Typography color="textSecondary" variant="caption">
             Copyright@2020_Siddhartha Sarkar
