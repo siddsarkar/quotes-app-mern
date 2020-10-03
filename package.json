@@ -8,7 +8,7 @@
     "heroku-postbuild": "cd client && yarn install && yarn build",
     "client": "cd client && yarn start",
     "server": "nodemon app.js",
-    "concurrently": "concurrently \"npm run start\" \"npm run client\"",
+    "concurrently": "concurrently  --names \"SERVER,CLIENT\" -c \"bgGreen.bold,bgMagenta.bold\" \"npm run start\" \"npm run client\"",
     "concurrently-nodemon": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Siddhartha Sarkar",

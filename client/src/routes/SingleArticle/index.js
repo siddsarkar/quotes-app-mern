@@ -14,6 +14,7 @@ import {
   ListItemAvatar,
   ListItem,
   Avatar,
+  Chip,
 } from "@material-ui/core";
 import { connect } from "react-redux";
 import Loader from "../../components/Loader";
@@ -44,21 +45,31 @@ class SingleArticle extends Component {
   };
 
   likeCallback = () => {
-    this.mounted &&
-      this.setState(this.setState({ likesLoading: true }), () => {
-        this.props.getLikers(
-          this.props.match.params.id,
-          this.getLikersCallbackUpdate
-        );
-      });
+    this.props.getLikers(
+      this.props.match.params.id,
+      this.getLikersCallbackUpdate
+    );
+  };
+
+  handleLike = () => {
+    this.setState(this.setState({ likesLoading: true }), () => {
+      this.props.like(this.props.article._id, this.likeCallback);
+    });
   };
   getLikersCallback = () => {
-    for (let i = 0; i < this.props.likersNames.length; i++) {
-      if (this.props.likersNames[i].authorId === this.props.userId) {
-        this.mounted && this.setState({ isLiked: true, likesLoading: false });
+    let i = 0;
+    if (this.props.likersNames.length) {
+      while (i < this.props.likersNames.length) {
+        console.log("kk");
+        if (this.props.likersNames[i].authorId === this.props.userId) {
+          this.mounted && this.setState({ isLiked: true, likesLoading: false });
+          break;
+        }
+        i++;
       }
+    } else {
+      this.mounted && this.setState({ likesLoading: false });
     }
-    this.mounted && this.setState({ likesLoading: false });
   };
 
   getCommentsCallback = () => {
@@ -123,6 +134,24 @@ class SingleArticle extends Component {
     return this.state.pageLoaded ? (
       <>
         <CardContent>
+          {article.tags.map((tag, i) => {
+            return (
+              <Link
+                style={{ textDecoration: "none" }}
+                key={i}
+                to={"/tags/" + tag}
+              >
+                <Chip
+                  clickable
+                  color="primary"
+                  // variant="outlined"
+                  label={"#" + tag}
+                  size="small"
+                  style={{ marginLeft: 5 }}
+                />
+              </Link>
+            );
+          })}
           <Typography color="textPrimary" variant="h3" gutterBottom>
             {article.title}
           </Typography>
@@ -147,11 +176,7 @@ class SingleArticle extends Component {
           {this.props.auth ? (
             <Button
               disabled={this.state.likesLoading}
-              onClick={() =>
-                this.setState(this.setState({ likesLoading: true }), () => {
-                  this.props.like(article._id, this.likeCallback);
-                })
-              }
+              onClick={this.handleLike}
               style={{ position: "relative" }}
             >
               <Typography>{this.state.isLiked ? "unlike" : "like"}</Typography>

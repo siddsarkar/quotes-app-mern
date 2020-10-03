@@ -78,7 +78,7 @@ class LikesPage extends Component {
                     </ListItemText>
                     <ListItemSecondaryAction>
                       <Typography variant="caption" color="textSecondary">
-                        {Date(value.addedOn).substring(0, 10)}
+                        {value.addedOn.split(".")[0].split("T")[0]}
                       </Typography>
                     </ListItemSecondaryAction>
                   </ListItem>

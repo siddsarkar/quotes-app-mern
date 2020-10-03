@@ -7,7 +7,6 @@ import {
   Typography,
   Button,
   Grid,
-  Chip,
   FormControl,
   FormGroup,
   FormLabel,
@@ -15,7 +14,7 @@ import {
   Checkbox,
   FormControlLabel,
 } from "@material-ui/core";
-import { AccountCircle, RssFeedTwoTone } from "@material-ui/icons";
+import { AccountCircle } from "@material-ui/icons";
 
 class AddArticleScreen extends Component {
   state = {
@@ -41,24 +40,26 @@ class AddArticleScreen extends Component {
       Object.entries(this.state.tags).filter(([key, value]) => value === true)
     );
     const [first, ...rest] = Object.keys(filterSelected);
-    const article = {
-      author: this.state.author,
-      body: this.state.body,
-      title: this.state.title,
-      tags: [first, ...rest],
-    };
+    if ([first, ...rest].length >= 1 && [first, ...rest][0] !== undefined) {
+      const article = {
+        author: this.state.author,
+        body: this.state.body,
+        title: this.state.title,
+        tags: [first, ...rest],
+      };
 
-    this.props.addArticle(article, () => {
-      this.setState({
-        body: "",
-        title: "",
-        tags: {
-          love: false,
-          inspiration: false,
-          travel: false,
-        },
+      this.props.addArticle(article, () => {
+        this.setState({
+          body: "",
+          title: "",
+          tags: {
+            love: false,
+            inspiration: false,
+            travel: false,
+          },
+        });
       });
-    });
+    }
   };
 
   handleChange = (event) => {

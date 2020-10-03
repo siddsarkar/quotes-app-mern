@@ -17,15 +17,22 @@ class MyCard extends Component {
     const { item } = this.props;
     return (
       <Card elevation={5} style={{ marginBottom: 10, borderTopLeftRadius: 18 }}>
-        {item.tags.map((tag) => {
+        {item.tags.map((tag, i) => {
           return (
-            <Chip
-              color="primary"
-              variant="outlined"
-              label={"#" + tag}
-              size="small"
-              style={{ marginLeft: 5, marginTop: 5 }}
-            />
+            <Link
+              key={i}
+              style={{ textDecoration: "none" }}
+              to={"/tags/" + tag}
+            >
+              <Chip
+                color="primary"
+                variant="outlined"
+                label={"#" + tag}
+                size="small"
+                clickable
+                style={{ marginLeft: 5, marginTop: 5 }}
+              />
+            </Link>
           );
         })}
         <Link style={{ textDecoration: "none" }} to={"/article/" + item._id}>

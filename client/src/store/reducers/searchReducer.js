@@ -20,6 +20,13 @@ const reducer = (state = initialState, action) => {
         pages: action.pages,
         fetching: false,
       };
+    case actionTypes.GOT_TAGGED_ARTICLES:
+      return {
+        ...state,
+        articles: action.articles,
+        pages: action.pages,
+        fetching: false,
+      };
     default:
       return state;
   }

@@ -56,9 +56,10 @@ router.get("/search", (req, res) => {
 //* get by tags */
 router.get("/tags", (req, res) => {
   const [first, ...rest] = Object.values(req.query);
-  Article.find({ tags: [first, ...rest] }, (err, articles) => {
+  Article.find({ tags: req.query.t }, (err, articles) => {
     if (err) throw err;
-    res.json(articles);
+    let paginated = paginatedResponse(articles, req.query.p);
+    res.json(paginated);
   });
 });
 

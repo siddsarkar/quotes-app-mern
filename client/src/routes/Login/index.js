@@ -80,7 +80,7 @@ class Login extends Component {
           value={this.state.value}
           onChange={(e, v) => this.setState({ value: v })}
           indicatorColor="secondary"
-          textColor="seconsary"
+          textColor="secondary"
           centered
         >
           <Tab label="Login" />

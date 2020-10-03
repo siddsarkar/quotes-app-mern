@@ -44,7 +44,7 @@ function TabPanel(props) {
     >
       {value === index && (
         <Container maxWidth="md" style={{ padding: 10 }}>
-          {children}
+          {children ? children : null}
         </Container>
       )}
     </div>

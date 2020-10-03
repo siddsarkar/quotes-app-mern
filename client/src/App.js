@@ -13,10 +13,12 @@ import getArticleAuthor from "./routes/AuthorArticles";
 import LikesPage from "./routes/Likes";
 import SearchPage from "./routes/Search";
 
+import TagsScreen from "./routes/TagsScreen";
+
 function App(props) {
   return (
     <Router>
-      <AppBar position="sticky">
+      <AppBar position="relative" style={{ zIndex: 9999 }}>
         <Toolbar variant="dense">
           <Link
             style={{
@@ -97,6 +99,7 @@ function App(props) {
           component={getArticleAuthor}
         />
         <Route path="/search" component={SearchPage} />
+        <Route path="/tags/:tag" exact component={TagsScreen} />
         <Route path="/likes/:id" exact component={LikesPage} />
         <Route path="/article/:id" exact component={SingleArticle} />
         <Route path="/addarticle" component={AddArticleScreen} />
