@@ -23,7 +23,8 @@ mongoose.connect(
     useUnifiedTopology: true,
     useCreateIndex: true,
   },
-  (err) => (err ? console.log(err) : console.log("MongoDB Connected"))
+  (err) =>
+    err ? console.log("MongoDB Error:", err) : console.log("MongoDB Connected")
 );
 
 const app = express();
@@ -50,15 +51,17 @@ app.use("/api/articles", articles);
 app.use("/api/users", users);
 app.use("/api/comments", comments);
 
-//* production/deployment
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client/build/index.html"));
-});
+if (process.env.NODE_ENV === "development") {
+  app.get("/", (req, res) => {
+    res.json({ message: "welcome dev environmment" });
+  });
+}
 
-//? development/testing
-// app.get("/", (req, res) => {
-//   res.json({ message: "welcome" });
-// });
+if (process.env.NODE_ENV === "production") {
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "client/build/index.html"));
+  });
+}
 
 app.listen(PORT, () => {
   console.log(`Server started at ${PORT}`);
