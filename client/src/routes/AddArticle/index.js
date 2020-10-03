@@ -29,6 +29,7 @@ class AddArticleScreen extends Component {
       author: this.state.author,
       body: this.state.body,
       title: this.state.title,
+      // tags: ["love", "inspiration"],
     };
     this.props.addArticle(article, () => {
       this.setState({

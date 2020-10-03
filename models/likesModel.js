@@ -2,6 +2,14 @@ const mongoose = require("mongoose");
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
 const LikeSchema = mongoose.Schema({
+  author: {
+    type: String,
+    required: true,
+  },
+  postTitle: {
+    type: String,
+    required: true,
+  },
   authorId: {
     type: ObjectId,
     required: true,

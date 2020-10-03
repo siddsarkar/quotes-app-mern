@@ -14,8 +14,9 @@ router.post("/add", isAuthenticated, (req, res) => {
   const author = req.body.author || "";
   const body = req.body.body || "";
   const authorId = req.authorId;
+  const tags = req.body.tags;
 
-  const articleBody = { title, author, body, authorId };
+  const articleBody = { title, tags, author, body, authorId };
 
   const newArticle = new Article({
     ...articleBody,
@@ -49,6 +50,15 @@ router.get("/search", (req, res) => {
     });
     let paginated = paginatedResponse(matches, req.query.p);
     res.json(paginated);
+  });
+});
+
+//* get by tags */
+router.get("/tags", (req, res) => {
+  const [first, ...rest] = Object.values(req.query);
+  Article.find({ tags: [first, ...rest] }, (err, articles) => {
+    if (err) throw err;
+    res.json(articles);
   });
 });
 

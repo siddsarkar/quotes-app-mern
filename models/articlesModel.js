@@ -6,6 +6,10 @@ const ArticleSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  tags: {
+    type: Array,
+    default: ["uncategorised"],
+  },
   author: {
     type: String,
     required: true,

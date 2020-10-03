@@ -40,20 +40,17 @@ class SingleArticle extends Component {
     addCommentLoading: false,
   };
   getLikersCallbackUpdate = () => {
-    return;
+    this.setState({ isLiked: !this.state.isLiked, likesLoading: false });
   };
 
   likeCallback = () => {
     this.mounted &&
-      this.setState(
-        this.setState({ isLiked: !this.state.isLiked, likesLoading: false }),
-        () => {
-          this.props.getLikers(
-            this.props.match.params.id,
-            this.getLikersCallbackUpdate
-          );
-        }
-      );
+      this.setState(this.setState({ likesLoading: true }), () => {
+        this.props.getLikers(
+          this.props.match.params.id,
+          this.getLikersCallbackUpdate
+        );
+      });
   };
   getLikersCallback = () => {
     for (let i = 0; i < this.props.likersNames.length; i++) {
