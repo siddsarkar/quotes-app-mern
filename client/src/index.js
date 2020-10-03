@@ -13,11 +13,13 @@ import { Provider } from "react-redux";
 import thunk from "redux-thunk";
 import { createStore, applyMiddleware, combineReducers } from "redux";
 
-import commentsReducer from "./store/reducers/commentsReducer";
-import articlesReducer from "./store/reducers/articlesReducer";
-import usersReducer from "./store/reducers/usersReducer";
-import likesReducer from "./store/reducers/likesReducer";
-import searchReducer from "./store/reducers/searchReducer";
+import {
+  likesReducer,
+  commentsReducer,
+  articlesReducer,
+  usersReducer,
+  searchReducer,
+} from "./store/reducers";
 
 const rootReducer = combineReducers({
   articles: articlesReducer,
@@ -42,4 +44,4 @@ ReactDOM.render(
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.register();

@@ -5,6 +5,7 @@ const initialState = {
   myArticles: [],
   article: {},
   pages: 0,
+  tags: ["love", "inspiration", "travel"],
 };
 
 const reducer = (state = initialState, action) => {

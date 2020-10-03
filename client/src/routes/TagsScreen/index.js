@@ -1,38 +1,15 @@
-import {
-  AppBar,
-  CardActions,
-  Chip,
-  Container,
-  useScrollTrigger,
-} from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Link } from "react-router-dom";
 import MyCard from "../../components/Card";
 import Loader from "../../components/Loader";
+import TagsBar from "../../components/TagsBar";
 import { getArticleByTags } from "../../store/actions/searchActions";
-
-function ElevationScroll(props) {
-  const { children, window } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 0,
-    target: window ? window() : undefined,
-  });
-
-  return React.cloneElement(children, {
-    elevation: trigger ? 4 : 0,
-  });
-}
 
 class TagsScreen extends Component {
   mounted = false;
   state = {
     loading: true,
-    tags: ["love", "inspiration", "travel"],
   };
   callback = () => {
     this.mounted && this.setState({ loading: false });
@@ -52,44 +29,19 @@ class TagsScreen extends Component {
     this.mounted = false;
   }
 
+  handleClick = (tag) => {
+    this.setState(
+      this.setState({ loading: true }),
+      this.props.getTags(tag, 1, this.callback)
+    );
+  };
   render() {
-    const { articles, getTags } = this.props;
+    const { articles, tags } = this.props;
     const { loading } = this.state;
+    const paramTag = this.props.match.params.tag;
     return (
       <>
-        <ElevationScroll {...this.props}>
-          <AppBar
-            position="sticky"
-            // elevation={0}
-            style={{ backgroundColor: "white" }}
-          >
-            <CardActions>
-              {this.state.tags.map((tag, i) => (
-                <Link
-                  key={i}
-                  style={{ textDecoration: "none" }}
-                  to={"/tags/" + tag}
-                >
-                  <Chip
-                    color={
-                      this.props.match.params.tag === tag
-                        ? "primary"
-                        : "default"
-                    }
-                    clickable
-                    onClick={() =>
-                      this.setState(
-                        this.setState({ loading: true }),
-                        getTags(tag, 1, this.callback)
-                      )
-                    }
-                    label={"#" + tag}
-                  />
-                </Link>
-              ))}
-            </CardActions>
-          </AppBar>
-        </ElevationScroll>
+        <TagsBar tags={tags} color={paramTag} onClick={this.handleClick} />
         <Container maxWidth="md" style={{ padding: 10 }}>
           {loading ? (
             <Loader />
@@ -106,6 +58,7 @@ class TagsScreen extends Component {
 
 const mapStateToProps = (state) => ({
   articles: state.search.articles,
+  tags: state.articles.tags,
 });
 
 const mapDispatchToProps = (dispatch) => ({

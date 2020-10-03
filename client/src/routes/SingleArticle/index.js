@@ -57,16 +57,14 @@ class SingleArticle extends Component {
     });
   };
   getLikersCallback = () => {
-    let i = 0;
-    if (this.props.likersNames.length) {
-      while (i < this.props.likersNames.length) {
-        console.log("kk");
+    if (this.props.likersNames.length > 0) {
+      for (let i = 0; i < this.props.likersNames.length; i++) {
         if (this.props.likersNames[i].authorId === this.props.userId) {
           this.mounted && this.setState({ isLiked: true, likesLoading: false });
           break;
         }
-        i++;
       }
+      this.mounted && this.setState({ likesLoading: false });
     } else {
       this.mounted && this.setState({ likesLoading: false });
     }

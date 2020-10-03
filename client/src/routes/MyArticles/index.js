@@ -30,26 +30,9 @@ import {
 } from "../../store/actions/commentActions";
 import { getMyLikes } from "../../store/actions/likesActions";
 import Loader from "../../components/Loader";
+import ElevationScroll from "../../utils/ElevationScroll";
+import TabPanel from "../../utils/TabPanel";
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Container maxWidth="md" style={{ padding: 10 }}>
-          {children ? children : null}
-        </Container>
-      )}
-    </div>
-  );
-}
 class MyArticles extends Component {
   mounted = false;
   state = {
@@ -80,19 +63,21 @@ class MyArticles extends Component {
     const { likes } = this.props;
     return this.props.auth ? (
       <>
-        <AppBar position="sticky" style={{ backgroundColor: "white" }}>
-          <Tabs
-            value={this.state.value}
-            onChange={(e, v) => this.setState({ value: v })}
-            indicatorColor="secondary"
-            textColor="secondary"
-            centered
-          >
-            <Tab label="Posts" />
-            <Tab label="Comments" />
-            <Tab label="Likes" />
-          </Tabs>
-        </AppBar>
+        <ElevationScroll {...this.props}>
+          <AppBar position="sticky" style={{ backgroundColor: "white" }}>
+            <Tabs
+              value={this.state.value}
+              onChange={(e, v) => this.setState({ value: v })}
+              indicatorColor="secondary"
+              textColor="secondary"
+              centered
+            >
+              <Tab label="Posts" />
+              <Tab label="Comments" />
+              <Tab label="Likes" />
+            </Tabs>
+          </AppBar>
+        </ElevationScroll>
         <TabPanel value={this.state.value} index={0}>
           {/* posts */}
           {this.state.postLoading ? (

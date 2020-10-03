@@ -5,30 +5,9 @@ import {
   userLogoutRequest,
   userSignUpRequest,
 } from "../../store/actions/usersActions";
-import {
-  Container,
-  TextField,
-  Button,
-  Typography,
-  Tabs,
-  Tab,
-} from "@material-ui/core";
+import { TextField, Button, Typography, Tabs, Tab } from "@material-ui/core";
+import TabPanel from "../../utils/TabPanel";
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`full-width-tabpanel-${index}`}
-      aria-labelledby={`full-width-tab-${index}`}
-      {...other}
-    >
-      {value === index && <Container>{children}</Container>}
-    </div>
-  );
-}
 class Login extends Component {
   mounted = false;
   state = {

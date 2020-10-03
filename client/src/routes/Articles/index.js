@@ -5,33 +5,11 @@ import {
   getArticleByAuthor,
 } from "../../store/actions/articleActions";
 import { getCommentsForArticle } from "../../store/actions/commentActions";
-import {
-  AppBar,
-  CardActions,
-  Chip,
-  Container,
-  useScrollTrigger,
-} from "@material-ui/core";
+import { Container } from "@material-ui/core";
 import MyCard from "../../components/Card";
 import Loader from "../../components/Loader";
 import Paginate from "../../components/Paginate/Paginate";
-import { Link } from "react-router-dom";
-
-function ElevationScroll(props) {
-  const { children, window } = props;
-  // Note that you normally won't need to set the window ref as useScrollTrigger
-  // will default to window.
-  // This is only being set here because the demo is in an iframe.
-  const trigger = useScrollTrigger({
-    disableHysteresis: true,
-    threshold: 0,
-    target: window ? window() : undefined,
-  });
-
-  return React.cloneElement(children, {
-    elevation: trigger ? 4 : 0,
-  });
-}
+import TagsBar from "../../components/TagsBar";
 
 class Articles extends Component {
   mounted = false;
@@ -39,7 +17,6 @@ class Articles extends Component {
     isLoading: true,
     page: 1,
     pageCount: 0,
-    tags: ["love", "inspiration", "travel"],
   };
 
   cb = () => {
@@ -59,28 +36,13 @@ class Articles extends Component {
   }
 
   render() {
-    const { articles } = this.props;
+    const { articles, tags } = this.props;
     const { page, pageCount } = this.state;
     return this.state.isLoading ? (
       <Loader />
     ) : (
       <>
-        {" "}
-        <ElevationScroll {...this.props}>
-          <AppBar position="sticky" style={{ backgroundColor: "white" }}>
-            <CardActions>
-              {this.state.tags.map((tag, i) => (
-                <Link
-                  key={i}
-                  style={{ textDecoration: "none" }}
-                  to={"/tags/" + tag}
-                >
-                  <Chip clickable label={"#" + tag} />
-                </Link>
-              ))}
-            </CardActions>
-          </AppBar>
-        </ElevationScroll>
+        <TagsBar tags={tags} />
         <Container maxWidth="md" style={{ padding: 10 }}>
           {articles.map((item, index) => {
             return <MyCard key={item._id} item={item} />;
@@ -106,6 +68,7 @@ class Articles extends Component {
 
 const mapStateToProps = (state) => {
   return {
+    tags: state.articles.tags,
     pageCount: state.articles.pages,
     articles: state.articles.articles,
     comments: state.comments.comments,
