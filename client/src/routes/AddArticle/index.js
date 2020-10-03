@@ -7,14 +7,26 @@ import {
   Typography,
   Button,
   Grid,
+  Chip,
+  FormControl,
+  FormGroup,
+  FormLabel,
+  FormHelperText,
+  Checkbox,
+  FormControlLabel,
 } from "@material-ui/core";
-import { AccountCircle } from "@material-ui/icons";
+import { AccountCircle, RssFeedTwoTone } from "@material-ui/icons";
 
 class AddArticleScreen extends Component {
   state = {
     author: "",
     body: "",
     title: "",
+    tags: {
+      love: false,
+      inspiration: false,
+      travel: false,
+    },
   };
 
   getAuthorname = () => {
@@ -25,20 +37,41 @@ class AddArticleScreen extends Component {
     this.getAuthorname();
   }
   addArticle = () => {
+    const filterSelected = Object.fromEntries(
+      Object.entries(this.state.tags).filter(([key, value]) => value === true)
+    );
+    const [first, ...rest] = Object.keys(filterSelected);
     const article = {
       author: this.state.author,
       body: this.state.body,
       title: this.state.title,
-      // tags: ["love", "inspiration"],
+      tags: [first, ...rest],
     };
+
     this.props.addArticle(article, () => {
       this.setState({
         body: "",
         title: "",
+        tags: {
+          love: false,
+          inspiration: false,
+          travel: false,
+        },
       });
     });
   };
+
+  handleChange = (event) => {
+    const name = event.target.name;
+    const checked = event.target.checked;
+    this.setState((state) => ({
+      tags: { ...state.tags, [name]: checked },
+    }));
+  };
+
   render() {
+    const { love, inspiration, travel } = this.state.tags;
+    const error = [love, inspiration, travel].filter((v) => v).length < 1;
     return (
       <Container style={{ padding: 20 }}>
         {this.props.auth ? null : (
@@ -91,6 +124,46 @@ class AddArticleScreen extends Component {
             variant="outlined"
             disabled={this.props.auth ? false : true}
           />
+          <br />
+          <br />
+
+          <FormControl required error={error} component="fieldset">
+            <FormLabel component="legend">Tags</FormLabel>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={love}
+                    onChange={this.handleChange}
+                    name="love"
+                  />
+                }
+                label="Love"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={inspiration}
+                    onChange={this.handleChange}
+                    name="inspiration"
+                  />
+                }
+                label="Inspiration"
+              />
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={travel}
+                    onChange={this.handleChange}
+                    name="travel"
+                  />
+                }
+                label="Travel"
+              />
+            </FormGroup>
+            <FormHelperText>Pick at least one tag!</FormHelperText>
+          </FormControl>
+
           <br />
           <div style={{ padding: 20, paddingLeft: 0 }}>
             <Button

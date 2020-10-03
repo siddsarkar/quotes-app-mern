@@ -65,7 +65,7 @@ class LikesPage extends Component {
                 <Link
                   key={value.authorId}
                   style={{ textDecoration: "none" }}
-                  to={"/article/" + value.authorId + "/articles"}
+                  to={"/article/" + value.author + "/articles"}
                 >
                   <ListItem button>
                     <ListItemAvatar>
@@ -73,7 +73,7 @@ class LikesPage extends Component {
                     </ListItemAvatar>
                     <ListItemText>
                       <Typography color="textPrimary">
-                        {value.authorId}
+                        {value.author}
                       </Typography>
                     </ListItemText>
                     <ListItemSecondaryAction>

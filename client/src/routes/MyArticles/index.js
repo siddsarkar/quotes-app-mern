@@ -218,7 +218,7 @@ class MyArticles extends Component {
                       </ListItemAvatar>
                       <ListItemText>
                         <Typography color="textPrimary">
-                          {value.articleId}
+                          {value.postTitle}
                         </Typography>
                       </ListItemText>
                       <ListItemSecondaryAction>

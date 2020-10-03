@@ -7,6 +7,7 @@ import {
   Button,
   CardActions,
   CardContent,
+  Chip,
 } from "@material-ui/core";
 import { AccountCircle, Favorite, Comment } from "@material-ui/icons";
 import { likeArticle } from "../../store/actions/likesActions";
@@ -15,10 +16,21 @@ class MyCard extends Component {
   render() {
     const { item } = this.props;
     return (
-      <Card elevation={5} style={{ marginBottom: 10 }}>
+      <Card elevation={5} style={{ marginBottom: 10, borderTopLeftRadius: 18 }}>
+        {item.tags.map((tag) => {
+          return (
+            <Chip
+              color="primary"
+              variant="outlined"
+              label={"#" + tag}
+              size="small"
+              style={{ marginLeft: 5, marginTop: 5 }}
+            />
+          );
+        })}
         <Link style={{ textDecoration: "none" }} to={"/article/" + item._id}>
-          <CardContent style={{ paddingBottom: 0 }}>
-            <Typography variant="h5" color="textPrimary" gutterBottom>
+          <CardContent style={{ paddingBottom: 0, paddingTop: 0 }}>
+            <Typography variant="h4" color="textPrimary" gutterBottom>
               {item.title}
             </Typography>
             <Typography variant="body2" color="textPrimary">
