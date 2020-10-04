@@ -1,120 +1,51 @@
-import React from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
-import { GitHub, Search } from "@material-ui/icons";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-import AddArticleScreen from "./routes/AddArticle";
-import Articles from "./routes/Articles";
-import Login from "./routes/Login";
-import MyArticles from "./routes/MyArticles";
-import SingleArticle from "./routes/SingleArticle";
-import getArticleAuthor from "./routes/AuthorArticles";
-import LikesPage from "./routes/Likes";
-import SearchPage from "./routes/Search";
+//components
+import { MainAppBar } from "./components";
 
-import TagsScreen from "./routes/TagsScreen";
+//pages or screens
+import {
+  ArticlesPage,
+  AddArticlePage,
+  MyArticlesPage,
+  LoginPage,
+  LikesPage,
+  TagsPage,
+  AuthorArticlesPage,
+  SearchPage,
+  SingleArticlePage,
+} from "./routes";
 
-function App(props) {
-  return (
-    <Router>
-      <AppBar position="relative" style={{ zIndex: 9999 }}>
-        <Toolbar variant="dense">
-          <Link
-            style={{
-              textDecoration: "none",
-              marginRight: 5,
-            }}
-            to="/"
-          >
-            <Typography variant="inherit" style={{ color: "white" }}>
-              QUOTES
-            </Typography>
-          </Link>
-          <Link
-            style={{
-              textDecoration: "none",
-              marginRight: 5,
-            }}
-            to="/addarticle"
-          >
-            <Typography variant="inherit" style={{ color: "white" }}>
-              WRITE
-            </Typography>
-          </Link>
-          <Link
-            style={{
-              textDecoration: "none",
-            }}
-            to="/myarticles"
-          >
-            <Typography variant="inherit" style={{ color: "white" }}>
-              ACTIVITY
-            </Typography>
-          </Link>
-          <Link
-            style={{
-              textDecoration: "none",
-              position: "absolute",
-              right: 20,
-            }}
-            to="/login"
-          >
-            <Typography style={{ color: "white" }} variant="inherit">
-              {props.isLoggedin ? "LOGOUT" : "LOGIN"}
-            </Typography>
-          </Link>
-          <IconButton
-            href="https://github.com/siddsarkar/quotes-app-mern"
-            aria-label="Github repo"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            color="inherit"
-          >
-            <GitHub />
-          </IconButton>
-          <Link
-            style={{
-              textDecoration: "none",
-              color: "inherit",
-            }}
-            to="/search"
-          >
-            <IconButton
-              color="inherit"
-              aria-label="search"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-            >
-              <Search />
-            </IconButton>
-          </Link>
-        </Toolbar>
-      </AppBar>
-
-      <Switch>
-        <Route
-          path="/article/:authorId/articles"
-          exact
-          component={getArticleAuthor}
-        />
-        <Route path="/search" component={SearchPage} />
-        <Route path="/tags/:tag" exact component={TagsScreen} />
-        <Route path="/likes/:id" exact component={LikesPage} />
-        <Route path="/article/:id" exact component={SingleArticle} />
-        <Route path="/addarticle" component={AddArticleScreen} />
-        <Route path="/myarticles" component={MyArticles} />
-        <Route path="/login" component={Login} />
-        <Route path="/" exact component={Articles} />
-      </Switch>
-    </Router>
-  );
+class App extends Component {
+  render() {
+    const { isLoggedin } = this.props;
+    return (
+      <Router>
+        <MainAppBar isLoggedin={isLoggedin} />
+        <Switch>
+          <Route
+            path="/article/:authorId/articles"
+            exact
+            component={AuthorArticlesPage}
+          />
+          <Route path="/tags/:tag" exact component={TagsPage} />
+          <Route path="/likes/:id" exact component={LikesPage} />
+          <Route path="/article/:id" exact component={SingleArticlePage} />
+          <Route path="/search" component={SearchPage} />
+          <Route path="/addarticle" component={AddArticlePage} />
+          <Route path="/myarticles" component={MyArticlesPage} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/" exact component={ArticlesPage} />
+        </Switch>
+      </Router>
+    );
+  }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    isLoggedin: state.users.isAuthenticated,
-  };
-};
+const mapStateToProps = (state) => ({
+  isLoggedin: state.users.isAuthenticated,
+});
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps)(src);

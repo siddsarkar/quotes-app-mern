@@ -1,5 +1,39 @@
 import * as actionTypes from "./actionTypes";
 
+//? Helpers
+
+const postOptions = (arg) => ({
+  method: "POST",
+  body: JSON.stringify(arg),
+  headers: {
+    Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+    "Content-Type": "application/json",
+    Accept: "application/json",
+  },
+});
+
+//* POST
+
+export const addArticle = (article, callback) => {
+  return (dispatch) => {
+    return fetch("/api/articles/add", postOptions(article))
+      .then((res) => res.json())
+      .then((res) => {
+        alert(res.message);
+        callback();
+      });
+  };
+};
+export const updateArticle = (articleId, updatedArticle) => {
+  return (dispatch) => {
+    return fetch("/api/articles/edit/" + articleId, postOptions(updatedArticle))
+      .then((res) => res.json())
+      .then((res) => alert(res.success));
+  };
+};
+
+//* GET
+
 export const getAllArticles = (callback, p) => {
   return (dispatch) => {
     fetch("/api/articles?p=" + p, {
@@ -63,39 +97,7 @@ export const getMyArticles = (cb) => {
   };
 };
 
-export const addArticle = (article, callback) => {
-  return (dispatch) => {
-    return fetch("/api/articles/add", {
-      method: "POST",
-      body: JSON.stringify(article),
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        alert(res.message);
-        callback();
-      });
-  };
-};
-export const updateArticle = (articleId, updatedArticle) => {
-  return (dispatch) => {
-    return fetch("/api/articles/edit/" + articleId, {
-      method: "POST",
-      body: JSON.stringify(updatedArticle),
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => alert(res.success));
-  };
-};
+//* DELETE
 
 export const deleteArticle = (articleId, callback) => {
   return (dispatch) => {

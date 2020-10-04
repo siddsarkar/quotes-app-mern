@@ -10,7 +10,7 @@ import Loader from "../../components/Loader";
 
 import "../../index.css";
 
-class SearchPage extends Component {
+class Search extends Component {
   state = {
     query: "",
     page: 1,
@@ -86,4 +86,4 @@ const mapDispatchToProps = (dispatch) => ({
   search: (query, page, cb) => dispatch(getArticleBySearch(query, page, cb)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchPage);
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

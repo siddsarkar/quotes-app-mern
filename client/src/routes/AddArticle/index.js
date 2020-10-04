@@ -16,7 +16,7 @@ import {
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 
-class AddArticleScreen extends Component {
+class AddArticle extends Component {
   state = {
     author: "",
     body: "",
@@ -202,4 +202,4 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddArticleScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(AddArticle);

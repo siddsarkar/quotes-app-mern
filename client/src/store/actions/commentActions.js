@@ -1,6 +1,7 @@
 import * as actionTypes from "./actionTypes";
 
-// const getAllComments
+//* GET
+
 export const getCommentsForArticle = (articleId, cb) => {
   return (dispatch) => {
     fetch("/api/comments/get/" + articleId, {
@@ -13,25 +14,6 @@ export const getCommentsForArticle = (articleId, cb) => {
           comments: res,
         });
         cb();
-      });
-  };
-};
-
-export const addComment = (articleId, body, callback) => {
-  return (dispatch) => {
-    fetch("/api/comments/add/" + articleId, {
-      method: "POST",
-      headers: {
-        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify(body),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        // alert(res.message);
-        callback();
       });
   };
 };
@@ -56,6 +38,29 @@ export const getMyComments = (cb) => {
       });
   };
 };
+
+//* POST
+
+export const addComment = (articleId, body, callback) => {
+  return (dispatch) => {
+    fetch("/api/comments/add/" + articleId, {
+      method: "POST",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("jwtToken"),
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        // alert(res.message);
+        callback();
+      });
+  };
+};
+
+//* DELETE
 
 export const deleteComment = (commentId, callback) => {
   return (dispatch) => {

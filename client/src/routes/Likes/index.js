@@ -14,7 +14,7 @@ import {
 import { AccountCircle, Favorite } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
-class LikesPage extends Component {
+class Likes extends Component {
   mounted = false;
   state = {
     loading: true,
@@ -102,4 +102,4 @@ const mapDispatchToprops = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchToprops)(LikesPage);
+export default connect(mapStateToProps, mapDispatchToprops)(Likes);

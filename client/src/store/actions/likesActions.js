@@ -1,5 +1,7 @@
 import * as actionTypes from "./actionTypes";
 
+//* POST
+
 export const likeArticle = (articleId, cb) => {
   return (dispatch) => {
     fetch("/api/likes/like/" + articleId, {
@@ -17,6 +19,8 @@ export const likeArticle = (articleId, cb) => {
       });
   };
 };
+
+//* GET
 
 export const getLikesForArticle = (articleId, cb) => {
   return (dispatch) => {
