@@ -1,6 +1,8 @@
+//base
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Schema.Types.ObjectId;
 
+//schema
 const LikeSchema = mongoose.Schema({
   author: {
     type: String,

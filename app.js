@@ -1,20 +1,34 @@
+/**
+ * * Copyright ©2020 Siddhartha Sarkar. All Rights Reserved
+ * ? This source code is licensed under the MIT license found in the
+ * ? LICENSE file in the root directory of this source tree.
+ *
+ * ? BASE APP
+ * TODO-1 : Image upload
+ * TODO-2 : Publish modules to npm
+ */
+
+//base
 const express = require("express");
+const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
+
+//load env. variables
 require("dotenv").config();
 
-//routes import
-const articles = require("./routes/articlesRoute.js");
-const users = require("./routes/usersRoute.js");
-const comments = require("./routes/commentsRoute");
-const likes = require("./routes/likesRoute");
+//routes
+const { articles, likes, users, comments } = require("./routes");
 
-const config = require("./config.js");
-const { error } = require("console");
+//env. vars.
+const config = require("./config");
 
+//extract env. vars
 const MONGODB_URI = config.mongodburi;
 const PORT = process.env.PORT || 5000;
+
+//connect to mongoDB
 mongoose.connect(
   MONGODB_URI,
   {
@@ -27,9 +41,7 @@ mongoose.connect(
     err ? console.log("MongoDB Error:", err) : console.log("MongoDB Connected")
 );
 
-const app = express();
-
-// Body Parser Middleware
+// Middlewares
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "client/build")));
@@ -46,17 +58,20 @@ app.use((req, res, next) => {
   next();
 });
 
+// express routes
 app.use("/api/likes", likes);
 app.use("/api/articles", articles);
 app.use("/api/users", users);
 app.use("/api/comments", comments);
 
+//for development
 if (process.env.NODE_ENV === "development") {
   app.get("/", (req, res) => {
     res.json({ message: "welcome dev environmment" });
   });
 }
 
+//for production
 if (process.env.NODE_ENV === "production") {
   app.get("*", (req, res) => {
     res.sendFile(path.join(__dirname, "client/build/index.html"));
@@ -64,5 +79,5 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.listen(PORT, () => {
-  console.log(`Server started at ${PORT}`);
+  console.log("Server started at %d", PORT);
 });

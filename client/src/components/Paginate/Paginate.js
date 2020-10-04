@@ -1,5 +1,5 @@
 import React from "react";
-import Pagination from "@material-ui/lab/Pagination";
+import { Pagination } from "@material-ui/lab";
 import { Typography } from "@material-ui/core";
 
 export default function Paginate(props) {
@@ -15,8 +15,6 @@ export default function Paginate(props) {
     >
       {props.onlyFooter === true ? null : (
         <Pagination
-          //hideNextButton
-          //hidePrevButton
           count={props.count}
           page={props.page}
           onChange={props.change}

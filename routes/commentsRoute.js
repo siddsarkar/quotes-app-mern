@@ -1,29 +1,31 @@
-const express = require("express");
+/**
+ * ?RULES:
+ * *PROTECTED ROUTES REQUIRES USERS TO BE AUTHENTICATED
+ */
 
+//base
+const express = require("express");
+const router = express.Router();
 const mongoose = require("mongoose");
 const ObjectId = mongoose.Types.ObjectId;
-const Comment = require("../models/commentsModel");
-const { json } = require("body-parser");
-const router = express.Router();
 
-const isAuthenticated = require("../utils/auth");
-const Article = require("../models/articlesModel");
+//models
+const { Article, Comment } = require("../models");
 
-router.get("/", (req, res) => {
-  res.json({ message: "wlcome to comments" });
-});
+//utils
+const { isAuthenticated } = require("../utils");
 
+//add a comment
 router.post("/add/:articleId", isAuthenticated, (req, res) => {
-  const articleId = req.params.articleId;
   const comment = req.body.comment;
   const author = req.body.author;
   const authorId = req.authorId;
-  const commentBody = { articleId, comment, author, authorId };
-
+  const articleId = req.params.articleId;
   const newComment = new Comment({
-    ...commentBody,
-    articleId: new ObjectId(articleId),
+    comment,
+    author,
     authorId: new ObjectId(authorId),
+    articleId: new ObjectId(articleId),
   });
 
   newComment.save((err) => {
@@ -46,6 +48,7 @@ router.post("/add/:articleId", isAuthenticated, (req, res) => {
   });
 });
 
+//get comments for a article
 router.get("/get/:articleId", (req, res) => {
   const articleId = req.params.articleId;
   Comment.find({ articleId }, (err, comments) => {
@@ -56,6 +59,7 @@ router.get("/get/:articleId", (req, res) => {
   });
 });
 
+//PROTECTED - Delete a comment by comment id
 router.delete("/delete/:commentId", isAuthenticated, (req, res) => {
   Comment.findById(req.params.commentId, (err, comment) => {
     if (err) return err;
@@ -78,6 +82,7 @@ router.delete("/delete/:commentId", isAuthenticated, (req, res) => {
   });
 });
 
+//PROTECTED - get your comments
 router.get("/mycomments", isAuthenticated, (req, res) => {
   const authorId = req.authorId;
   Comment.find({ authorId }, (err, mycomments) => {

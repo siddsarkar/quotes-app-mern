@@ -1,7 +1,9 @@
-import { AppBar, CardActions, Chip } from "@material-ui/core";
-import { TrendingUp } from "@material-ui/icons";
 import React from "react";
 import { Link } from "react-router-dom";
+import { AppBar, CardActions, Chip } from "@material-ui/core";
+import { TrendingUp } from "@material-ui/icons";
+
+//custom - utils
 import ElevationScroll from "../../utils/ElevationScroll";
 
 export default function TagsBar(props) {
