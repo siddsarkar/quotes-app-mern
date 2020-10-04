@@ -1,25 +1,21 @@
 import jwt from "jsonwebtoken";
 import * as actionTypes from "./actionTypes";
 
-const options = (data) => {
-  return {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    method: "post",
-    body: JSON.stringify(data),
-  };
-};
+//? helper
+
+const options = (data) => ({
+  headers: {
+    "Content-Type": "application/json",
+  },
+  method: "post",
+  body: JSON.stringify(data),
+});
+
+//* POST
 
 export const userSignUpRequest = (data, cb) => {
   return (dispatch) => {
-    return fetch("/api/users/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    })
+    return fetch("/api/users/signup", options(data))
       .then((res) => res.json())
       .then((res) => {
         alert(res.message + "! Please Click Login");
@@ -56,6 +52,8 @@ export const userLoginRequest = (userLoginDetails, callback) => {
       });
   };
 };
+
+//* Delete token from local storage
 
 export const userLogoutRequest = () => (dispatch) => {
   localStorage.removeItem("jwtToken");

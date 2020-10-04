@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   Typography,
@@ -16,10 +17,9 @@ import {
   Avatar,
   Chip,
 } from "@material-ui/core";
-import { connect } from "react-redux";
-import Loader from "../../components/Loader";
 import { AccountCircle, Favorite } from "@material-ui/icons";
 
+//actions
 import {
   getLikesForArticle,
   likeArticle,
@@ -29,6 +29,9 @@ import {
   addComment,
 } from "../../store/actions/commentActions";
 import { getSingleArticle } from "../../store/actions/articleActions";
+
+//components
+import Loader from "../../components/Loader";
 
 class SingleArticle extends Component {
   mounted = false;
@@ -41,7 +44,11 @@ class SingleArticle extends Component {
     addCommentLoading: false,
   };
   getLikersCallbackUpdate = () => {
-    this.setState({ isLiked: !this.state.isLiked, likesLoading: false });
+    this.mounted &&
+      this.setState(({ isLiked }) => ({
+        isLiked: !isLiked,
+        likesLoading: false,
+      }));
   };
 
   likeCallback = () => {
@@ -61,10 +68,10 @@ class SingleArticle extends Component {
       for (let i = 0; i < this.props.likersNames.length; i++) {
         if (this.props.likersNames[i].authorId === this.props.userId) {
           this.mounted && this.setState({ isLiked: true, likesLoading: false });
-          break;
+          return;
         }
       }
-      this.mounted && this.setState({ likesLoading: false });
+      this.mounted && this.setState({ isLiked: false, likesLoading: false });
     } else {
       this.mounted && this.setState({ likesLoading: false });
     }
@@ -128,8 +135,16 @@ class SingleArticle extends Component {
   };
 
   render() {
-    const { article } = this.props;
-    return this.state.pageLoaded ? (
+    const { article, auth, likersNames, comments } = this.props;
+    const {
+      addCommentLoading,
+      comment,
+      commentsLoading,
+      isLiked,
+      likesLoading,
+      pageLoaded,
+    } = this.state;
+    return pageLoaded ? (
       <>
         <CardContent>
           {article.tags.map((tag, i) => {
@@ -142,7 +157,6 @@ class SingleArticle extends Component {
                 <Chip
                   clickable
                   color="primary"
-                  // variant="outlined"
                   label={"#" + tag}
                   size="small"
                   style={{ marginLeft: 5 }}
@@ -171,29 +185,29 @@ class SingleArticle extends Component {
             </Button>
           </Link>
           <div style={{ flexGrow: 1 }} />
-          {this.props.auth ? (
+          {auth ? (
             <Button
-              disabled={this.state.likesLoading}
+              disabled={likesLoading}
               onClick={this.handleLike}
               style={{ position: "relative" }}
             >
-              <Typography>{this.state.isLiked ? "unlike" : "like"}</Typography>
+              <Typography>{isLiked ? "unlike" : "like"}</Typography>
             </Button>
           ) : null}
           <Link style={{ textDecoration: "none" }} to={"/likes/" + article._id}>
             <Button>
               <Favorite style={{ marginRight: 5 }} />
-              <Typography>{this.props.likersNames.length}</Typography>
+              <Typography>{likersNames.length}</Typography>
             </Button>
           </Link>
         </CardActions>
         <Divider variant="middle" />
         <CardContent style={{ marginBottom: 0, paddingBottom: 0 }}>
           <Typography variant="h5">Comments</Typography>
-          {this.state.commentsLoading && <LinearProgress />}
+          {commentsLoading && <LinearProgress />}
         </CardContent>
-        {this.state.commentsLoading ? null : this.props.comments.length ? (
-          this.props.comments.map((item) => {
+        {commentsLoading ? null : comments.length ? (
+          comments.map((item) => {
             return (
               <List key={item._id}>
                 <ListItem alignItems="flex-start">
@@ -234,13 +248,13 @@ class SingleArticle extends Component {
           </CardContent>
         )}
 
-        {this.props.auth ? (
+        {auth ? (
           <CardContent>
             <TextField
               type="text"
               onChange={(e) => this.setState({ comment: e.target.value })}
               fullWidth
-              value={this.state.comment}
+              value={comment}
               placeholder="Write your comment here"
               multiline
               // rows={2}
@@ -253,13 +267,13 @@ class SingleArticle extends Component {
                 borderTopRightRadius: 0,
                 position: "relative",
               }}
-              disabled={this.state.addCommentLoading}
-              onClick={() => this.state.comment && this.postComment()}
+              disabled={addCommentLoading}
+              onClick={this.postComment}
               color="primary"
               variant="contained"
             >
               Post Comment
-              {this.state.addCommentLoading && (
+              {addCommentLoading && (
                 <CircularProgress size={24} style={{ position: "absolute" }} />
               )}
             </Button>

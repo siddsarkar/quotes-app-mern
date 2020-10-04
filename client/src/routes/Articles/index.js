@@ -1,15 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { Container } from "@material-ui/core";
+
+//actions
 import {
   getAllArticles,
   getArticleByAuthor,
 } from "../../store/actions/articleActions";
 import { getCommentsForArticle } from "../../store/actions/commentActions";
-import { Container } from "@material-ui/core";
-import MyCard from "../../components/Card";
-import Loader from "../../components/Loader";
-import Paginate from "../../components/Paginate/Paginate";
-import TagsBar from "../../components/TagsBar";
+
+//components
+import { TagsBar, MyCard, Loader, Paginate } from "../../components";
 
 class Articles extends Component {
   mounted = false;
@@ -37,8 +38,8 @@ class Articles extends Component {
 
   render() {
     const { articles, tags } = this.props;
-    const { page, pageCount } = this.state;
-    return this.state.isLoading ? (
+    const { page, pageCount, isLoading } = this.state;
+    return isLoading ? (
       <Loader />
     ) : (
       <>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
 import { GitHub, Search } from "@material-ui/icons";
 
-export default function AppBar({ isLoggedin }) {
+export default function MainAppBar({ isLoggedin }) {
   return (
     <AppBar position="relative" style={{ zIndex: 9999 }}>
       <Toolbar variant="dense">

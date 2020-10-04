@@ -1,11 +1,15 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import { TextField, Button, Typography, Tabs, Tab } from "@material-ui/core";
+
+//actions
 import {
   userLoginRequest,
   userLogoutRequest,
   userSignUpRequest,
 } from "../../store/actions/usersActions";
-import { TextField, Button, Typography, Tabs, Tab } from "@material-ui/core";
+
+//utils
 import TabPanel from "../../utils/TabPanel";
 
 class Login extends Component {
@@ -15,6 +19,10 @@ class Login extends Component {
     password: "",
     name: "",
     value: 0,
+  };
+
+  cb = () => {
+    this.mounted && this.setState({ value: 0 });
   };
 
   componentDidMount() {
@@ -36,9 +44,6 @@ class Login extends Component {
     );
   };
 
-  cb = () => {
-    this.mounted && this.setState({ value: 0 });
-  };
   signupHandler = () => {
     const details = {
       name: this.state.name,
@@ -53,10 +58,12 @@ class Login extends Component {
   };
 
   render() {
+    const { isLoggedin } = this.props;
+    const { name, username, value, password } = this.state;
     return (
       <>
         <Tabs
-          value={this.state.value}
+          value={value}
           onChange={(e, v) => this.setState({ value: v })}
           indicatorColor="secondary"
           textColor="secondary"
@@ -65,20 +72,20 @@ class Login extends Component {
           <Tab label="Login" />
           <Tab label="Signup" />
         </Tabs>
-        <TabPanel value={this.state.value} index={0}>
+        <TabPanel value={value} index={0}>
           <>
-            {this.props.isLoggedin ? (
+            {isLoggedin ? (
               <Button
                 style={{ marginTop: 20 }}
                 variant="outlined"
-                onClick={() => this.logoutHandler()}
+                onClick={this.logoutHandler}
               >
                 Logout
               </Button>
             ) : (
               <>
                 <TextField
-                  value={this.state.username}
+                  value={username}
                   onChange={(e) => this.setState({ username: e.target.value })}
                   required
                   id="standard-required"
@@ -94,14 +101,14 @@ class Login extends Component {
                   label="Password"
                   type="password"
                   autoComplete="current-password"
-                  value={this.state.password}
+                  value={password}
                   onChange={(e) => this.setState({ password: e.target.value })}
                 />
                 <br />
                 <Button
                   style={{ marginTop: 20 }}
                   variant="outlined"
-                  onClick={() => this.loginHandler()}
+                  onClick={this.loginHandler}
                 >
                   Login
                 </Button>
@@ -109,15 +116,15 @@ class Login extends Component {
             )}
           </>
         </TabPanel>
-        <TabPanel value={this.state.value} index={1}>
-          {this.props.isLoggedin ? (
+        <TabPanel value={value} index={1}>
+          {isLoggedin ? (
             <div style={{ margin: 20, textAlign: "center" }}>
               <Typography variant="h5">You are already Logged In!</Typography>
             </div>
           ) : (
             <>
               <TextField
-                value={this.state.name}
+                value={name}
                 onChange={(e) => this.setState({ name: e.target.value })}
                 required
                 id="standard-required"
@@ -126,7 +133,7 @@ class Login extends Component {
                 style={{ marginBottom: 20 }}
               />
               <TextField
-                value={this.state.username}
+                value={username}
                 onChange={(e) => this.setState({ username: e.target.value })}
                 required
                 id="standard-required"
@@ -142,12 +149,12 @@ class Login extends Component {
                 label="Password"
                 type="password"
                 autoComplete="current-password"
-                value={this.state.password}
+                value={password}
                 onChange={(e) => this.setState({ password: e.target.value })}
               />
               <br />
               <div style={{ marginTop: 20 }}>
-                <Button variant="outlined" onClick={() => this.signupHandler()}>
+                <Button variant="outlined" onClick={this.signupHandler}>
                   Signup
                 </Button>
               </div>

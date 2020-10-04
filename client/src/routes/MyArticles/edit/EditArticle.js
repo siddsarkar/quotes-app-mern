@@ -1,39 +1,45 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import { Container, TextField, Typography, Button } from "@material-ui/core";
+
+//actions
 import {
   updateArticle,
   getSingleArticle,
 } from "../../../store/actions/articleActions";
-import { Link } from "react-router-dom";
 
 class EditArticle extends Component {
+  mounted = false;
   state = {
     body: "",
     title: "",
     author: "",
+    disabled: true,
   };
+
   getFields = () => {
-    this.setState({
-      body: this.props.article.body,
-      title: this.props.article.title,
-      author: this.props.article.author,
-    });
+    const { body, title, author } = this.props.article;
+    this.mounted && this.setState({ body, title, author, disabled: false });
   };
 
   componentDidMount() {
+    this.mounted = true;
     this.props.getSingle(this.props.match.params.id, this.getFields);
   }
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   updateArticle = () => {
-    const article = {
-      author: this.state.author,
-      body: this.state.body,
-      title: this.state.title,
-    };
+    const { body, title, author } = this.state;
+    const article = { body, title, author };
     this.props.updateArticle(this.props.match.params.id, article);
     this.props.getArticles();
   };
+
   render() {
+    const { body, author, title, disabled } = this.state;
     return (
       <Container style={{ padding: 20 }}>
         <Typography style={{ padding: 20, paddingLeft: 0 }} variant="h3">
@@ -43,15 +49,16 @@ class EditArticle extends Component {
           <TextField
             style={{ marginBottom: 20 }}
             fullWidth
-            value={this.state.author}
+            value={author}
             id="standard-basic"
             placeholder="Author"
             disabled
           />
           <br />
           <TextField
+            disabled={disabled}
             type="text"
-            value={this.state.title}
+            value={title}
             style={{ marginBottom: 20 }}
             fullWidth
             onChange={(e) => {
@@ -61,22 +68,25 @@ class EditArticle extends Component {
           />
           <br />
           <TextField
+            disabled={disabled}
             type="text"
-            value={this.state.body}
+            value={body}
             onChange={(e) => {
               this.setState({ body: e.target.value });
             }}
             fullWidth
             placeholder="Body"
-            // id="outlined-multiline-static"
-            // label="Body"
             multiline
             rows={4}
             variant="outlined"
           />
           <br />
           <div style={{ padding: 20, paddingLeft: 0 }}>
-            <Button variant="outlined" onClick={() => this.updateArticle()}>
+            <Button
+              disabled={disabled}
+              variant="outlined"
+              onClick={this.updateArticle}
+            >
               Update
             </Button>
             <Link

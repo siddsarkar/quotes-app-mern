@@ -1,25 +1,35 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { InputBase, Container } from "@material-ui/core";
-import { Search } from "@material-ui/icons";
-
-import { getArticleBySearch } from "../../store/actions/searchActions";
-import MyCard from "../../components/Card";
-import Paginate from "../../components/Paginate/Paginate";
-import Loader from "../../components/Loader";
-
+import { Search as SearchIcon } from "@material-ui/icons";
 import "../../index.css";
 
+//actions
+import { getArticleBySearch } from "../../store/actions/searchActions";
+
+//components
+import { Paginate, MyCard, Loader } from "../../components";
+
 class Search extends Component {
+  mounted = false;
   state = {
     query: "",
     page: 1,
   };
-  cb = () => console.log("result");
+
+  cb = () => console.log("received");
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.search(this.state.query, 1, this.cb);
   };
+
+  componentDidMount() {
+    this.mounted = true;
+  }
+  componentWillUnmount() {
+    this.mounted = false;
+  }
 
   render() {
     const { articles, loading, pageCount } = this.props;
@@ -29,7 +39,7 @@ class Search extends Component {
         <form noValidate autoComplete="off" onSubmit={this.handleSubmit}>
           <div className="search">
             <div className="searchIcon">
-              <Search />
+              <SearchIcon />
             </div>
             <InputBase
               type="search"
@@ -61,10 +71,11 @@ class Search extends Component {
             count={pageCount}
             page={page}
             change={(e, page) => {
-              this.setState(
-                this.setState({ page }),
-                this.props.search(query, page, this.cb)
-              );
+              this.mounted &&
+                this.setState(
+                  this.setState({ page }),
+                  this.props.search(query, page, this.cb)
+                );
             }}
           />
         ) : (
@@ -75,13 +86,12 @@ class Search extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    articles: state.search.articles,
-    pageCount: state.search.pages,
-    loading: state.search.fetching,
-  };
-};
+const mapStateToProps = (state) => ({
+  articles: state.search.articles,
+  pageCount: state.search.pages,
+  loading: state.search.fetching,
+});
+
 const mapDispatchToProps = (dispatch) => ({
   search: (query, page, cb) => dispatch(getArticleBySearch(query, page, cb)),
 });

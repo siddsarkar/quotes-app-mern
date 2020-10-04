@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getArticleByAuthor } from "../../store/actions/articleActions";
 import { Container, Typography } from "@material-ui/core";
-import MyCard from "../../components/Card";
-import Loader from "../../components/Loader";
+
+//components
+import { MyCard, Loader } from "../../components";
+
+//actions
+import { getArticleByAuthor } from "../../store/actions/articleActions";
+
 class AuthorArticles extends Component {
   mounted = false;
   state = {
@@ -29,13 +33,16 @@ class AuthorArticles extends Component {
 
   render() {
     const { articles } = this.props;
-    return this.state.isloading ? (
+    const { isloading } = this.state;
+    const authorId = this.props.match.params.authorId;
+
+    return isloading ? (
       <Loader />
     ) : (
       <>
         <div style={{ margin: 10, textAlign: "center" }}>
           <Typography color="textSecondary" variant="caption">
-            Showing articles by {this.props.match.params.authorId}
+            Showing articles by {authorId}
           </Typography>
         </div>
         <Container maxWidth="lg">

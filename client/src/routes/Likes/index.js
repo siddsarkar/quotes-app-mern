@@ -1,7 +1,6 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import Loader from "../../components/Loader";
-import { getLikesForArticle } from "../../store/actions/likesActions";
 import {
   Container,
   Typography,
@@ -12,7 +11,12 @@ import {
   ListItemSecondaryAction,
 } from "@material-ui/core";
 import { AccountCircle, Favorite } from "@material-ui/icons";
-import { Link } from "react-router-dom";
+
+//components
+import { Loader } from "../../components";
+
+//actions
+import { getLikesForArticle } from "../../store/actions/likesActions";
 
 class Likes extends Component {
   mounted = false;
@@ -36,7 +40,10 @@ class Likes extends Component {
   }
   render() {
     const { likes } = this.props;
-    return this.state.loading ? (
+    const { loading } = this.state;
+
+    const id = this.props.match.params.id;
+    return loading ? (
       <Loader />
     ) : (
       <>
@@ -51,7 +58,7 @@ class Likes extends Component {
           }}
         >
           <Typography color="textSecondary" variant="caption">
-            Likes on post {this.props.match.params.id}
+            Likes on post {id}
           </Typography>
           <div style={{ display: "flex", flexDirection: "row", margin: 5 }}>
             <Favorite fontSize="small" />

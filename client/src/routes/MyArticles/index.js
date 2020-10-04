@@ -1,9 +1,6 @@
 import React, { Component } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { connect } from "react-redux";
-import {
-  getMyArticles,
-  deleteArticle,
-} from "../../store/actions/articleActions";
 import {
   Container,
   Card,
@@ -18,20 +15,31 @@ import {
   Tabs,
   Divider,
   AppBar,
+  CardActions,
+  CardContent,
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import EditArticle from "./edit/EditArticle";
+
+//actions
+import {
+  getMyArticles,
+  deleteArticle,
+} from "../../store/actions/articleActions";
 import {
   getMyComments,
   deleteComment,
 } from "../../store/actions/commentActions";
 import { getMyLikes } from "../../store/actions/likesActions";
-import Loader from "../../components/Loader";
+
+//utils
 import ElevationScroll from "../../utils/ElevationScroll";
 import TabPanel from "../../utils/TabPanel";
+
+//components
+import { Loader } from "../../components";
+
+// children - component
+import EditArticle from "./edit/EditArticle";
 
 class MyArticles extends Component {
   mounted = false;
@@ -60,13 +68,14 @@ class MyArticles extends Component {
     this.mounted = false;
   }
   render() {
-    const { likes } = this.props;
-    return this.props.auth ? (
+    const { myLikes, myArticles, myComments, auth } = this.props;
+    const { commentsLoading, likesLoading, postLoading, value } = this.state;
+    return auth ? (
       <>
         <ElevationScroll {...this.props}>
           <AppBar position="sticky" style={{ backgroundColor: "white" }}>
             <Tabs
-              value={this.state.value}
+              value={value}
               onChange={(e, v) => this.setState({ value: v })}
               indicatorColor="secondary"
               textColor="secondary"
@@ -78,9 +87,9 @@ class MyArticles extends Component {
             </Tabs>
           </AppBar>
         </ElevationScroll>
-        <TabPanel value={this.state.value} index={0}>
+        <TabPanel value={value} index={0}>
           {/* posts */}
-          {this.state.postLoading ? (
+          {postLoading ? (
             <Loader />
           ) : (
             <Router>
@@ -95,7 +104,7 @@ class MyArticles extends Component {
                   )}
                 />
               </Switch>
-              {this.props.myArticles.map((item) => {
+              {myArticles.map((item) => {
                 return (
                   <Card
                     elevation={3}
@@ -141,12 +150,12 @@ class MyArticles extends Component {
             </Router>
           )}
         </TabPanel>
-        <TabPanel value={this.state.value} index={1}>
+        <TabPanel value={value} index={1}>
           {/* comments */}
-          {this.state.commentsLoading ? (
+          {commentsLoading ? (
             <Loader />
-          ) : this.props.myComments.length ? (
-            this.props.myComments.map((comment) => {
+          ) : myComments.length ? (
+            myComments.map((comment) => {
               return (
                 <Card
                   elevation={3}
@@ -184,13 +193,13 @@ class MyArticles extends Component {
             })
           ) : null}
         </TabPanel>
-        <TabPanel value={this.state.value} index={2}>
+        <TabPanel value={value} index={2}>
           {/* likes */}
           <List>
-            {this.state.likesLoading ? (
+            {likesLoading ? (
               <Loader />
             ) : (
-              likes.map((value) => {
+              myLikes.map((value) => {
                 return (
                   <Link
                     key={value.articleId}
@@ -242,7 +251,7 @@ const mapStateToProps = (state) => {
     myArticles: state.articles.myArticles,
     auth: state.users.isAuthenticated,
     userId: state.users.userId,
-    likes: state.likes.myLikes,
+    myLikes: state.likes.myLikes,
   };
 };
 

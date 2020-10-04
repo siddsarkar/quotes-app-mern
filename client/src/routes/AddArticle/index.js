@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { addArticle } from "../../store/actions/articleActions";
 import {
   Container,
   TextField,
@@ -16,7 +15,11 @@ import {
 } from "@material-ui/core";
 import { AccountCircle } from "@material-ui/icons";
 
+//actions
+import { addArticle } from "../../store/actions/articleActions";
+
 class AddArticle extends Component {
+  mounted = true;
   state = {
     author: "",
     body: "",
@@ -29,12 +32,17 @@ class AddArticle extends Component {
   };
 
   getAuthorname = () => {
-    this.setState({ author: this.props.authenticatedUsername });
+    this.mounted && this.setState({ author: this.props.authenticatedUsername });
   };
 
   componentDidMount() {
+    this.mounted = true;
     this.getAuthorname();
   }
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   addArticle = () => {
     const filterSelected = Object.fromEntries(
       Object.entries(this.state.tags).filter(([key, value]) => value === true)
@@ -49,15 +57,16 @@ class AddArticle extends Component {
       };
 
       this.props.addArticle(article, () => {
-        this.setState({
-          body: "",
-          title: "",
-          tags: {
-            love: false,
-            inspiration: false,
-            travel: false,
-          },
-        });
+        this.mounted &&
+          this.setState({
+            body: "",
+            title: "",
+            tags: {
+              love: false,
+              inspiration: false,
+              travel: false,
+            },
+          });
       });
     }
   };
@@ -65,17 +74,20 @@ class AddArticle extends Component {
   handleChange = (event) => {
     const name = event.target.name;
     const checked = event.target.checked;
-    this.setState((state) => ({
-      tags: { ...state.tags, [name]: checked },
-    }));
+    this.mounted &&
+      this.setState((state) => ({
+        tags: { ...state.tags, [name]: checked },
+      }));
   };
 
   render() {
     const { love, inspiration, travel } = this.state.tags;
     const error = [love, inspiration, travel].filter((v) => v).length < 1;
+    const { auth } = this.props;
+    const { author, title, body } = this.state;
     return (
       <Container style={{ padding: 20 }}>
-        {this.props.auth ? null : (
+        {auth ? null : (
           <Typography
             color="textSecondary"
             variant="h4"
@@ -93,7 +105,7 @@ class AddArticle extends Component {
           </Grid>
           <Grid item>
             <TextField
-              value={this.state.author}
+              value={author}
               id="standard-basic"
               label="Username"
               disabled
@@ -102,18 +114,18 @@ class AddArticle extends Component {
         </Grid>
         <br />
         <TextField
-          value={this.state.title}
+          value={title}
           style={{ marginBottom: 20 }}
           fullWidth
           onChange={(e) => {
             this.setState({ title: e.target.value });
           }}
           placeholder="Title"
-          disabled={this.props.auth ? false : true}
+          disabled={auth ? false : true}
         />
         <br />
         <TextField
-          value={this.state.body}
+          value={body}
           onChange={(e) => {
             this.setState({ body: e.target.value });
           }}
@@ -122,13 +134,12 @@ class AddArticle extends Component {
           multiline
           rows={4}
           variant="outlined"
-          disabled={this.props.auth ? false : true}
+          disabled={auth ? false : true}
         />
         <br />
         <br />
-
         <FormControl
-          disabled={this.props.auth ? false : true}
+          disabled={auth ? false : true}
           required
           error={error}
           component="fieldset"
@@ -168,13 +179,12 @@ class AddArticle extends Component {
           </FormGroup>
           <FormHelperText>Pick at least one tag!</FormHelperText>
         </FormControl>
-
         <br />
         <div style={{ padding: 20, paddingLeft: 0 }}>
           <Button
-            disabled={this.props.auth ? false : true}
+            disabled={auth ? false : true}
             variant="outlined"
-            onClick={() => this.addArticle()}
+            onClick={this.addArticle}
           >
             Submit
           </Button>

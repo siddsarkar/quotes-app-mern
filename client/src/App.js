@@ -48,4 +48,4 @@ const mapStateToProps = (state) => ({
   isLoggedin: state.users.isAuthenticated,
 });
 
-export default connect(mapStateToProps)(src);
+export default connect(mapStateToProps)(App);

@@ -1,10 +1,12 @@
 import { Container } from "@material-ui/core";
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import MyCard from "../../components/Card";
-import Loader from "../../components/Loader";
-import TagsBar from "../../components/TagsBar";
+
+//actions
 import { getArticleByTags } from "../../store/actions/searchActions";
+
+//components
+import { MyCard, Loader, TagsBar } from "../../components";
 
 class TagsScreen extends Component {
   mounted = false;

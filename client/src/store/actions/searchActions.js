@@ -1,5 +1,7 @@
 import * as actionTypes from "./actionTypes";
 
+//* GET
+
 export const getArticleBySearch = (query, page, cb) => {
   return (dispatch) => {
     dispatch({ type: actionTypes.GETTING_SEARCHED_ARTICLES });
