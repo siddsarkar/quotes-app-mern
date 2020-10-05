@@ -1,6 +1,13 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { TextField, Button, Typography, Tabs, Tab } from "@material-ui/core";
+import {
+  TextField,
+  Container,
+  Button,
+  Typography,
+  Tabs,
+  Tab,
+} from "@material-ui/core";
 
 //actions
 import {
@@ -61,7 +68,7 @@ class Login extends Component {
     const { isLoggedin } = this.props;
     const { name, username, value, password } = this.state;
     return (
-      <>
+      <Container maxWidth="md">
         <Tabs
           value={value}
           onChange={(e, v) => this.setState({ value: v })}
@@ -166,7 +173,7 @@ class Login extends Component {
             Copyright@2020_Siddhartha_Sarkar
           </Typography>
         </div>
-      </>
+      </Container>
     );
   }
 }

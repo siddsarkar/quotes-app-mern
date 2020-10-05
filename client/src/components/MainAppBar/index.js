@@ -1,33 +1,43 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { AppBar, IconButton, Toolbar, Typography } from "@material-ui/core";
+import {
+  AppBar,
+  Button,
+  IconButton,
+  Toolbar,
+  Typography,
+} from "@material-ui/core";
 import { GitHub, Search } from "@material-ui/icons";
 
 export default function MainAppBar({ isLoggedin }) {
   return (
     <AppBar position="relative" style={{ zIndex: 9999 }}>
-      <Toolbar variant="dense">
+      <Toolbar variant="dense" style={{ margin: 0, padding: 0 }}>
         <Link
           style={{
             textDecoration: "none",
-            marginRight: 5,
+            // marginRight: 5,
           }}
           to="/"
         >
-          <Typography variant="inherit" style={{ color: "white" }}>
-            QUOTES
-          </Typography>
+          <Button>
+            <Typography variant="body1" style={{ color: "white" }}>
+              FEED
+            </Typography>
+          </Button>
         </Link>
         <Link
           style={{
             textDecoration: "none",
-            marginRight: 5,
+            // marginRight: 5,
           }}
           to="/addarticle"
         >
-          <Typography variant="inherit" style={{ color: "white" }}>
-            WRITE
-          </Typography>
+          <Button>
+            <Typography variant="body1" style={{ color: "white" }}>
+              WRITE
+            </Typography>
+          </Button>
         </Link>
         <Link
           style={{
@@ -35,9 +45,11 @@ export default function MainAppBar({ isLoggedin }) {
           }}
           to="/myarticles"
         >
-          <Typography variant="inherit" style={{ color: "white" }}>
-            ACTIVITY
-          </Typography>
+          <Button>
+            <Typography variant="body1" style={{ color: "white" }}>
+              ACTIVITY
+            </Typography>
+          </Button>
         </Link>
         <Link
           style={{
@@ -47,9 +59,11 @@ export default function MainAppBar({ isLoggedin }) {
           }}
           to="/login"
         >
-          <Typography style={{ color: "white" }} variant="inherit">
-            {isLoggedin ? "LOGOUT" : "LOGIN"}
-          </Typography>
+          <Button>
+            <Typography style={{ color: "white" }} variant="body1">
+              {isLoggedin ? "LOGOUT" : "LOGIN"}
+            </Typography>
+          </Button>
         </Link>
         <IconButton
           href="https://github.com/siddsarkar/quotes-app-mern"

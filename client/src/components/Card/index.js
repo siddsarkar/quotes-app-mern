@@ -7,7 +7,8 @@ import {
   CardActions,
   CardContent,
 } from "@material-ui/core";
-import { AccountCircle, Favorite, Comment } from "@material-ui/icons";
+import { AccountCircle, Favorite, Comment, Schedule } from "@material-ui/icons";
+import assetMapping from "../../assets/assetMapping.json";
 
 export default function MyCard({ item }) {
   return (
@@ -16,7 +17,11 @@ export default function MyCard({ item }) {
         return (
           <Link key={i} style={{ textDecoration: "none" }} to={"/tags/" + tag}>
             <Typography
-              style={{ marginLeft: 10, marginTop: 5 }}
+              style={{
+                marginLeft: 10,
+                marginTop: 5,
+                color: assetMapping.colors[tag],
+              }}
               variant="overline"
             >
               #{tag}
@@ -31,12 +36,12 @@ export default function MyCard({ item }) {
             paddingTop: 0,
           }}
         >
-          <Typography variant="h4" color="textPrimary" gutterBottom>
+          <Typography variant="h4" color="textPrimary">
             {item.title}
           </Typography>
-          <Typography variant="body2" color="textPrimary">
+          {/* <Typography variant="body2" color="textPrimary">
             {item.body}
-          </Typography>
+          </Typography> */}
         </CardContent>
       </Link>
       <CardActions>
@@ -53,7 +58,14 @@ export default function MyCard({ item }) {
             <Typography variant="subtitle1">{item.author}</Typography>
           </Button>
         </Link>
+
         <div style={{ flexGrow: 1 }} />
+        <Button style={{ textTransform: "none" }} color="default" size="small">
+          <Schedule style={{ marginRight: 5 }} />
+          <Typography variant="caption" color="textSecondary">
+            {item.addedOn.split(".")[0].split("T")[0]}
+          </Typography>
+        </Button>
         <Link
           style={{
             textDecoration: "none",

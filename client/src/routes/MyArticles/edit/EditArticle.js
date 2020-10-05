@@ -8,6 +8,10 @@ import {
   updateArticle,
   getSingleArticle,
 } from "../../../store/actions/articleActions";
+//utils
+import TabPanel from "../../../utils/TabPanel";
+//components
+import { MarkedDown } from "../../../components";
 
 class EditArticle extends Component {
   mounted = false;
@@ -16,6 +20,7 @@ class EditArticle extends Component {
     title: "",
     author: "",
     disabled: true,
+    value: 0,
   };
 
   getFields = () => {
@@ -39,65 +44,96 @@ class EditArticle extends Component {
   };
 
   render() {
-    const { body, author, title, disabled } = this.state;
+    const { addedOn } = this.props.article;
+    const { body, author, title, disabled, value } = this.state;
     return (
-      <Container style={{ padding: 20 }}>
-        <Typography style={{ padding: 20, paddingLeft: 0 }} variant="h3">
-          Edit Your Quote
-        </Typography>
-        <form noValidate autoComplete="off">
-          <TextField
-            style={{ marginBottom: 20 }}
-            fullWidth
-            value={author}
-            id="standard-basic"
-            placeholder="Author"
-            disabled
+      <>
+        <TabPanel value={value} index={0}>
+          <Container style={{ padding: 20 }}>
+            <Typography style={{ padding: 20, paddingLeft: 0 }} variant="h3">
+              Edit Your Quote
+            </Typography>
+            <form noValidate autoComplete="off">
+              <TextField
+                style={{ marginBottom: 20 }}
+                fullWidth
+                value={author}
+                id="standard-basic"
+                placeholder="Author"
+                disabled
+              />
+              <br />
+              <TextField
+                disabled={disabled}
+                type="text"
+                value={title}
+                style={{ marginBottom: 20 }}
+                fullWidth
+                onChange={(e) => {
+                  this.setState({ title: e.target.value });
+                }}
+                placeholder="Title"
+              />
+              <br />
+              <TextField
+                disabled={disabled}
+                type="text"
+                value={body}
+                onChange={(e) => {
+                  this.setState({ body: e.target.value });
+                }}
+                fullWidth
+                placeholder="Body"
+                multiline
+                rows={4}
+                variant="outlined"
+              />
+              <br />
+            </form>
+          </Container>
+        </TabPanel>
+        <TabPanel value={value} index={1}>
+          <MarkedDown
+            body={body}
+            title={title}
+            date={addedOn}
+            tags={this.props.article.tags}
           />
-          <br />
-          <TextField
+        </TabPanel>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginBottom: 20,
+          }}
+        >
+          <Button
             disabled={disabled}
-            type="text"
-            value={title}
-            style={{ marginBottom: 20 }}
-            fullWidth
-            onChange={(e) => {
-              this.setState({ title: e.target.value });
-            }}
-            placeholder="Title"
-          />
-          <br />
-          <TextField
-            disabled={disabled}
-            type="text"
-            value={body}
-            onChange={(e) => {
-              this.setState({ body: e.target.value });
-            }}
-            fullWidth
-            placeholder="Body"
-            multiline
-            rows={4}
             variant="outlined"
-          />
-          <br />
-          <div style={{ padding: 20, paddingLeft: 0 }}>
-            <Button
-              disabled={disabled}
-              variant="outlined"
-              onClick={this.updateArticle}
-            >
-              Update
-            </Button>
-            <Link
-              to="/myarticles"
-              style={{ textDecoration: "none", marginLeft: 5 }}
-            >
-              <Button variant="outlined">Close</Button>
-            </Link>
-          </div>
-        </form>
-      </Container>
+            onClick={this.updateArticle}
+          >
+            Update
+          </Button>
+          <Button
+            disabled={disabled}
+            style={{ marginLeft: 5 }}
+            variant="outlined"
+            onClick={() =>
+              this.setState((prevState) => ({
+                value: prevState.value === 0 ? 1 : 0,
+              }))
+            }
+          >
+            {value ? "Edit" : "preview"}
+          </Button>
+          <Link
+            to="/myarticles"
+            style={{ textDecoration: "none", marginLeft: 5 }}
+          >
+            <Button variant="outlined">Close</Button>
+          </Link>
+        </div>
+      </>
     );
   }
 }

@@ -1,4 +1,3 @@
-import { Container } from "@material-ui/core";
 import React from "react";
 
 export default function TabPanel(props) {
@@ -12,11 +11,7 @@ export default function TabPanel(props) {
       aria-labelledby={`full-width-tab-${index}`}
       {...other}
     >
-      {value === index && (
-        <Container maxWidth="md" style={{ padding: 10 }}>
-          {children === null ? null : children}
-        </Container>
-      )}
+      {value === index && <>{children === null ? null : children}</>}
     </div>
   );
 }

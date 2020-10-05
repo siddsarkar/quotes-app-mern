@@ -38,7 +38,14 @@ router.post("/add", isAuthenticated, (req, res) => {
 
 //get all articles by page (10 per page)
 router.get("/", (req, res) => {
-  Article.find({}, (err, articles) => {
+  const aggregate = Article.aggregate([
+    {
+      $sort: {
+        addedOn: -1,
+      },
+    },
+  ]);
+  aggregate.exec((err, articles) => {
     if (err) throw err;
     let paginated = paginatedResponse(articles, req.query.p);
     res.json(paginated);

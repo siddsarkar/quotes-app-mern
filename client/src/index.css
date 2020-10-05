@@ -7,6 +7,12 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+img {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
@@ -35,5 +41,9 @@ code {
   margin-left: 10%;
 }
 .inputInput {
+  width: 100%;
+}
+
+.markdown {
   width: 100%;
 }
