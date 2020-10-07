@@ -1,96 +1,167 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useRef } from "react";
+import { connect } from "react-redux";
+import { Link, useHistory } from "react-router-dom";
 import {
   AppBar,
   Button,
   IconButton,
   Toolbar,
-  Typography,
+  makeStyles,
+  fade,
+  InputBase,
+  Menu,
+  MenuItem,
 } from "@material-ui/core";
-import { GitHub, Search } from "@material-ui/icons";
+import {
+  AccountCircle,
+  Create,
+  History,
+  Home,
+  Search,
+} from "@material-ui/icons";
+import { getArticleBySearch } from "../../store/actions/searchActions";
 
-export default function MainAppBar({ isLoggedin }) {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+  },
+  search: {
+    position: "relative",
+    borderRadius: theme.shape.borderRadius,
+    backgroundColor: fade(theme.palette.common.white, 0.15),
+    "&:hover": {
+      backgroundColor: fade(theme.palette.common.white, 0.25),
+    },
+    marginRight: theme.spacing(1),
+    marginLeft: theme.spacing(1),
+    width: "100%",
+    [theme.breakpoints.up("sm")]: {
+      marginLeft: theme.spacing(3),
+      width: "auto",
+    },
+  },
+  searchIcon: {
+    padding: theme.spacing(0, 2),
+    height: "100%",
+    position: "absolute",
+    pointerEvents: "none",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  inputRoot: {
+    color: "inherit",
+  },
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    // vertical padding + font size from searchIcon
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create("width"),
+    width: "100%",
+    [theme.breakpoints.up("md")]: {
+      width: "20ch",
+    },
+  },
+}));
+
+function MainAppBar(props) {
+  const ref = useRef();
+  const history = useHistory();
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [searchInput, setSearchInput] = React.useState("");
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+  const classes = useStyles();
+  // const preventDefault = (event) => event.preventDefault();
+
+  const call = () => console.log("got");
+
   return (
-    <AppBar position="relative" style={{ zIndex: 9999 }}>
-      <Toolbar variant="dense" style={{ margin: 0, padding: 0 }}>
-        <Link
-          style={{
-            textDecoration: "none",
-            // marginRight: 5,
-          }}
-          to="/"
-        >
-          <Button>
-            <Typography variant="body1" style={{ color: "white" }}>
-              FEED
-            </Typography>
-          </Button>
-        </Link>
-        <Link
-          style={{
-            textDecoration: "none",
-            // marginRight: 5,
-          }}
-          to="/addarticle"
-        >
-          <Button>
-            <Typography variant="body1" style={{ color: "white" }}>
-              WRITE
-            </Typography>
-          </Button>
-        </Link>
-        <Link
-          style={{
-            textDecoration: "none",
-          }}
-          to="/myarticles"
-        >
-          <Button>
-            <Typography variant="body1" style={{ color: "white" }}>
-              ACTIVITY
-            </Typography>
-          </Button>
-        </Link>
-        <Link
-          style={{
-            textDecoration: "none",
-            position: "absolute",
-            right: 20,
-          }}
-          to="/login"
-        >
-          <Button>
-            <Typography style={{ color: "white" }} variant="body1">
-              {isLoggedin ? "LOGOUT" : "LOGIN"}
-            </Typography>
-          </Button>
-        </Link>
-        <IconButton
-          href="https://github.com/siddsarkar/quotes-app-mern"
-          aria-label="Github repo"
-          aria-controls="menu-appbar"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <GitHub />
+    <AppBar position="relative" style={{ zIndex: 99999 }}>
+      <Toolbar className={classes.root} variant="dense" disableGutters>
+        <IconButton color="inherit" to="/" component={Link}>
+          <Home />
         </IconButton>
-        <Link
-          style={{
-            textDecoration: "none",
-            color: "inherit",
-          }}
-          to="/search"
-        >
-          <IconButton
-            color="inherit"
-            aria-label="search"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
+        <div className={classes.search}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              history.push("/search");
+              props.search(searchInput, 1, call);
+              setSearchInput("");
+              ref.current.blur();
+            }}
           >
-            <Search />
-          </IconButton>
-        </Link>
+            <div className={classes.searchIcon}>
+              <Search />
+            </div>
+            <InputBase
+              placeholder="Search…"
+              classes={{
+                root: classes.inputRoot,
+                input: classes.inputInput,
+              }}
+              inputProps={{ "aria-label": "search" }}
+              value={searchInput}
+              inputRef={ref}
+              type="search"
+              onChange={(e) => setSearchInput(e.target.value)}
+            />
+          </form>
+        </div>
+        <div style={{ flexGrow: 1 }} />
+        {props.isLoggedin ? (
+          <>
+            <IconButton to="/addarticle" component={Link} color="inherit">
+              <Create />
+            </IconButton>
+            <IconButton color="inherit" to="/myarticles" component={Link}>
+              <History />
+            </IconButton>
+            <div>
+              <IconButton
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+              <Menu
+                style={{ zIndex: 9999999 }}
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+              >
+                {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleClose}>My account</MenuItem> */}
+                <MenuItem onClick={handleClose && props.logout}>
+                  Logout
+                </MenuItem>
+              </Menu>
+            </div>
+          </>
+        ) : (
+          <Button to="/login" component={Link} color="inherit">
+            Login
+          </Button>
+        )}
       </Toolbar>
     </AppBar>
   );
 }
+
+const mapStateToProps = (state) => ({});
+const mapDispatchToProps = (dispatch) => ({
+  search: (query, page, cb) => dispatch(getArticleBySearch(query, page, cb)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(MainAppBar);

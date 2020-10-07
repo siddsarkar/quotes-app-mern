@@ -56,7 +56,7 @@ router.post("/login", (req, res) => {
             },
             config.jwtSecret,
             {
-              expiresIn: "1h",
+              expiresIn: "2h",
             }
           );
           res.json({ token, message: "Successfully Logged in!" });

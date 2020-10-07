@@ -17,13 +17,18 @@ import {
   SearchPage,
   SingleArticlePage,
 } from "./routes";
+import { userLogoutRequest } from "./store/actions/usersActions";
 
 class App extends Component {
   render() {
     const { isLoggedin } = this.props;
     return (
       <Router>
-        <MainAppBar isLoggedin={isLoggedin} />
+        <MainAppBar
+          isLoggedin={isLoggedin}
+          logout={() => this.props.logout()}
+          // search={(object) => this.props.history.push("/")}
+        />
         <Switch>
           <Route
             path="/article/:authorId/articles"
@@ -47,5 +52,8 @@ class App extends Component {
 const mapStateToProps = (state) => ({
   isLoggedin: state.users.isAuthenticated,
 });
+const mapDispatchToProps = (dispatch) => ({
+  logout: () => dispatch(userLogoutRequest()),
+});
 
-export default connect(mapStateToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
