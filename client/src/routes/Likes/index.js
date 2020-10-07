@@ -72,7 +72,7 @@ class Likes extends Component {
                 <Link
                   key={value.authorId}
                   style={{ textDecoration: "none" }}
-                  to={"/article/" + value.author + "/articles"}
+                  to={"/article/" + value.authorId + "/articles"}
                 >
                   <ListItem button>
                     <ListItemAvatar>
