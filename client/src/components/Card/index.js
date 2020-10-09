@@ -12,7 +12,7 @@ import assetMapping from "../../assets/assetMapping.json";
 
 export default function MyCard({ item }) {
   return (
-    <Card elevation={5} style={{ marginBottom: 10 }}>
+    <Card elevation={3} style={{ marginBottom: 10 }}>
       {item.tags.map((tag, i) => {
         return (
           <Link key={i} style={{ textDecoration: "none" }} to={"/tags/" + tag}>
@@ -36,7 +36,7 @@ export default function MyCard({ item }) {
             paddingTop: 0,
           }}
         >
-          <Typography variant="h4" color="textPrimary">
+          <Typography variant="h5" color="textPrimary">
             {item.title}
           </Typography>
           {/* <Typography variant="body2" color="textPrimary">
@@ -44,18 +44,20 @@ export default function MyCard({ item }) {
           </Typography> */}
         </CardContent>
       </Link>
-      <CardActions>
+      <CardActions disableSpacing style={{ paddingBottom: 0, paddingTop: 0 }}>
         <Link
           style={{ textDecoration: "none" }}
           to={"/article/" + item.authorId + "/articles"}
         >
           <Button
             style={{ textTransform: "none" }}
-            color="secondary"
+            color="default"
             size="small"
           >
             <AccountCircle style={{ marginRight: 5 }} />
-            <Typography variant="subtitle1">{item.author}</Typography>
+            <Typography color="textSecondary" variant="subtitle1">
+              {item.author}
+            </Typography>
           </Button>
         </Link>
 

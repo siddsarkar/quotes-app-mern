@@ -85,7 +85,7 @@ function MainAppBar(props) {
   const call = () => console.log("got");
 
   return (
-    <AppBar position="relative" color="default" style={{ zIndex: 99999 }}>
+    <AppBar position="relative" color="primary" style={{ zIndex: 99999 }}>
       <Toolbar className={classes.root} variant="dense" disableGutters>
         <IconButton color="inherit" to="/" component={Link}>
           <Home />
