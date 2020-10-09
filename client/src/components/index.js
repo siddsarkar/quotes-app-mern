@@ -4,5 +4,16 @@ import Paginate from "./Paginate";
 import TagsBar from "./TagsBar";
 import MainAppBar from "./MainAppBar";
 import MarkedDown from "./MarkedDown";
+import BottomNav from "./BottomNav";
+import SideNav from "./SideNav";
 
-export { MyCard, Loader, Paginate, TagsBar, MainAppBar, MarkedDown };
+export {
+  MyCard,
+  Loader,
+  Paginate,
+  TagsBar,
+  MainAppBar,
+  MarkedDown,
+  BottomNav,
+  SideNav,
+};

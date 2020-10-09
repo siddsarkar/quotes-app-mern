@@ -9,7 +9,7 @@ import ElevationScroll from "../../utils/ElevationScroll";
 export default function TagsBar(props) {
   return (
     <ElevationScroll {...props}>
-      <AppBar position="sticky" style={{ backgroundColor: "white" }}>
+      <AppBar position="sticky">
         <CardActions>
           {props.tags.map((tag, i) => (
             <Link

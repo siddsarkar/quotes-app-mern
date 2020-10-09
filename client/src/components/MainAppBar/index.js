@@ -11,6 +11,8 @@ import {
   InputBase,
   Menu,
   MenuItem,
+  Typography,
+  Hidden,
 } from "@material-ui/core";
 import {
   AccountCircle,
@@ -83,7 +85,7 @@ function MainAppBar(props) {
   const call = () => console.log("got");
 
   return (
-    <AppBar position="relative" style={{ zIndex: 99999 }}>
+    <AppBar position="relative" color="default" style={{ zIndex: 99999 }}>
       <Toolbar className={classes.root} variant="dense" disableGutters>
         <IconButton color="inherit" to="/" component={Link}>
           <Home />
@@ -115,6 +117,11 @@ function MainAppBar(props) {
             />
           </form>
         </div>
+        <Hidden xsDown>
+          <Typography>
+            {props.isLoggedin ? "Hi, " + props.username : null}
+          </Typography>
+        </Hidden>
         <div style={{ flexGrow: 1 }} />
         {props.isLoggedin ? (
           <>
@@ -159,7 +166,9 @@ function MainAppBar(props) {
   );
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => ({
+  username: state.users.authenticatedUsername,
+});
 const mapDispatchToProps = (dispatch) => ({
   search: (query, page, cb) => dispatch(getArticleBySearch(query, page, cb)),
 });

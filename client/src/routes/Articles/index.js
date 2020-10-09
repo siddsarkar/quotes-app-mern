@@ -1,6 +1,17 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Container } from "@material-ui/core";
+import {
+  Container,
+  Grid,
+  Hidden,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Avatar,
+  ListItemText,
+  ListItemIcon,
+  Typography,
+} from "@material-ui/core";
 
 //actions
 import {
@@ -11,6 +22,17 @@ import { getCommentsForArticle } from "../../store/actions/commentActions";
 
 //components
 import { TagsBar, MyCard, Loader, Paginate } from "../../components";
+import {
+  AccountCircle,
+  CakeOutlined,
+  DataUsage,
+  Extension,
+  Flare,
+  FlareOutlined,
+  LabelImportant,
+  Loyalty,
+  Star,
+} from "@material-ui/icons";
 
 class Articles extends Component {
   mounted = false;
@@ -44,24 +66,90 @@ class Articles extends Component {
     ) : (
       <>
         <TagsBar tags={tags} />
-        <Container maxWidth="md" style={{ padding: 10 }}>
-          {articles.map((item, index) => {
-            return <MyCard key={item._id} item={item} />;
-          })}
-        </Container>
-        <Paginate
-          count={pageCount}
-          page={page}
-          change={(e, page) => {
-            this.mounted &&
-              this.setState(
-                this.setState({ page: page, isLoading: true }),
-                () => {
-                  this.props.initArticles(this.cb, page);
-                }
-              );
-          }}
-        />
+        <Grid
+          container
+          container
+          direction="row"
+          justify="flex-start"
+          alignItems="stretch"
+        >
+          <Grid
+            item
+            lg={2}
+            xl={2}
+            md={3}
+            sm={4}
+            xs={0}
+            // style={{ position: "relative" }}
+          >
+            <Hidden xsDown>
+              <ListItem dense={true}>
+                <ListItemAvatar>
+                  <Avatar>S</Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary="Siddhartha Sarkar"
+                  secondary={
+                    <span>
+                      <Typography variant="caption">
+                        <DataUsage fontSize="inherit" /> 19-02-2020
+                      </Typography>
+                    </span>
+                  }
+                />
+              </ListItem>
+              <List dense={true}>
+                <ListItem>
+                  <ListItemIcon>
+                    <Flare />
+                  </ListItemIcon>
+                  <ListItemText primary="Highlights" />
+                </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <LabelImportant />
+                  </ListItemIcon>
+                  <ListItemText primary="Popular" />
+                </ListItem>
+                <ListItem>
+                  <ListItemIcon>
+                    <Loyalty />
+                  </ListItemIcon>
+                  <ListItemText primary="Trending" />
+                </ListItem>
+              </List>
+            </Hidden>
+          </Grid>
+          <Grid
+            item
+            lg={8}
+            xl={8}
+            md={7}
+            sm={8}
+            xs={12}
+            // style={{ backgroundColor: "lightblue" }}
+          >
+            <Container maxWidth="md" style={{ padding: 10 }}>
+              {articles.map((item, index) => {
+                return <MyCard key={item._id} item={item} />;
+              })}
+            </Container>
+            <Paginate
+              count={pageCount}
+              page={page}
+              change={(e, page) => {
+                this.mounted &&
+                  this.setState(
+                    this.setState({ page: page, isLoading: true }),
+                    () => {
+                      this.props.initArticles(this.cb, page);
+                    }
+                  );
+              }}
+            />
+          </Grid>
+          <Grid item lg={2} xl={2} md={1} sm={0} xs={0} />
+        </Grid>
       </>
     );
   }

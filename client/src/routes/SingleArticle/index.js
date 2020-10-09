@@ -15,6 +15,8 @@ import {
   ListItemAvatar,
   ListItem,
   Avatar,
+  Hidden,
+  Grid,
 } from "@material-ui/core";
 import { AccountCircle, Favorite } from "@material-ui/icons";
 
@@ -30,8 +32,7 @@ import {
 import { getSingleArticle } from "../../store/actions/articleActions";
 
 //components
-import Loader from "../../components/Loader";
-import MarkedDown from "../../components/MarkedDown";
+import { BottomNav, MarkedDown, Loader, SideNav } from "../../components";
 
 class SingleArticle extends Component {
   mounted = false;
@@ -146,140 +147,174 @@ class SingleArticle extends Component {
     } = this.state;
     return pageLoaded ? (
       <>
-        <MarkedDown
-          tags={article.tags}
-          title={article.title}
-          body={article.body}
-          date={article.addedOn}
+        <Grid
+          container
+          container
+          direction="row"
+          justify="flex-start"
+          alignItems="stretch"
         >
-          <CardActions>
-            <Link
-              style={{ textDecoration: "none" }}
-              to={"/article/" + article.authorId + "/articles"}
+          <Grid item md={2} sm={2} xs={0} style={{ position: "relative" }}>
+            <Hidden xsDown>
+              <SideNav isliked={isLiked} isBookMarked={false} />
+            </Hidden>
+          </Grid>
+          <Grid item md={8} sm={10} xs={12}>
+            <MarkedDown
+              tags={article.tags}
+              title={article.title}
+              body={article.body}
+              date={article.addedOn}
             >
-              <Button
-                color="primary"
-                style={{ textTransform: "none", marginTop: 5, marginBottom: 5 }}
-              >
-                <AccountCircle style={{ marginRight: 5 }} />
-                <Typography>{article.author}</Typography>
-              </Button>
-            </Link>
-            <div style={{ flexGrow: 1 }} />
-            {auth ? (
-              <Button
-                disabled={likesLoading}
-                onClick={this.handleLike}
-                style={{ position: "relative" }}
-              >
-                <Typography>{isLiked ? "unlike" : "like"}</Typography>
-              </Button>
-            ) : null}
-            <Link
-              style={{ textDecoration: "none" }}
-              to={"/likes/" + article._id}
-            >
-              <Button>
-                <Favorite
-                  color={isLiked ? "secondary" : "primary"}
-                  style={{ marginRight: 5 }}
-                />
-                <Typography>{likersNames.length}</Typography>
-              </Button>
-            </Link>
-          </CardActions>
-          <Divider variant="middle" />
-          <CardContent style={{ marginBottom: 0, paddingBottom: 0 }}>
-            <Typography variant="h5">Comments</Typography>
-            {commentsLoading && <LinearProgress />}
-          </CardContent>
-          {commentsLoading ? null : comments.length ? (
-            comments.map((item) => {
-              return (
-                <List key={item._id}>
-                  <ListItem alignItems="flex-start">
-                    <ListItemAvatar>
-                      <Link
-                        style={{ textDecoration: "none" }}
-                        to={"/article/" + item.authorId + "/articles"}
-                      >
-                        <Avatar>{item.author[0].toUpperCase()}</Avatar>
-                      </Link>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={item.comment}
-                      secondary={
-                        <>
-                          <Typography
-                            component="span"
-                            variant="body2"
-                            color="textPrimary"
-                          >
-                            {item.author}
-                          </Typography>{" "}
-                          {" - " +
-                            item.addedOn.split(".")[0].split("T")[1] +
-                            " - " +
-                            item.addedOn.split(".")[0].split("T")[0]}
-                        </>
-                      }
+              <CardActions>
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to={"/article/" + article.authorId + "/articles"}
+                >
+                  <Button
+                    color="primary"
+                    style={{
+                      textTransform: "none",
+                      marginTop: 5,
+                      marginBottom: 5,
+                    }}
+                  >
+                    <AccountCircle style={{ marginRight: 5 }} />
+                    <Typography>{article.author}</Typography>
+                  </Button>
+                </Link>
+                <div style={{ flexGrow: 1 }} />
+                {auth ? (
+                  <Button
+                    disabled={likesLoading}
+                    onClick={this.handleLike}
+                    style={{ position: "relative" }}
+                  >
+                    <Typography>{isLiked ? "unlike" : "like"}</Typography>
+                  </Button>
+                ) : null}
+                <Link
+                  style={{ textDecoration: "none" }}
+                  to={"/likes/" + article._id}
+                >
+                  <Button>
+                    <Favorite
+                      color={isLiked ? "secondary" : "primary"}
+                      style={{ marginRight: 5 }}
                     />
-                  </ListItem>
-                  <Divider variant="inset" component="li" />
-                </List>
-              );
-            })
-          ) : (
-            <CardContent>
-              <Typography color="textSecondary">No comments yet!</Typography>
-            </CardContent>
-          )}
+                    <Typography>{likersNames.length}</Typography>
+                  </Button>
+                </Link>
+              </CardActions>
+              <Divider variant="middle" />
+              <CardContent style={{ marginBottom: 0, paddingBottom: 0 }}>
+                <Typography variant="h5">Comments</Typography>
+                {commentsLoading && <LinearProgress />}
+              </CardContent>
+              {commentsLoading ? null : comments.length ? (
+                comments.map((item) => {
+                  return (
+                    <List key={item._id}>
+                      <ListItem alignItems="flex-start">
+                        <ListItemAvatar>
+                          <Link
+                            style={{ textDecoration: "none" }}
+                            to={"/article/" + item.authorId + "/articles"}
+                          >
+                            <Avatar>{item.author[0].toUpperCase()}</Avatar>
+                          </Link>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={item.comment}
+                          secondary={
+                            <>
+                              <Typography
+                                component="span"
+                                variant="body2"
+                                color="textPrimary"
+                              >
+                                {item.author}
+                              </Typography>{" "}
+                              {" - " +
+                                item.addedOn.split(".")[0].split("T")[1] +
+                                " - " +
+                                item.addedOn.split(".")[0].split("T")[0]}
+                            </>
+                          }
+                        />
+                      </ListItem>
+                      <Divider variant="inset" component="li" />
+                    </List>
+                  );
+                })
+              ) : (
+                <CardContent>
+                  <Typography color="textSecondary">
+                    No comments yet!
+                  </Typography>
+                </CardContent>
+              )}
 
-          {auth ? (
-            <CardContent>
-              <TextField
-                type="text"
-                onChange={(e) => this.setState({ comment: e.target.value })}
-                fullWidth
-                value={comment}
-                placeholder="Write your comment here"
-                multiline
-                // rows={2}
-                variant="standard"
-              />
-              <Button
-                size="medium"
-                style={{
-                  borderTopLeftRadius: 0,
-                  borderTopRightRadius: 0,
-                  position: "relative",
-                }}
-                disabled={addCommentLoading}
-                onClick={this.postComment}
-                color="primary"
-                variant="contained"
-              >
-                Post Comment
-                {addCommentLoading && (
-                  <CircularProgress
-                    size={24}
-                    style={{ position: "absolute" }}
+              {auth ? (
+                <CardContent>
+                  <TextField
+                    type="text"
+                    onChange={(e) => this.setState({ comment: e.target.value })}
+                    fullWidth
+                    value={comment}
+                    placeholder="Write your comment here"
+                    multiline
+                    // rows={2}
+                    variant="standard"
                   />
-                )}
-              </Button>
-            </CardContent>
-          ) : (
-            <CardContent>
-              <Typography
-                color="textSecondary"
-                variant="body1"
-                style={{ textAlign: "center" }}
-              >
-                Login to Write a comment
-              </Typography>
-            </CardContent>
-          )}
-        </MarkedDown>
+                  <Button
+                    size="medium"
+                    style={{
+                      borderTopLeftRadius: 0,
+                      borderTopRightRadius: 0,
+                      position: "relative",
+                    }}
+                    disabled={addCommentLoading}
+                    onClick={this.postComment}
+                    color="primary"
+                    variant="contained"
+                  >
+                    Post Comment
+                    {addCommentLoading && (
+                      <CircularProgress
+                        size={24}
+                        style={{ position: "absolute" }}
+                      />
+                    )}
+                  </Button>
+                </CardContent>
+              ) : (
+                <CardContent>
+                  <Typography
+                    color="textSecondary"
+                    variant="body1"
+                    style={{ textAlign: "center" }}
+                  >
+                    Login to Write a comment
+                  </Typography>
+                </CardContent>
+              )}
+            </MarkedDown>
+          </Grid>
+          <Grid item md={2} sm={0} xs={0} />
+        </Grid>
+
+        <Hidden smUp>
+          <div
+            style={{
+              position: "relative",
+              width: "100%",
+              bottom: 0,
+              height: 80,
+            }}
+          />
+          <BottomNav isliked={isLiked} />
+        </Hidden>
       </>
     ) : (
       <Loader />

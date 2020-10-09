@@ -11,5 +11,6 @@ export default function ElevationScroll(props) {
 
   return React.cloneElement(children, {
     elevation: trigger ? 4 : 0,
+    style: { backgroundColor: trigger ? "default" : "#fff" },
   });
 }

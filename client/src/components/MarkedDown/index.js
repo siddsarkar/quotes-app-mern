@@ -13,7 +13,8 @@ import assetMapping from "../../assets/assetMapping.json";
 
 export default function MarkedDown({ date, tags, title, body, children }) {
   return (
-    <Container maxWidth="md" style={{ padding: 0 }}>
+    // <Container maxWidth="md" style={{ padding: 0, position: "relative" }}>
+    <>
       <CardContent>
         {tags.map((tag, i) => {
           return (
@@ -27,7 +28,11 @@ export default function MarkedDown({ date, tags, title, body, children }) {
                 // color="primary"
                 label={"#" + tag}
                 size="small"
-                style={{ marginLeft: 5, color: assetMapping.colors[tag] }}
+                style={{
+                  marginLeft: 5,
+                  color: "#fff",
+                  backgroundColor: assetMapping.colors[tag],
+                }}
               />
             </Link>
           );
@@ -46,6 +51,6 @@ export default function MarkedDown({ date, tags, title, body, children }) {
         />
       </CardContent>
       {children}
-    </Container>
+    </>
   );
 }
