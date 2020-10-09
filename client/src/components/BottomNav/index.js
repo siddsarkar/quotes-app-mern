@@ -1,31 +1,15 @@
 import React from "react";
-import {
-  BottomNavigationAction,
-  BottomNavigation,
-  makeStyles,
-  createStyles,
-} from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 
 import {
-  LocationOn,
   Favorite,
-  Restore,
   Bookmark,
-  MoreHoriz,
-  Share,
-  FavoriteOutlined,
   FavoriteBorderOutlined,
   BookmarkBorderOutlined,
   ShareOutlined,
   MoreHorizOutlined,
 } from "@material-ui/icons";
-import {
-  AppBar,
-  CardActions,
-  colors,
-  IconButton,
-  Toolbar,
-} from "@material-ui/core";
+import { CardActions, IconButton } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,7 +27,6 @@ const useStyles = makeStyles((theme) => ({
 export default function BottomNav(props) {
   const { isliked, isBookmarked = false } = props;
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
 
   return (
     <CardActions className={classes.root}>
@@ -51,7 +34,7 @@ export default function BottomNav(props) {
         {isliked ? <Favorite color="inherit" /> : <FavoriteBorderOutlined />}
       </IconButton>
       <IconButton color="inherit">
-        <BookmarkBorderOutlined />
+        {isBookmarked ? <Bookmark /> : <BookmarkBorderOutlined />}
       </IconButton>
       <IconButton color="inherit">
         <ShareOutlined />

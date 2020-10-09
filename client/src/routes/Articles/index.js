@@ -22,17 +22,7 @@ import { getCommentsForArticle } from "../../store/actions/commentActions";
 
 //components
 import { TagsBar, MyCard, Loader, Paginate } from "../../components";
-import {
-  AccountCircle,
-  CakeOutlined,
-  DataUsage,
-  Extension,
-  Flare,
-  FlareOutlined,
-  LabelImportant,
-  Loyalty,
-  Star,
-} from "@material-ui/icons";
+import { DataUsage, Flare, LabelImportant, Loyalty } from "@material-ui/icons";
 
 class Articles extends Component {
   mounted = false;
@@ -67,7 +57,6 @@ class Articles extends Component {
       <>
         <TagsBar tags={tags} />
         <Grid
-          container
           container
           direction="row"
           justify="flex-start"

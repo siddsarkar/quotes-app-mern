@@ -1,14 +1,7 @@
 import React from "react";
-import {
-  CardActions,
-  CardContent,
-  IconButton,
-  makeStyles,
-} from "@material-ui/core";
+import { CardContent, IconButton, makeStyles } from "@material-ui/core";
 import {
   Bookmark,
-  BookmarkOutlined,
-  BookOutlined,
   Favorite,
   FavoriteBorderOutlined,
   ShareOutlined,

@@ -149,12 +149,17 @@ class SingleArticle extends Component {
       <>
         <Grid
           container
-          container
           direction="row"
           justify="flex-start"
           alignItems="stretch"
         >
-          <Grid item md={2} sm={2} xs={0} style={{ position: "relative" }}>
+          <Grid
+            item
+            md={2}
+            sm={2}
+            xs={0}
+            style={{ position: "relative", backgroundColor: "#fafafa" }}
+          >
             <Hidden xsDown>
               <SideNav isliked={isLiked} isBookMarked={false} />
             </Hidden>
@@ -301,7 +306,13 @@ class SingleArticle extends Component {
               )}
             </MarkedDown>
           </Grid>
-          <Grid item md={2} sm={0} xs={0} />
+          <Grid
+            item
+            md={2}
+            sm={0}
+            xs={0}
+            style={{ backgroundColor: "#fafafa" }}
+          />
         </Grid>
 
         <Hidden smUp>
