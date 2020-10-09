@@ -68,7 +68,7 @@ class Articles extends Component {
             xl={2}
             md={3}
             sm={4}
-            xs={0}
+            xs={false}
             // style={{ position: "relative" }}
           >
             <Hidden xsDown>
@@ -137,7 +137,7 @@ class Articles extends Component {
               }}
             />
           </Grid>
-          <Grid item lg={2} xl={2} md={1} sm={0} xs={0} />
+          <Grid item lg={2} xl={2} md={1} sm={false} xs={false} />
         </Grid>
       </>
     );

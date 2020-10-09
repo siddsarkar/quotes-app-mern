@@ -6,6 +6,7 @@ import MainAppBar from "./MainAppBar";
 import MarkedDown from "./MarkedDown";
 import BottomNav from "./BottomNav";
 import SideNav from "./SideNav";
+import TagsSelect from "./TagsSelect";
 
 export {
   MyCard,
@@ -16,4 +17,5 @@ export {
   MarkedDown,
   BottomNav,
   SideNav,
+  TagsSelect,
 };

@@ -5,24 +5,19 @@ import {
   TextField,
   Typography,
   Button,
-  Grid,
-  FormControl,
-  FormGroup,
-  FormLabel,
-  FormHelperText,
-  Checkbox,
   Tabs,
   Tab,
-  FormControlLabel,
   AppBar,
+  Paper,
+  Divider,
 } from "@material-ui/core";
-import { AccountCircle } from "@material-ui/icons";
 
 //actions
 import { addArticle } from "../../store/actions/articleActions";
 import TabPanel from "../../utils/TabPanel";
 import MarkedDown from "../../components/MarkedDown";
 import ElevationScroll from "../../utils/ElevationScroll";
+import { TagsSelect } from "../../components";
 
 class AddArticle extends Component {
   mounted = true;
@@ -31,11 +26,7 @@ class AddArticle extends Component {
     author: "",
     body: "",
     title: "",
-    tags: {
-      love: false,
-      inspiration: false,
-      travel: false,
-    },
+    tags: [],
   };
 
   getAuthorname = () => {
@@ -50,53 +41,28 @@ class AddArticle extends Component {
     this.mounted = false;
   }
 
-  addArticle = () => {
-    const filterSelected = Object.fromEntries(
-      Object.entries(this.state.tags).filter(([key, value]) => value === true)
-    );
-    const [first, ...rest] = Object.keys(filterSelected);
-    if ([first, ...rest].length >= 1 && [first, ...rest][0] !== undefined) {
-      const article = {
-        author: this.state.author,
-        body: this.state.body,
-        title: this.state.title,
-        tags: [first, ...rest],
-      };
-
-      this.props.addArticle(article, () => {
-        this.mounted &&
-          this.setState({
-            body: "",
-            title: "",
-            tags: {
-              love: false,
-              inspiration: false,
-              travel: false,
-            },
-          });
-      });
-    }
+  setTags = (v) => {
+    this.mounted && this.setState({ tags: v });
   };
 
-  handleChange = (event) => {
-    const name = event.target.name;
-    const checked = event.target.checked;
-    this.mounted &&
-      this.setState((state) => ({
-        tags: { ...state.tags, [name]: checked },
-      }));
+  addArticle = () => {
+    const { tags, title, body, author } = this.state;
+    const article = { body, title, tags, author };
+    console.log(article);
+    this.props.addArticle(article, () => {
+      this.mounted &&
+        this.setState({
+          body: "",
+          title: "",
+          tags: [],
+        });
+    });
   };
 
   render() {
-    const [first, ...rest] = Object.keys(
-      Object.fromEntries(
-        Object.entries(this.state.tags).filter(([key, value]) => value === true)
-      )
-    );
-    const { love, inspiration, travel } = this.state.tags;
-    const error = [love, inspiration, travel].filter((v) => v).length < 1;
     const { auth } = this.props;
-    const { author, title, body, value } = this.state;
+    const { title, body, value } = this.state;
+
     return (
       <>
         <ElevationScroll {...this.props}>
@@ -115,33 +81,21 @@ class AddArticle extends Component {
         </ElevationScroll>
         <TabPanel value={value} index={0}>
           <Container maxWidth="md">
-            <Typography style={{ padding: 20, paddingLeft: 0 }} variant="h3">
-              Write Your Quote
-            </Typography>
-            <Grid container spacing={1} alignItems="flex-end">
-              <Grid item>
-                <AccountCircle />
-              </Grid>
-              <Grid item>
-                <TextField
-                  value={author}
-                  id="standard-basic"
-                  label="Username"
-                  disabled
-                />
-              </Grid>
-            </Grid>
-            <br />
+            <TagsSelect setTags={this.setTags} tags={this.state.tags} />
             <TextField
-              value={title}
-              style={{ marginBottom: 20 }}
+              variant="standard"
+              margin="normal"
+              label="Title"
               fullWidth
-              onChange={(e) => {
-                this.setState({ title: e.target.value });
-              }}
-              placeholder="Title"
-              disabled={auth ? false : true}
+              value={this.state.title}
+              onChange={(e) => this.setState({ title: e.target.value })}
+              placeholder="Title of your post"
             />
+            <Typography color="textSecondary" gutterBottom variant="caption">
+              {Date()}
+            </Typography>
+
+            <Divider variant="fullWidth" />
             <br />
             <TextField
               value={body}
@@ -151,55 +105,17 @@ class AddArticle extends Component {
               fullWidth
               placeholder="Body"
               multiline
-              rows={4}
+              label="Body"
               variant="filled"
               disabled={auth ? false : true}
             />
-            <br />
-            <br />
-            <FormControl
-              disabled={auth ? false : true}
-              required
-              error={error}
-              component="fieldset"
+
+            <div
+              style={{
+                paddingTop: 10,
+                paddingLeft: 0,
+              }}
             >
-              <FormLabel component="legend">Tags</FormLabel>
-              <FormGroup>
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={love}
-                      onChange={this.handleChange}
-                      name="love"
-                    />
-                  }
-                  label="Love"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={inspiration}
-                      onChange={this.handleChange}
-                      name="inspiration"
-                    />
-                  }
-                  label="Inspiration"
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      checked={travel}
-                      onChange={this.handleChange}
-                      name="travel"
-                    />
-                  }
-                  label="Travel"
-                />
-              </FormGroup>
-              <FormHelperText>Pick at least one tag!</FormHelperText>
-            </FormControl>
-            <br />
-            <div style={{ padding: 20, paddingLeft: 0 }}>
               <Button
                 disabled={auth ? false : true}
                 variant="outlined"
@@ -208,15 +124,24 @@ class AddArticle extends Component {
                 Submit
               </Button>
             </div>
+
+            {/* <ReactMarkdown
+                  className="markdown"
+                  source={body || `## use markdown or html \n goodluck!`}
+                  escapeHtml={false}
+                /> */}
           </Container>
         </TabPanel>
+
         <TabPanel value={value} index={1}>
-          <MarkedDown
-            date={Date().substr(0, 25)}
-            tags={[first, ...rest]}
-            body={body}
-            title={title}
-          />
+          <Container component={Paper} maxWidth="md">
+            <MarkedDown
+              date={Date().substr(0, 25)}
+              tags={this.state.tags}
+              body={body}
+              title={title}
+            />
+          </Container>
         </TabPanel>
       </>
     );

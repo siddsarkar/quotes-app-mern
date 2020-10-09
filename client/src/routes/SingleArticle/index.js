@@ -157,7 +157,7 @@ class SingleArticle extends Component {
             item
             md={2}
             sm={2}
-            xs={0}
+            xs={false}
             style={{ position: "relative", backgroundColor: "#fafafa" }}
           >
             <Hidden xsDown>
@@ -309,8 +309,8 @@ class SingleArticle extends Component {
           <Grid
             item
             md={2}
-            sm={0}
-            xs={0}
+            sm={false}
+            xs={false}
             style={{ backgroundColor: "#fafafa" }}
           />
         </Grid>

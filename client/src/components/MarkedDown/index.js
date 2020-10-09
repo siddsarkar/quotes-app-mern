@@ -25,7 +25,7 @@ export default function MarkedDown({ date, tags, title, body, children }) {
                 style={{
                   marginLeft: 5,
                   color: "#fff",
-                  backgroundColor: assetMapping.colors[tag],
+                  backgroundColor: assetMapping.colors[tag] || "gray",
                 }}
               />
             </Link>
