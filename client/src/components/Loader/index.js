@@ -1,5 +1,5 @@
 import React from "react";
-import { CircularProgress } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 
 export default function Loader() {
   return (
@@ -9,11 +9,14 @@ export default function Loader() {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        top: "48vh",
-        left: "48vw",
+        top: 0,
+        height: "100%",
+        width: "100%",
       }}
     >
-      <CircularProgress />
+      <Typography color="textSecondary" variant="overline">
+        Loading...
+      </Typography>
     </div>
   );
 }

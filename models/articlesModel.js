@@ -10,7 +10,7 @@ const ArticleSchema = mongoose.Schema({
   },
   tags: {
     type: Array,
-    default: ["uncategorised"],
+    required: true,
   },
   author: {
     type: String,

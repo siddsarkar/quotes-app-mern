@@ -203,11 +203,11 @@ class MyArticles extends Component {
           </TabPanel>
           <TabPanel value={value} index={2}>
             {/* likes */}
-            <List>
-              {likesLoading ? (
-                <Loader />
-              ) : (
-                myLikes.map((value) => {
+            {likesLoading ? (
+              <Loader />
+            ) : (
+              <List>
+                {myLikes.map((value) => {
                   return (
                     <Link
                       key={value.articleId}
@@ -232,9 +232,9 @@ class MyArticles extends Component {
                       <Divider />
                     </Link>
                   );
-                })
-              )}
-            </List>
+                })}
+              </List>
+            )}
           </TabPanel>
         </Container>
       </>

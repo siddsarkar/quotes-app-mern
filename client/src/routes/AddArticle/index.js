@@ -48,15 +48,15 @@ class AddArticle extends Component {
   addArticle = () => {
     const { tags, title, body, author } = this.state;
     const article = { body, title, tags, author };
-    console.log(article);
-    this.props.addArticle(article, () => {
-      this.mounted &&
-        this.setState({
-          body: "",
-          title: "",
-          tags: [],
-        });
-    });
+    tags.length &&
+      this.props.addArticle(article, () => {
+        this.mounted &&
+          this.setState({
+            body: "",
+            title: "",
+            tags: [],
+          });
+      });
   };
 
   render() {

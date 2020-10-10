@@ -43,7 +43,7 @@ class TagsScreen extends Component {
     const paramTag = this.props.match.params.tag;
     return (
       <>
-        <TagsBar tags={tags} color={paramTag} onClick={this.handleClick} />
+        <TagsBar tags={tags} curTag={paramTag} onClick={this.handleClick} />
         <Container maxWidth="md" style={{ padding: 10 }}>
           {loading ? (
             <Loader />

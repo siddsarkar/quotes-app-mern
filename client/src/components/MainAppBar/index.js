@@ -13,6 +13,7 @@ import {
   MenuItem,
   Typography,
   Hidden,
+  Grid,
 } from "@material-ui/core";
 import {
   AccountCircle,
@@ -86,82 +87,88 @@ function MainAppBar(props) {
 
   return (
     <AppBar position="relative" color="primary" style={{ zIndex: 99999 }}>
-      <Toolbar className={classes.root} variant="dense" disableGutters>
-        <IconButton color="inherit" to="/" component={Link}>
-          <Home />
-        </IconButton>
-        <div className={classes.search}>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              history.push("/search");
-              props.search(searchInput, 1, call);
-              setSearchInput("");
-              ref.current.blur();
-            }}
-          >
-            <div className={classes.searchIcon}>
-              <Search />
+      <Grid container>
+        <Grid item md={2} />
+        <Grid item md={8}>
+          <Toolbar className={classes.root} variant="dense" disableGutters>
+            <IconButton color="inherit" to="/" component={Link}>
+              <Home />
+            </IconButton>
+            <div className={classes.search}>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  history.push("/search");
+                  props.search(searchInput, 1, call);
+                  setSearchInput("");
+                  ref.current.blur();
+                }}
+              >
+                <div className={classes.searchIcon}>
+                  <Search />
+                </div>
+                <InputBase
+                  placeholder="Search…"
+                  classes={{
+                    root: classes.inputRoot,
+                    input: classes.inputInput,
+                  }}
+                  inputProps={{ "aria-label": "search" }}
+                  value={searchInput}
+                  inputRef={ref}
+                  type="search"
+                  onChange={(e) => setSearchInput(e.target.value)}
+                />
+              </form>
             </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput,
-              }}
-              inputProps={{ "aria-label": "search" }}
-              value={searchInput}
-              inputRef={ref}
-              type="search"
-              onChange={(e) => setSearchInput(e.target.value)}
-            />
-          </form>
-        </div>
-        <Hidden xsDown>
-          <Typography>
-            {props.isLoggedin ? "Hi, " + props.username : null}
-          </Typography>
-        </Hidden>
-        <div style={{ flexGrow: 1 }} />
-        {props.isLoggedin ? (
-          <>
-            <IconButton to="/addarticle" component={Link} color="inherit">
-              <Create />
-            </IconButton>
-            <IconButton color="inherit" to="/myarticles" component={Link}>
-              <History />
-            </IconButton>
-            <div>
-              <IconButton
-                aria-controls="simple-menu"
-                aria-haspopup="true"
-                onClick={handleClick}
-                color="inherit"
-              >
-                <AccountCircle />
-              </IconButton>
-              <Menu
-                style={{ zIndex: 9999999 }}
-                id="simple-menu"
-                anchorEl={anchorEl}
-                keepMounted
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
+            <Hidden xsDown>
+              <Typography>
+                {props.isLoggedin ? "Hi, " + props.username : null}
+              </Typography>
+            </Hidden>
+            <div style={{ flexGrow: 1 }} />
+            {props.isLoggedin ? (
+              <>
+                <IconButton to="/addarticle" component={Link} color="inherit">
+                  <Create />
+                </IconButton>
+                <IconButton color="inherit" to="/myarticles" component={Link}>
+                  <History />
+                </IconButton>
+                <div>
+                  <IconButton
+                    aria-controls="simple-menu"
+                    aria-haspopup="true"
+                    onClick={handleClick}
+                    color="inherit"
+                  >
+                    <AccountCircle />
+                  </IconButton>
+                  <Menu
+                    style={{ zIndex: 9999999 }}
+                    id="simple-menu"
+                    anchorEl={anchorEl}
+                    keepMounted
+                    open={Boolean(anchorEl)}
+                    onClose={handleClose}
+                  >
+                    {/* <MenuItem onClick={handleClose}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem> */}
-                <MenuItem onClick={handleClose && props.logout}>
-                  Logout
-                </MenuItem>
-              </Menu>
-            </div>
-          </>
-        ) : (
-          <Button to="/login" component={Link} color="inherit">
-            Login
-          </Button>
-        )}
-      </Toolbar>
+                    <MenuItem onClick={handleClose && props.logout}>
+                      Logout
+                    </MenuItem>
+                  </Menu>
+                </div>
+              </>
+            ) : (
+              <Button to="/login" component={Link} color="inherit">
+                Login
+              </Button>
+            )}
+          </Toolbar>
+        </Grid>
+        <Grid item md={2} />
+      </Grid>
     </AppBar>
   );
 }

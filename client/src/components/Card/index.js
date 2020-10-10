@@ -36,7 +36,7 @@ export default function MyCard({ item }) {
             paddingTop: 0,
           }}
         >
-          <Typography variant="h5" color="textPrimary">
+          <Typography variant="h4" color="textPrimary">
             {item.title}
           </Typography>
           {/* <Typography variant="body2" color="textPrimary">
