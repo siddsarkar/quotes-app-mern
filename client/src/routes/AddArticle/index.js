@@ -10,7 +10,6 @@ import {
   AppBar,
   Paper,
   Divider,
-  TextareaAutosize,
 } from "@material-ui/core";
 
 //actions

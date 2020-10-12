@@ -9,7 +9,6 @@ import {
   ListItemAvatar,
   Avatar,
   ListItemText,
-  ListItemIcon,
   Typography,
 } from "@material-ui/core";
 
@@ -50,7 +49,7 @@ class Articles extends Component {
   }
 
   render() {
-    const { articles, tags, userId, username, loggedIn } = this.props;
+    const { articles, tags, username, loggedIn } = this.props;
     const { page, pageCount, isLoading } = this.state;
     return isLoading ? (
       <Loader />
@@ -152,7 +151,6 @@ const mapStateToProps = (state) => {
     articles: state.articles.articles,
     comments: state.comments.comments,
     username: state.users.authenticatedUsername,
-    userId: state.users.userId,
     loggedIn: state.users.isAuthenticated,
   };
 };

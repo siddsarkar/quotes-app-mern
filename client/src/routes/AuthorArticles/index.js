@@ -40,7 +40,6 @@ class AuthorArticles extends Component {
   render() {
     const { articles } = this.props;
     const { isloading } = this.state;
-    const authorId = this.props.match.params.authorId;
 
     return isloading ? (
       <Loader />

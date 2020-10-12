@@ -1,4 +1,4 @@
-import { CardContent, Chip, Typography, Divider } from "@material-ui/core";
+import { Chip, Typography, Divider } from "@material-ui/core";
 import React from "react";
 import ReactMarkdown from "react-markdown/with-html";
 import { Link } from "react-router-dom";
