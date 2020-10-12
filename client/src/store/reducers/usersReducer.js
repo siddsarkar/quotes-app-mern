@@ -6,11 +6,16 @@ const validCredentials = () => {
   if (authorizationToken === null) return false;
   try {
     jwt.decode(authorizationToken);
+    const { exp } = jwt.decode(authorizationToken);
+    if (Date.now() >= exp * 1000) {
+      return false;
+    }
     return true;
   } catch (err) {
     return false;
   }
 };
+
 const initialState = {
   isAuthenticated: validCredentials(),
   authenticatedUsername:

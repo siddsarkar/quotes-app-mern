@@ -86,12 +86,21 @@ export const getMyArticles = (cb) => {
         Accept: "application/json",
       },
     })
-      .then((res) => res.json())
       .then((res) => {
-        dispatch({
-          type: actionTypes.GOT_MY_ARTICLES,
-          myArticles: res.articles,
-        });
+        if (res.status === 401) {
+          dispatch({ type: actionTypes.USER_LOGGED_OUT });
+          alert("session expired please login again!");
+          return false;
+        } else {
+          return res.json();
+        }
+      })
+      .then((res) => {
+        res &&
+          dispatch({
+            type: actionTypes.GOT_MY_ARTICLES,
+            myArticles: res.articles,
+          });
         cb();
       });
   };
