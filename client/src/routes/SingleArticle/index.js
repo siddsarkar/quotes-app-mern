@@ -166,7 +166,7 @@ class SingleArticle extends Component {
               <SideNav isliked={isLiked} isBookMarked={false} />
             </Hidden>
           </Grid>
-          <Grid elevation={false} component={Paper} item md={8} sm={10} xs={12}>
+          <Grid elevation={0} component={Paper} item md={8} sm={10} xs={12}>
             <Container maxWidth="md" style={{ padding: 10 }}>
               <MarkedDown
                 tags={article.tags}

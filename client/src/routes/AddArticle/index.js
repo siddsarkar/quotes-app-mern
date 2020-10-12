@@ -132,7 +132,7 @@ class AddArticle extends Component {
         </TabPanel>
 
         <TabPanel value={value} index={1}>
-          <Container component={Paper} elevation={false} maxWidth="md">
+          <Container component={Paper} elevation={0} maxWidth="md">
             <MarkedDown
               date={Date().substr(0, 15)}
               tags={this.state.tags}
