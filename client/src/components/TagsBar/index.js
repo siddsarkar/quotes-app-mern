@@ -7,34 +7,42 @@ import { TrendingUp } from "@material-ui/icons";
 import ElevationScroll from "../../utils/ElevationScroll";
 
 export default function TagsBar(props) {
-  const { curTag = false } = props;
-  const chipRef = React.useRef();
+  const { curTag } = props;
+  const chipRef = React.useRef(null);
 
   useEffect(() => {
-    curTag && chipRef.current && chipRef.current.scrollIntoView(true);
+    setTimeout(() => {
+      if (chipRef.current === null) {
+        return;
+      } else {
+        chipRef.current.scrollIntoView({ behavior: "smooth" });
+      }
+    }, 500);
   });
 
   return (
     <ElevationScroll {...props}>
       <AppBar position="sticky">
         <CardActions className="example">
-          {props.tags.map((tag, i) => (
-            <Chip
-              key={i}
-              component={Link}
-              to={"/tags/" + tag.name}
-              innerRef={curTag === tag.name ? chipRef : null}
-              color={curTag === tag.name ? "primary" : "default"}
-              onClick={
-                props.onClick === undefined
-                  ? null
-                  : () => props.onClick(tag.name)
-              }
-              clickable
-              icon={<TrendingUp />}
-              label={"#" + tag.name}
-            />
-          ))}
+          {props.tags.map((tag, i) => {
+            return (
+              <Chip
+                key={i}
+                component={Link}
+                to={"/tags/" + tag.name}
+                ref={curTag === tag.name ? chipRef : null}
+                color={curTag === tag.name ? "primary" : "default"}
+                onClick={
+                  props.onClick === undefined
+                    ? null
+                    : () => props.onClick(tag.name)
+                }
+                clickable
+                icon={<TrendingUp />}
+                label={"#" + tag.name}
+              />
+            );
+          })}
         </CardActions>
       </AppBar>
     </ElevationScroll>

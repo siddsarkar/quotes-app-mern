@@ -37,17 +37,18 @@ class TagsScreen extends Component {
       this.props.getTags(tag, 1, this.callback)
     );
   };
+
   render() {
     const { articles, tags } = this.props;
     const { loading } = this.state;
     const paramTag = this.props.match.params.tag;
-    return (
+    return loading ? (
+      <Loader />
+    ) : (
       <>
         <TagsBar tags={tags} curTag={paramTag} onClick={this.handleClick} />
         <Container maxWidth="md" style={{ padding: 10 }}>
-          {loading ? (
-            <Loader />
-          ) : articles.length ? (
+          {articles.length ? (
             articles.map((item, index) => {
               return <MyCard key={item._id} item={item} />;
             })
