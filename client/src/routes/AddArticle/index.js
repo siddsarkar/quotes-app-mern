@@ -10,6 +10,7 @@ import {
   AppBar,
   Paper,
   Divider,
+  TextareaAutosize,
 } from "@material-ui/core";
 
 //actions
@@ -60,7 +61,7 @@ class AddArticle extends Component {
   };
 
   render() {
-    const { auth } = this.props;
+    const { auth, authenticatedUsername } = this.props;
     const { title, body, value } = this.state;
 
     return (
@@ -92,7 +93,7 @@ class AddArticle extends Component {
               placeholder="Title of your post"
             />
             <Typography color="textSecondary" gutterBottom variant="caption">
-              {Date()}
+              {Date().substr(0, 15)}
             </Typography>
 
             <Divider variant="fullWidth" />
@@ -104,8 +105,9 @@ class AddArticle extends Component {
               }}
               fullWidth
               placeholder="Body"
+              rows={18}
               multiline
-              label="Body"
+              // label="Body"
               variant="filled"
               disabled={auth ? false : true}
             />
@@ -123,20 +125,17 @@ class AddArticle extends Component {
               >
                 Submit
               </Button>
+              <Typography color="textSecondary">
+                Signed In as : {authenticatedUsername}
+              </Typography>
             </div>
-
-            {/* <ReactMarkdown
-                  className="markdown"
-                  source={body || `## use markdown or html \n goodluck!`}
-                  escapeHtml={false}
-                /> */}
           </Container>
         </TabPanel>
 
         <TabPanel value={value} index={1}>
           <Container component={Paper} maxWidth="md">
             <MarkedDown
-              date={Date().substr(0, 25)}
+              date={Date().substr(0, 15)}
               tags={this.state.tags}
               body={body}
               title={title}

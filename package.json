@@ -8,8 +8,8 @@
     "heroku-postbuild": "cd client && yarn install && yarn build",
     "client": "cd client && yarn start",
     "server": "nodemon app.js",
-    "concurrently": "concurrently  --names \"SERVER,CLIENT\" -c \"bgGreen.bold,bgMagenta.bold\" \"npm run start\" \"npm run client\"",
-    "concurrently-nodemon": "concurrently  --names \"SERVER,CLIENT\" -c \"bgGreen.bold,bgMagenta.bold\" \"npm run server\" \"npm run client\""
+    "dev": "concurrently  --names \"SERVER,CLIENT\" -c \"bgGreen.bold,bgMagenta.bold\" \"npm run start\" \"npm run client\"",
+    "dev2": "concurrently  --names \"SERVER,CLIENT\" -c \"bgGreen.bold,bgMagenta.bold\" \"npm run server\" \"npm run client\""
   },
   "author": "Siddhartha Sarkar",
   "license": "ISC",

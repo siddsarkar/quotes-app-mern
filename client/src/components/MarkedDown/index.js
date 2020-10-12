@@ -7,43 +7,35 @@ import assetMapping from "../../assets/assetMapping.json";
 
 export default function MarkedDown({ date, tags, title, body, children }) {
   return (
-    // <Container maxWidth="md" style={{ padding: 0, position: "relative" }}>
     <>
-      <CardContent>
-        {tags.map((tag, i) => {
-          return (
-            <Link
-              key={i}
-              style={{ textDecoration: "none" }}
-              to={"/tags/" + tag}
-            >
-              <Chip
-                clickable
-                // color="primary"
-                label={"#" + tag}
-                size="small"
-                style={{
-                  marginLeft: 5,
-                  color: "#fff",
-                  backgroundColor: assetMapping.colors[tag] || "gray",
-                }}
-              />
-            </Link>
-          );
-        })}
-        <Typography color="textPrimary" variant="h3">
-          {title || "Your title here"}
-        </Typography>
-        <Typography color="textSecondary" gutterBottom variant="caption">
-          {date}
-        </Typography>
-        <Divider variant="fullWidth" />
-        <ReactMarkdown
-          className="markdown"
-          source={body || `## use markdown or html \n goodluck!`}
-          escapeHtml={false}
-        />
-      </CardContent>
+      {tags.map((tag, i) => {
+        return (
+          <Link key={i} style={{ textDecoration: "none" }} to={"/tags/" + tag}>
+            <Chip
+              clickable
+              label={"#" + tag}
+              size="small"
+              style={{
+                marginLeft: 5,
+                color: "#fff",
+                backgroundColor: assetMapping.colors[tag] || "gray",
+              }}
+            />
+          </Link>
+        );
+      })}
+      <Typography color="textPrimary" variant="h3">
+        {title || "Your post title"}
+      </Typography>
+      <Typography color="textSecondary" gutterBottom variant="caption">
+        {date}
+      </Typography>
+      <Divider variant="fullWidth" />
+      <ReactMarkdown
+        className="markdown"
+        source={body || `# Use markdown or html \n Goodluck! \n`}
+        escapeHtml={false}
+      />
       {children}
     </>
   );

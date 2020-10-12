@@ -1,6 +1,12 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { Container, Typography } from "@material-ui/core";
+import {
+  Avatar,
+  CardContent,
+  Container,
+  Grid,
+  Typography,
+} from "@material-ui/core";
 
 //components
 import { MyCard, Loader } from "../../components";
@@ -40,12 +46,38 @@ class AuthorArticles extends Component {
       <Loader />
     ) : (
       <>
-        <div style={{ margin: 10, textAlign: "center" }}>
-          <Typography color="textSecondary" variant="caption">
-            Showing articles by {authorId}
-          </Typography>
-        </div>
-        <Container maxWidth="lg">
+        <Container maxWidth="md">
+          <CardContent style={{ paddingBottom: 0 }}>
+            <Grid
+              container
+              direction="column"
+              justify="center"
+              alignItems="center"
+              spacing={2}
+            >
+              <Grid item>
+                <Avatar style={{ height: 100, width: 100 }}>
+                  {articles[0].author.substr(0, 1).toUpperCase()}
+                </Avatar>
+              </Grid>
+              <Grid item>
+                <Typography variant="h4">{articles[0].author}</Typography>
+                <Typography color="textSecondary" variant="h5">
+                  {"@" + articles[0].author}
+                </Typography>
+                {/* <Typography variant="h6" color="textSecondary">
+                      Joined: {Date().substr(0, 16)}
+                    </Typography> */}
+              </Grid>
+            </Grid>
+          </CardContent>
+        </Container>
+        <Container maxWidth="md" style={{ padding: 10 }}>
+          <div style={{ textAlign: "left" }}>
+            <Typography color="textSecondary" variant="caption">
+              Recent articles by {articles[0].author}
+            </Typography>
+          </div>
           {articles.map((item, index) => {
             return <MyCard key={item._id} item={item} />;
           })}

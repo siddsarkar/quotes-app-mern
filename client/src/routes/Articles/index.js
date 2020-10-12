@@ -23,6 +23,7 @@ import { getCommentsForArticle } from "../../store/actions/commentActions";
 //components
 import { TagsBar, MyCard, Loader, Paginate } from "../../components";
 import { DataUsage, Flare, LabelImportant, Loyalty } from "@material-ui/icons";
+import { Link } from "react-router-dom";
 
 class Articles extends Component {
   mounted = false;
@@ -49,7 +50,7 @@ class Articles extends Component {
   }
 
   render() {
-    const { articles, tags } = this.props;
+    const { articles, tags, userId, username, loggedIn } = this.props;
     const { page, pageCount, isLoading } = this.state;
     return isLoading ? (
       <Loader />
@@ -62,26 +63,32 @@ class Articles extends Component {
           justify="flex-start"
           alignItems="stretch"
         >
-          <Grid
-            item
-            lg={2}
-            xl={2}
-            md={3}
-            sm={4}
-            xs={false}
-            // style={{ position: "relative" }}
-          >
+          <Grid item lg={2} xl={2} md={3} sm={4} xs={false}>
             <Hidden xsDown>
               <ListItem dense={true}>
                 <ListItemAvatar>
-                  <Avatar>S</Avatar>
+                  <Avatar>{username.substr(0, 1).toUpperCase() || "X"}</Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary="Siddhartha Sarkar"
+                  primary={
+                    loggedIn ? (
+                      username
+                    ) : (
+                      <Typography
+                        style={{ textDecoration: "none" }}
+                        component={Link}
+                        to="/login"
+                      >
+                        Login/Signup
+                      </Typography>
+                    )
+                  }
+                  primaryTypographyProps={{ variant: "h5" }}
                   secondary={
                     <span>
                       <Typography variant="caption">
-                        <DataUsage fontSize="inherit" /> 19-02-2020
+                        <DataUsage fontSize="inherit" />
+                        {" " + Date().substr(0, 15)}
                       </Typography>
                     </span>
                   }
@@ -89,21 +96,15 @@ class Articles extends Component {
               </ListItem>
               <List dense={true}>
                 <ListItem>
-                  <ListItemIcon>
-                    <Flare />
-                  </ListItemIcon>
+                  <Flare style={{ marginRight: 10 }} />
                   <ListItemText primary="Highlights" />
                 </ListItem>
                 <ListItem>
-                  <ListItemIcon>
-                    <LabelImportant />
-                  </ListItemIcon>
+                  <LabelImportant style={{ marginRight: 10 }} />
                   <ListItemText primary="Popular" />
                 </ListItem>
                 <ListItem>
-                  <ListItemIcon>
-                    <Loyalty />
-                  </ListItemIcon>
+                  <Loyalty style={{ marginRight: 10 }} />
                   <ListItemText primary="Trending" />
                 </ListItem>
               </List>
@@ -150,6 +151,9 @@ const mapStateToProps = (state) => {
     pageCount: state.articles.pages,
     articles: state.articles.articles,
     comments: state.comments.comments,
+    username: state.users.authenticatedUsername,
+    userId: state.users.userId,
+    loggedIn: state.users.isAuthenticated,
   };
 };
 

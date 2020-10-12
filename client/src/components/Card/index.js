@@ -44,7 +44,7 @@ export default function MyCard({ item }) {
           </Typography> */}
         </CardContent>
       </Link>
-      <CardActions disableSpacing style={{ paddingBottom: 0, paddingTop: 0 }}>
+      <CardActions disableSpacing style={{ paddingBottom: 0 }}>
         <Link
           style={{ textDecoration: "none" }}
           to={"/article/" + item.authorId + "/articles"}

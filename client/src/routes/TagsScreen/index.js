@@ -1,4 +1,4 @@
-import { Container } from "@material-ui/core";
+import { Container, Typography } from "@material-ui/core";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
@@ -47,10 +47,14 @@ class TagsScreen extends Component {
         <Container maxWidth="md" style={{ padding: 10 }}>
           {loading ? (
             <Loader />
-          ) : (
+          ) : articles.length ? (
             articles.map((item, index) => {
               return <MyCard key={item._id} item={item} />;
             })
+          ) : (
+            <Typography style={{ textAlign: "center" }}>
+              Sorry, No results
+            </Typography>
           )}
         </Container>
       </>
