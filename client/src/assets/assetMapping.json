@@ -1,7 +1,14 @@
 {
   "colors": {
-    "love": "purple",
-    "inspiration": "blue",
-    "travel": "green"
+    "javascript": "magenta",
+    "webdev": "brown",
+    "beginners": "red",
+    "react": "blue",
+    "tutorial": "darkgreen",
+    "python": "violet",
+    "discuss": "orange",
+    "css": "pink",
+    "productivity": "black",
+    "android": "lightgreen"
   }
 }

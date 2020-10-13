@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { AppBar, CardActions, Chip } from "@material-ui/core";
+import { AppBar, CardActions, Chip, Typography } from "@material-ui/core";
 import { TrendingUp } from "@material-ui/icons";
 
 //custom - utils
@@ -27,6 +27,7 @@ export default function TagsBar(props) {
           {props.tags.map((tag, i) => {
             return (
               <Chip
+                variant={curTag === tag.name ? "default" : "outlined"}
                 key={i}
                 component={Link}
                 to={"/tags/" + tag.name}
@@ -38,8 +39,12 @@ export default function TagsBar(props) {
                     : () => props.onClick(tag.name)
                 }
                 clickable
-                icon={<TrendingUp />}
-                label={"#" + tag.name}
+                icon={<TrendingUp color="inherit" />}
+                label={
+                  <Typography variant="body2" color="inherit">
+                    {"#" + tag.name}
+                  </Typography>
+                }
               />
             );
           })}

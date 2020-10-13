@@ -27,7 +27,6 @@ class App extends Component {
         <MainAppBar
           isLoggedin={isLoggedin}
           logout={() => this.props.logout()}
-          // search={(object) => this.props.history.push("/")}
         />
         <Switch>
           <Route

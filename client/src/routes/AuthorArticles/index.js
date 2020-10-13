@@ -71,8 +71,8 @@ class AuthorArticles extends Component {
             </Grid>
           </CardContent>
         </Container>
-        <Container maxWidth="md" style={{ padding: 10 }}>
-          <div style={{ textAlign: "left" }}>
+        <Container maxWidth="md" style={{ padding: 0 }}>
+          <div style={{ textAlign: "center", marginLeft: 10 }}>
             <Typography color="textSecondary" variant="caption">
               Recent articles by {articles[0].author}
             </Typography>

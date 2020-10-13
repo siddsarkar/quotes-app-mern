@@ -12,13 +12,13 @@ export default function MarkedDown({ date, tags, title, body, children }) {
         return (
           <Link key={i} style={{ textDecoration: "none" }} to={"/tags/" + tag}>
             <Chip
+              variant="outlined"
               clickable
               label={"#" + tag}
               size="small"
               style={{
                 marginLeft: 5,
-                color: "#fff",
-                backgroundColor: assetMapping.colors[tag] || "gray",
+                color: assetMapping.colors[tag] || "gray",
               }}
             />
           </Link>

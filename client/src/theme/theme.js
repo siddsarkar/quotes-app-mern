@@ -20,4 +20,7 @@ export const theme = createMuiTheme({
       },
     },
   },
+  link: {
+    textDecoration: "none",
+  },
 });

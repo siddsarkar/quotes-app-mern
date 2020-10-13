@@ -5,87 +5,119 @@ import {
   Typography,
   Button,
   CardActions,
-  CardContent,
+  makeStyles,
+  Divider,
+  CardMedia,
 } from "@material-ui/core";
-import { AccountCircle, Favorite, Comment, Schedule } from "@material-ui/icons";
+import {
+  Schedule,
+  AccountCircleOutlined,
+  CommentOutlined,
+  FavoriteBorderOutlined,
+} from "@material-ui/icons";
 import assetMapping from "../../assets/assetMapping.json";
 
-export default function MyCard({ item }) {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    borderRadius: 0,
+    border: 0,
+    padding: theme.spacing(2),
+    paddingBottom: theme.spacing(1),
+  },
+  link: {
+    ...theme.link,
+    marginRight: theme.spacing(1),
+    textTransform: "uppercase",
+  },
+  title: {
+    ...theme.link,
+    display: "block",
+  },
+  btn: {
+    color: theme.palette.text.primary,
+    textTransform: "none",
+  },
+  media: {
+    height: 160,
+  },
+}));
+
+export default function MyCard({ item, index }) {
+  const classes = useStyles();
   return (
-    <Card elevation={3} style={{ marginBottom: 10 }}>
-      {item.tags.map((tag, i) => {
-        return (
-          <Link key={i} style={{ textDecoration: "none" }} to={"/tags/" + tag}>
+    <>
+      {index === 0 && (
+        <CardMedia
+          className={classes.media}
+          image="http://picsum.photos/600/160"
+          placeholder={"loading"}
+          title="Contemplative Reptile"
+        />
+      )}
+      <Card elevation={0} className={classes.root}>
+        {item.tags.map((tag, i) => {
+          return (
             <Typography
-              style={{
-                marginLeft: 10,
-                marginTop: 5,
-                color: assetMapping.colors[tag],
-              }}
-              variant="overline"
+              key={i}
+              component={Link}
+              to={"/tags/" + tag}
+              className={classes.link}
+              style={{ color: assetMapping.colors[tag] }}
+              variant="caption"
             >
               #{tag}
             </Typography>
-          </Link>
-        );
-      })}
-      <Link style={{ textDecoration: "none" }} to={"/article/" + item._id}>
-        <CardContent
-          style={{
-            paddingBottom: 0,
-            paddingTop: 0,
-          }}
+          );
+        })}
+
+        <Typography
+          component={Link}
+          to={"/article/" + item._id}
+          variant="h4"
+          color="textPrimary"
+          className={classes.title}
         >
-          <Typography variant="h4" color="textPrimary">
-            {item.title}
-          </Typography>
-          {/* <Typography variant="body2" color="textPrimary">
-            {item.body}
-          </Typography> */}
-        </CardContent>
-      </Link>
-      <CardActions disableSpacing style={{ paddingBottom: 0 }}>
-        <Link
-          style={{ textDecoration: "none" }}
-          to={"/article/" + item.authorId + "/articles"}
-        >
+          {item.title}
+        </Typography>
+
+        <CardActions disableSpacing style={{ padding: 0, margin: 0 }}>
           <Button
-            style={{ textTransform: "none" }}
-            color="default"
+            className={classes.btn}
+            color="primary"
+            component={Link}
+            to={"/article/" + item.authorId + "/articles"}
             size="small"
+            startIcon={<AccountCircleOutlined />}
           >
-            <AccountCircle style={{ marginRight: 5 }} />
-            <Typography color="textSecondary" variant="subtitle1">
-              {item.author}
+            <Typography color="textPrimary">{item.author}</Typography>
+          </Button>
+
+          <div style={{ flexGrow: 1 }} />
+          <Button className={classes.btn} startIcon={<Schedule />} size="small">
+            <Typography variant="caption" color="textPrimary">
+              {item.addedOn.split(".")[0].split("T")[0]}
             </Typography>
           </Button>
-        </Link>
 
-        <div style={{ flexGrow: 1 }} />
-        <Button style={{ textTransform: "none" }} color="default" size="small">
-          <Schedule style={{ marginRight: 5 }} />
-          <Typography variant="caption" color="textSecondary">
-            {item.addedOn.split(".")[0].split("T")[0]}
-          </Typography>
-        </Button>
-        <Link
-          style={{
-            textDecoration: "none",
-          }}
-          to={"/article/" + item._id}
-        >
-          <Button style={{ textTransform: "none" }}>
-            <Comment style={{ marginRight: 5 }} />
+          <Button
+            component={Link}
+            to={"/article/" + item._id}
+            startIcon={<CommentOutlined />}
+          >
             <Typography>{item.commentsCount}</Typography>
           </Button>
-        </Link>
-        <Link style={{ textDecoration: "none" }} to={"/likes/" + item._id}>
-          <Button color="secondary" style={{ textTransform: "none" }}>
-            <Favorite style={{ marginRight: 5 }} />
+
+          <Button
+            component={Link}
+            color="secondary"
+            to={"/article/" + item._id}
+            startIcon={<FavoriteBorderOutlined />}
+          >
             <Typography>{item.likesCount}</Typography>
           </Button>
-        </Link>
-      </CardActions>
-    </Card>
+        </CardActions>
+      </Card>
+      <Divider variant="fullWidth" />
+    </>
   );
 }

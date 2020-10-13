@@ -47,7 +47,7 @@ class TagsScreen extends Component {
     ) : (
       <>
         <TagsBar tags={tags} curTag={paramTag} onClick={this.handleClick} />
-        <Container maxWidth="md" style={{ padding: 10 }}>
+        <Container maxWidth="md" style={{ padding: 0 }}>
           {articles.length ? (
             articles.map((item, index) => {
               return <MyCard key={item._id} item={item} />;

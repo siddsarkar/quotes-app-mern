@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import { connect } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { Link, useHistory, useLocation } from "react-router-dom";
 import {
   AppBar,
   Button,
@@ -16,10 +16,13 @@ import {
   Grid,
 } from "@material-ui/core";
 import {
-  AccountCircle,
+  AccountCircleOutlined,
+  AmpStories,
+  AmpStoriesOutlined,
   Create,
-  History,
-  Home,
+  CreateOutlined,
+  LibraryBooks,
+  LibraryBooksOutlined,
   Search,
 } from "@material-ui/icons";
 import { getArticleBySearch } from "../../store/actions/searchActions";
@@ -71,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
 function MainAppBar(props) {
   const ref = useRef();
   const history = useHistory();
+  const location = useLocation();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [searchInput, setSearchInput] = React.useState("");
   const handleClick = (event) => {
@@ -92,7 +96,11 @@ function MainAppBar(props) {
         <Grid item md={8}>
           <Toolbar className={classes.root} variant="dense" disableGutters>
             <IconButton color="inherit" to="/" component={Link}>
-              <Home />
+              {location.pathname === "/" ? (
+                <AmpStories />
+              ) : (
+                <AmpStoriesOutlined />
+              )}
             </IconButton>
             <div className={classes.search}>
               <form
@@ -130,10 +138,18 @@ function MainAppBar(props) {
             {props.isLoggedin ? (
               <>
                 <IconButton to="/addarticle" component={Link} color="inherit">
-                  <Create />
+                  {location.pathname === "/addarticle" ? (
+                    <Create />
+                  ) : (
+                    <CreateOutlined />
+                  )}
                 </IconButton>
                 <IconButton color="inherit" to="/myarticles" component={Link}>
-                  <History />
+                  {location.pathname === "/myarticles" ? (
+                    <LibraryBooks />
+                  ) : (
+                    <LibraryBooksOutlined />
+                  )}
                 </IconButton>
                 <div>
                   <IconButton
@@ -142,7 +158,7 @@ function MainAppBar(props) {
                     onClick={handleClick}
                     color="inherit"
                   >
-                    <AccountCircle />
+                    <AccountCircleOutlined />
                   </IconButton>
                   <Menu
                     style={{ zIndex: 9999999 }}
