@@ -38,18 +38,48 @@ router.post("/add", isAuthenticated, (req, res) => {
 
 //get all articles by page (10 per page)
 router.get("/", (req, res) => {
-  const aggregate = Article.aggregate([
-    {
-      $sort: {
-        addedOn: -1,
-      },
-    },
-  ]);
-  aggregate.exec((err, articles) => {
-    if (err) throw err;
-    let paginated = paginatedResponse(articles, req.query.p);
-    res.json(paginated);
-  });
+  const sort = req.query.sort_by || "";
+  const page = req.query.p || "";
+
+  switch (sort) {
+    case "addedOn": {
+      const aggregate = Article.aggregate([
+        {
+          $sort: {
+            addedOn: -1,
+          },
+        },
+      ]);
+      aggregate.exec((err, articles) => {
+        if (err) throw err;
+        let paginated = paginatedResponse(articles, page);
+        res.json(paginated);
+      });
+      break;
+    }
+    case "likesCount": {
+      const aggregate = Article.aggregate([
+        {
+          $sort: {
+            likesCount: -1,
+          },
+        },
+      ]);
+      aggregate.exec((err, articles) => {
+        if (err) throw err;
+        let paginated = paginatedResponse(articles, page);
+        res.json(paginated);
+      });
+      break;
+    }
+    default: {
+      Article.find({}, (err, articles) => {
+        if (err) throw err;
+        let paginated = paginatedResponse(articles, page);
+        res.json(paginated);
+      });
+    }
+  }
 });
 
 //search feature eg:"/search?q=love&p=1" gives post with love keyword in it
