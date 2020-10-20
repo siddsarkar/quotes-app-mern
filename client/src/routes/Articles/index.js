@@ -1,15 +1,6 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
-import {
-  Grid,
-  Hidden,
-  List,
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
-  Typography,
-} from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
 //actions
 import {
@@ -20,163 +11,8 @@ import {
 import { getCommentsForArticle } from "../../store/actions/commentActions";
 
 //components
-import { TagsBar, MyCard } from "../../components";
-import { DataUsage, Flare, LabelImportant, Loyalty } from "@material-ui/icons";
-import { Link } from "react-router-dom";
-
-function RightPanel(props) {
-  return null;
-}
-
-function LeftPanel({ username, loggedIn }) {
-  return (
-    <Hidden xsDown>
-      <ListItem dense={true}>
-        <ListItemAvatar>
-          <Avatar>{username.substr(0, 1).toUpperCase() || "X"}</Avatar>
-        </ListItemAvatar>
-        <ListItemText
-          primary={
-            loggedIn ? (
-              username
-            ) : (
-              <Typography
-                style={{ textDecoration: "none" }}
-                component={Link}
-                to="/login"
-              >
-                Login/Signup
-              </Typography>
-            )
-          }
-          primaryTypographyProps={{ variant: "h5" }}
-          secondary={
-            <span>
-              <Typography variant="caption">
-                <DataUsage fontSize="inherit" />
-                {" " + Date().substr(0, 15)}
-              </Typography>
-            </span>
-          }
-        />
-      </ListItem>
-      <List dense={true}>
-        <ListItem>
-          <Flare style={{ marginRight: 10 }} />
-          <ListItemText primary="Highlights" />
-        </ListItem>
-        <ListItem>
-          <LabelImportant style={{ marginRight: 10 }} />
-          <ListItemText primary="Popular" />
-        </ListItem>
-        <ListItem>
-          <Loyalty style={{ marginRight: 10 }} />
-          <ListItemText primary="Trending" />
-        </ListItem>
-      </List>
-    </Hidden>
-  );
-}
-
-function CenterPanel(props) {
-  const { articles, page, pageCount, onPageChange, isLoading } = props;
-
-  const [bottom, setBottom] = useState(false);
-  //debug
-  // const [scr, setScr] = useState(0);
-  // const [h, setH] = useState(0);
-
-  function handleScroll() {
-    const sum = window.innerHeight + document.documentElement.scrollTop;
-
-    //debug
-    // setScr(sum);
-    // setH(document.documentElement.offsetHeight);
-    // console.log(
-    //   `scroll:${sum}, total:${document.documentElement.offsetHeight}`
-    // );
-
-    const isBottom = sum >= document.documentElement.offsetHeight * (95 / 100);
-    setBottom(isBottom);
-  }
-
-  useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  useEffect(() => {
-    //debug
-    // console.log(bottom);
-    // if (bottom) {
-    //   alert("bottomm recahed");
-    // }
-
-    if (!bottom || page >= pageCount) return;
-    onPageChange(page);
-  }, [bottom, page, pageCount, onPageChange]);
-
-  const loader = () => {
-    if (!isLoading && page === pageCount) {
-      return (
-        <div style={{ display: "block", textAlign: "center" }}>
-          <Typography color="textSecondary" variant="overline">
-            No More Posts
-          </Typography>
-        </div>
-      );
-    } else if (isLoading) {
-      return (
-        <div style={{ display: "block", textAlign: "center" }}>
-          <Typography color="textSecondary" variant="overline">
-            Loading...
-          </Typography>
-        </div>
-      );
-    } else if (!isLoading && page < pageCount) {
-      return (
-        <div style={{ display: "block", textAlign: "center" }}>
-          <Typography color="textSecondary" variant="overline">
-            Loading...
-          </Typography>
-        </div>
-      );
-    }
-  };
-
-  return (
-    <>
-      <Grid container direction="column" justify="center" alignItems="stretch">
-        {/* debug */}
-        {/* <Typography
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            zIndex: 9999999999999999999,
-          }}
-        >
-          {"scr:" + scr + "height" + h}
-        </Typography> */}
-        {articles.map((item, index) => {
-          return (
-            <Grid key={item._id} item>
-              <MyCard index={index} item={item} />
-            </Grid>
-          );
-        })}
-      </Grid>
-      {/* <Paginate
-        count={pageCount}
-        page={page}
-        change={(e, page) => props.onPageChange(page)}
-      /> */}
-      {loader()}
-    </>
-  );
-}
+import { TagsBar } from "../../components";
+import { CenterPanel, LeftPanel, RightPanel } from "./components";
 
 class Articles extends Component {
   mounted = false;
@@ -184,6 +20,7 @@ class Articles extends Component {
     isLoading: true,
     page: 1,
     pageCount: 0,
+    sort: "none",
   };
 
   cb = () => {
@@ -196,7 +33,10 @@ class Articles extends Component {
 
   componentDidMount() {
     this.mounted = true;
-    this.props.initArticles(this.cb, 1);
+    this.props.initArticles(this.cb, {
+      sort_by: this.state.sort,
+      page: this.state.page,
+    });
   }
   componentWillUnmount() {
     this.props.clearArticles();
@@ -205,6 +45,10 @@ class Articles extends Component {
 
   onPageChange = (page) => {
     console.log("getting page %d", page + 1);
+    const data = {
+      sort_by: this.state.sort,
+      page: page + 1,
+    };
     this.mounted &&
       this.setState(
         this.setState((prevState) => ({
@@ -212,9 +56,20 @@ class Articles extends Component {
           isLoading: true,
         })),
         () => {
-          this.props.initArticles(this.cb, page + 1);
+          this.props.initArticles(this.cb, data);
         }
       );
+  };
+
+  handleSort = (sort) => {
+    this.props.clearArticles();
+    this.setState(this.setState({ sort: sort, isLoading: true }), () => {
+      const data = {
+        sort_by: this.state.sort,
+        page: 1,
+      };
+      this.props.initArticles(this.cb, data);
+    });
   };
 
   render() {
@@ -255,6 +110,7 @@ class Articles extends Component {
               pageCount={pageCount}
               onPageChange={this.onPageChange}
               isLoading={isLoading}
+              handleSort={this.handleSort}
             />
           </Grid>
           <Grid
@@ -287,7 +143,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    initArticles: (callback, page) => dispatch(getAllArticles(callback, page)),
+    initArticles: (callback, data) => dispatch(getAllArticles(callback, data)),
     getComments: (id) => dispatch(getCommentsForArticle(id)),
     getautthorarticles: (id) => dispatch(getArticleByAuthor(id)),
     clearArticles: () => dispatch(clearArticles()),

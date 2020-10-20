@@ -34,9 +34,9 @@ export const updateArticle = (articleId, updatedArticle) => {
 
 //* GET
 
-export const getAllArticles = (callback, p) => {
+export const getAllArticles = (callback, data) => {
   return (dispatch) => {
-    fetch("/api/articles?p=" + p, {
+    fetch("/api/articles?sort_by=" + data.sort_by + "&p=" + data.page, {
       method: "GET",
     })
       .then((res) => res.json())

@@ -50,8 +50,8 @@ export default function MyCard({ item, index }) {
         <CardMedia
           className={classes.media}
           image="http://picsum.photos/600/160"
-          placeholder={"loading"}
-          title="Contemplative Reptile"
+          title="Cover"
+          style={{ backgroundColor: "lightgrey" }}
         />
       )}
       <Card elevation={0} className={classes.root}>
