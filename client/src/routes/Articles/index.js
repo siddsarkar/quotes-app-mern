@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import {
   Grid,
@@ -15,11 +15,12 @@ import {
 import {
   getAllArticles,
   getArticleByAuthor,
+  clearArticles,
 } from "../../store/actions/articleActions";
 import { getCommentsForArticle } from "../../store/actions/commentActions";
 
 //components
-import { TagsBar, MyCard, Loader, Paginate } from "../../components";
+import { TagsBar, MyCard } from "../../components";
 import { DataUsage, Flare, LabelImportant, Loyalty } from "@material-ui/icons";
 import { Link } from "react-router-dom";
 
@@ -78,10 +79,87 @@ function LeftPanel({ username, loggedIn }) {
 }
 
 function CenterPanel(props) {
-  const { articles, page, pageCount } = props;
+  const { articles, page, pageCount, onPageChange, isLoading } = props;
+
+  const [bottom, setBottom] = useState(false);
+  //debug
+  // const [scr, setScr] = useState(0);
+  // const [h, setH] = useState(0);
+
+  function handleScroll() {
+    const sum = window.innerHeight + document.documentElement.scrollTop;
+
+    //debug
+    // setScr(sum);
+    // setH(document.documentElement.offsetHeight);
+    // console.log(
+    //   `scroll:${sum}, total:${document.documentElement.offsetHeight}`
+    // );
+
+    const isBottom = sum >= document.documentElement.offsetHeight * (95 / 100);
+    setBottom(isBottom);
+  }
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
+    //debug
+    // console.log(bottom);
+    // if (bottom) {
+    //   alert("bottomm recahed");
+    // }
+
+    if (!bottom || page >= pageCount) return;
+    onPageChange(page);
+  }, [bottom, page, pageCount, onPageChange]);
+
+  const loader = () => {
+    if (!isLoading && page === pageCount) {
+      return (
+        <div style={{ display: "block", textAlign: "center" }}>
+          <Typography color="textSecondary" variant="overline">
+            No More Posts
+          </Typography>
+        </div>
+      );
+    } else if (isLoading) {
+      return (
+        <div style={{ display: "block", textAlign: "center" }}>
+          <Typography color="textSecondary" variant="overline">
+            Loading...
+          </Typography>
+        </div>
+      );
+    } else if (!isLoading && page < pageCount) {
+      return (
+        <div style={{ display: "block", textAlign: "center" }}>
+          <Typography color="textSecondary" variant="overline">
+            Loading...
+          </Typography>
+        </div>
+      );
+    }
+  };
+
   return (
     <>
       <Grid container direction="column" justify="center" alignItems="stretch">
+        {/* debug */}
+        {/* <Typography
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            zIndex: 9999999999999999999,
+          }}
+        >
+          {"scr:" + scr + "height" + h}
+        </Typography> */}
         {articles.map((item, index) => {
           return (
             <Grid key={item._id} item>
@@ -90,11 +168,12 @@ function CenterPanel(props) {
           );
         })}
       </Grid>
-      <Paginate
+      {/* <Paginate
         count={pageCount}
         page={page}
         change={(e, page) => props.onPageChange(page)}
-      />
+      /> */}
+      {loader()}
     </>
   );
 }
@@ -120,22 +199,28 @@ class Articles extends Component {
     this.props.initArticles(this.cb, 1);
   }
   componentWillUnmount() {
+    this.props.clearArticles();
     this.mounted = false;
   }
 
   onPageChange = (page) => {
+    console.log("getting page %d", page + 1);
     this.mounted &&
-      this.setState(this.setState({ page: page, isLoading: true }), () => {
-        this.props.initArticles(this.cb, page);
-      });
+      this.setState(
+        this.setState((prevState) => ({
+          page: page + 1,
+          isLoading: true,
+        })),
+        () => {
+          this.props.initArticles(this.cb, page + 1);
+        }
+      );
   };
 
   render() {
     const { articles, tags, username, loggedIn } = this.props;
     const { page, pageCount, isLoading } = this.state;
-    return isLoading ? (
-      <Loader />
-    ) : (
+    return (
       <>
         <TagsBar tags={tags} />
         <Grid
@@ -169,6 +254,7 @@ class Articles extends Component {
               page={page}
               pageCount={pageCount}
               onPageChange={this.onPageChange}
+              isLoading={isLoading}
             />
           </Grid>
           <Grid
@@ -204,6 +290,7 @@ const mapDispatchToProps = (dispatch) => {
     initArticles: (callback, page) => dispatch(getAllArticles(callback, page)),
     getComments: (id) => dispatch(getCommentsForArticle(id)),
     getautthorarticles: (id) => dispatch(getArticleByAuthor(id)),
+    clearArticles: () => dispatch(clearArticles()),
   };
 };
 

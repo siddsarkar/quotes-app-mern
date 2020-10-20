@@ -124,3 +124,13 @@ export const deleteArticle = (articleId, callback) => {
       });
   };
 };
+
+//del
+
+export const clearArticles = () => {
+  return (dispatch) => {
+    dispatch({
+      type: actionTypes.CLEAR_ARTICLES,
+    });
+  };
+};

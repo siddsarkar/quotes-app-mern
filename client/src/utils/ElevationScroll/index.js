@@ -5,7 +5,7 @@ export default function ElevationScroll(props) {
   const { children, window } = props;
   const trigger = useScrollTrigger({
     disableHysteresis: true,
-    threshold: 100,
+    threshold: 0,
     target: window ? window() : undefined,
   });
 

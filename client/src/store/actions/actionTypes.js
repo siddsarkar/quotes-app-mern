@@ -6,6 +6,7 @@ export const USER_LOGGED_OUT = "USER_LOGGED_OUT";
 export const GOT_ALL_ARTICLES = "GOT_ALL_ARTICLES";
 export const GOT_MY_ARTICLES = "GOT_MY_ARTICLES";
 export const GOT_SINGLE_ARTICLE = "GOT_SINGLE_ARTICLE";
+export const CLEAR_ARTICLES = "CLEAR_ARTICLES";
 
 //comments-actions
 export const GOT_ALL_COMMENTS = "GOT_ALL_COMMENTS";

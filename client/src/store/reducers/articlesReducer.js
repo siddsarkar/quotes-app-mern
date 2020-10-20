@@ -117,8 +117,14 @@ const reducer = (state = initialState, action) => {
     case actionTypes.GOT_ALL_ARTICLES:
       return {
         ...state,
-        articles: action.articles,
+        articles: [...state.articles, ...action.articles],
         pages: action.pages,
+      };
+    case actionTypes.CLEAR_ARTICLES:
+      return {
+        ...state,
+        articles: [],
+        pages: 0,
       };
     case actionTypes.GOT_MY_ARTICLES:
       return {
