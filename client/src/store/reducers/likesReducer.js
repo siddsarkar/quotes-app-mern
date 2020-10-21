@@ -3,6 +3,7 @@ import * as actionTypes from "../actions/actionTypes";
 const initialState = {
   likes: [],
   myLikes: [],
+  isLiked: false,
 };
 
 const reducer = (state = initialState, action) => {
@@ -11,6 +12,7 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         likes: action.likes,
+        isLiked: action.isLiked,
       };
     case actionTypes.GOT_MY_LIKES:
       return {

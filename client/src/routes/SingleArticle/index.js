@@ -42,23 +42,12 @@ class SingleArticle extends Component {
     comment: "",
     pageLoaded: false,
     likesLoading: true,
-    isLiked: false,
     commentsLoading: true,
     addCommentLoading: false,
   };
-  getLikersCallbackUpdate = () => {
-    this.mounted &&
-      this.setState(({ isLiked }) => ({
-        isLiked: !isLiked,
-        likesLoading: false,
-      }));
-  };
 
   likeCallback = () => {
-    this.props.getLikers(
-      this.props.match.params.id,
-      this.getLikersCallbackUpdate
-    );
+    this.props.getLikers(this.props.match.params.id, this.getLikersCallback);
   };
 
   handleLike = () => {
@@ -67,17 +56,8 @@ class SingleArticle extends Component {
     });
   };
   getLikersCallback = () => {
-    if (this.props.likersNames.length > 0) {
-      for (let i = 0; i < this.props.likersNames.length; i++) {
-        if (this.props.likersNames[i].authorId === this.props.userId) {
-          this.mounted && this.setState({ isLiked: true, likesLoading: false });
-          return;
-        }
-      }
-      this.mounted && this.setState({ isLiked: false, likesLoading: false });
-    } else {
-      this.mounted && this.setState({ isLiked: false, likesLoading: false });
-    }
+    //server logic
+    this.mounted && this.setState({ likesLoading: false });
   };
 
   getCommentsCallback = () => {
@@ -85,7 +65,7 @@ class SingleArticle extends Component {
   };
 
   articleCallback = () => {
-    this.mounted &&
+    if (this.props.auth) {
       this.setState(
         this.setState({
           pageLoaded: true,
@@ -103,6 +83,20 @@ class SingleArticle extends Component {
           );
         }
       );
+    } else {
+      this.setState(
+        this.setState({
+          pageLoaded: true,
+          commentsLoading: true,
+        }),
+        () => {
+          this.props.getComments(
+            this.props.match.params.id,
+            this.getCommentsCallback
+          );
+        }
+      );
+    }
   };
 
   addCommentCallback = () => {
@@ -138,12 +132,11 @@ class SingleArticle extends Component {
   };
 
   render() {
-    const { article, auth, likersNames, comments } = this.props;
+    const { article, auth, likersNames, comments, isLiked } = this.props;
     const {
       addCommentLoading,
       comment,
       commentsLoading,
-      isLiked,
       likesLoading,
       pageLoaded,
     } = this.state;
@@ -208,10 +201,12 @@ class SingleArticle extends Component {
               >
                 <Button>
                   <Favorite
-                    color={isLiked ? "secondary" : "primary"}
+                    color={auth && isLiked ? "secondary" : "primary"}
                     style={{ marginRight: 5 }}
                   />
-                  <Typography>{likersNames.length}</Typography>
+                  <Typography>
+                    {auth ? likersNames.length : article.likesCount}
+                  </Typography>
                 </Button>
               </Link>
             </CardActions>
@@ -342,6 +337,7 @@ const mapStateToProps = (state) => {
     comments: state.comments.comments,
     auth: state.users.isAuthenticated,
     userId: state.users.userId,
+    isLiked: state.likes.isLiked,
   };
 };
 

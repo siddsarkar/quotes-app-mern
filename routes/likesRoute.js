@@ -71,12 +71,20 @@ router.post("/like/:articleId", isAuthenticated, async (req, res) => {
 });
 
 //get likes for a given article
-router.get("/get/:articleId", (req, res) => {
+router.get("/get/:articleId", isAuthenticated, (req, res) => {
   const articleId = req.params.articleId;
+  const authorId = req.authorId;
   Like.find({ articleId }, (err, item) => {
     if (err) throw err;
     else {
-      res.json(item);
+      var found = false;
+      for (var i = 0; i < item.length; i++) {
+        if (item[i].authorId == authorId) {
+          found = true;
+          break;
+        }
+      }
+      res.json({ likes: item, isLiked: found });
     }
   });
 });
