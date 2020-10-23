@@ -10,6 +10,7 @@ export default function Loader() {
         justifyContent: "center",
         alignItems: "center",
         top: 0,
+        left: 0,
         height: "100%",
         width: "100%",
       }}
