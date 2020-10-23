@@ -1,24 +1,7 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import MenuItem from "@material-ui/core/MenuItem";
-
-import FormControl from "@material-ui/core/FormControl";
-import Select from "@material-ui/core/Select";
-import { Typography } from "@material-ui/core";
-
-const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(1),
-    minWidth: 120,
-    textAlign: "center",
-  },
-  selectEmpty: {
-    marginTop: theme.spacing(2),
-  },
-}));
+import { NativeSelect } from "@material-ui/core";
 
 export default function Selector({ handleSort }) {
-  const classes = useStyles();
   const [sort, setSort] = React.useState("none");
 
   const handleChange = (event) => {
@@ -28,25 +11,11 @@ export default function Selector({ handleSort }) {
 
   return (
     <div>
-      <FormControl className={classes.formControl}>
-        <Select
-          labelId="demo-simple-select-label"
-          aria-label="none"
-          id="demo-simple-select"
-          value={sort}
-          onChange={handleChange}
-        >
-          <MenuItem value="none">
-            <Typography>Default</Typography>
-          </MenuItem>
-          <MenuItem value="addedOn">
-            <Typography>Latest</Typography>
-          </MenuItem>
-          <MenuItem value="likesCount">
-            <Typography>Popular</Typography>
-          </MenuItem>
-        </Select>
-      </FormControl>
+      <NativeSelect value={sort} onChange={handleChange} id="select">
+        <option value="none">Default</option>
+        <option value="addedOn">Latest</option>
+        <option value="likesCount">Popular</option>
+      </NativeSelect>
     </div>
   );
 }
