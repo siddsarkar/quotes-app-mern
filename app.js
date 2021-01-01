@@ -12,6 +12,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const path = require("path");
 
+const crypto = require("crypto");
+
 //load env. variables
 require("dotenv").config();
 
@@ -20,6 +22,11 @@ const { articles, likes, users, comments } = require("./routes");
 
 //env. vars.
 const config = require("./config");
+
+//multer
+const MulterGridfsStorage = require("multer-gridfs-storage");
+const multer = require("multer");
+const { isAuthenticated } = require("./utils");
 
 //extract env. vars
 const MONGODB_URI = config.mongodburi;
@@ -38,8 +45,48 @@ mongoose.connect(
     err ? console.log("MongoDB Error:", err) : console.log("MongoDB Connected")
 );
 
+// init gfs
+let gfs;
+mongoose.connection.once("open", () => {
+  // init stream
+  gfs = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+    bucketName: "uploads",
+  });
+});
+
+// Storage
+const storage = new MulterGridfsStorage({
+  url: MONGODB_URI,
+  file: (req, file) => {
+    return new Promise((resolve, reject) => {
+      crypto.randomBytes(16, (err, buf) => {
+        if (err) {
+          return reject(err);
+        }
+        const filename = buf.toString("hex") + path.extname(file.originalname);
+        const fileInfo = {
+          filename: filename,
+          bucketName: "uploads",
+        };
+        resolve(fileInfo);
+      });
+    });
+  },
+});
+
+const upload = multer({
+  storage,
+  fileFilter: function (req, file, callback) {
+    var ext = path.extname(file.originalname);
+    if (ext !== ".png" && ext !== ".jpg" && ext !== ".gif" && ext !== ".jpeg") {
+      return callback(new Error("Only images are allowed"));
+    }
+    callback(null, true);
+  },
+});
+
 // Middlewares
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "client/build")));
 app.use((req, res, next) => {
@@ -74,6 +121,33 @@ if (process.env.NODE_ENV === "production") {
     res.sendFile(path.join(__dirname, "client/build/index.html"));
   });
 }
+
+app.post(
+  "/upload/cover",
+  isAuthenticated,
+  upload.single("cover"),
+  (req, res) => {
+    // res.json({ message: "uploaded" });
+    // console.log(req.file);
+    res.json({ file: req.file });
+  }
+);
+
+app.get("/image/:filename", (req, res) => {
+  // console.log('id', req.params.id)
+  const file = gfs
+    .find({
+      filename: req.params.filename,
+    })
+    .toArray((err, files) => {
+      if (!files || files.length === 0) {
+        return res.status(404).json({
+          err: "no files exist",
+        });
+      }
+      gfs.openDownloadStreamByName(req.params.filename).pipe(res);
+    });
+});
 
 app.listen(PORT, () => {
   console.log("Server started at %d", PORT);
