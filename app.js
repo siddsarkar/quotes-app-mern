@@ -25,6 +25,7 @@ const config = require("./config");
 
 //multer
 const MulterGridfsStorage = require("multer-gridfs-storage");
+const Grid = require("gridfs-stream");
 const multer = require("multer");
 const { isAuthenticated } = require("./utils");
 
@@ -49,9 +50,11 @@ mongoose.connect(
 let gfs;
 mongoose.connection.once("open", () => {
   // init stream
-  gfs = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
-    bucketName: "uploads",
-  });
+  gfs = Grid(mongoose.connection.db, mongoose.mongo);
+  gfs.collection("uploads");
+  // gfs = new mongoose.mongo.GridFSBucket(mongoose.connection.db, {
+  //   bucketName: "uploads",
+  // });
 });
 
 // Storage
@@ -135,18 +138,14 @@ app.post(
 
 app.get("/image/:filename", (req, res) => {
   // console.log('id', req.params.id)
-  const file = gfs
-    .find({
-      filename: req.params.filename,
-    })
-    .toArray((err, files) => {
-      if (!files || files.length === 0) {
-        return res.status(404).json({
-          err: "no files exist",
-        });
-      }
-      gfs.openDownloadStreamByName(req.params.filename).pipe(res);
-    });
+  gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+    if (!file || file.length === 0) {
+      return res.status(404).json({
+        err: "no files exist",
+      });
+    }
+    gfs.createReadStream(file.filename).pipe(res);
+  });
 });
 
 app.listen(PORT, () => {
