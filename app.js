@@ -144,6 +144,8 @@ app.get("/image/:filename", (req, res) => {
         err: "no files exist",
       });
     }
+    // console.log(file);
+    res.header({ "Content-Type": file.contentType });
     gfs.createReadStream(file.filename).pipe(res);
   });
 });
