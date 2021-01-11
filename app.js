@@ -145,8 +145,11 @@ app.get("/image/:filename", (req, res) => {
       });
     }
     // console.log(file);
-    res.header({ "Content-Type": file.contentType });
-    gfs.createReadStream(file.filename).pipe(res);
+    let readStream = gfs.createReadStream({
+      filename: file.filename,
+    });
+    res.header({ "Content-type": mime.lookup(file.filename) });
+    readStream.pipe(res);
   });
 });
 
