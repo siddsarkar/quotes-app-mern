@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/cbee75e3-ba0e-4104-b38f-26b77b065d1d/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/writeyourheart",
+    "appService.deploySubpath": "."
+}
