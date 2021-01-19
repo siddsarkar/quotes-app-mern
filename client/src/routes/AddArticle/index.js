@@ -29,6 +29,7 @@ class AddArticle extends Component {
     title: "",
     tags: [],
     uploadedFile: [],
+    uploading: false,
   };
   linkref = React.createRef(null);
 
@@ -77,7 +78,6 @@ class AddArticle extends Component {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      console.log(reader.result);
       this.setState({ selectedFileAsB64: reader.result });
     };
   };
@@ -87,6 +87,7 @@ class AddArticle extends Component {
     if (this.state.selectedFileAsB64 === "") {
       return;
     }
+    this.setState({ uploading: true });
     let req = await fetch("/upload/cover", {
       method: "POST",
       headers: {
@@ -98,8 +99,11 @@ class AddArticle extends Component {
     });
 
     let res = await req.json();
-    console.log(res);
-    this.setState({ uploadedFile: [...this.state.uploadedFile, res.file] });
+    // console.log(res);
+    this.setState({
+      uploadedFile: [...this.state.uploadedFile, res.file],
+      uploading: false,
+    });
   };
 
   // file upload is complete
@@ -129,6 +133,7 @@ class AddArticle extends Component {
               id="myInput"
             />
             <button onClick={this.linkHandler}>Copy Link</button>
+            {this.state.uploading && "Uploading...."}
           </div>
         );
       });
@@ -198,7 +203,7 @@ class AddArticle extends Component {
               <input type="file" name="cover" onChange={this.onFileChange} />
               <button onClick={this.onFileUpload}>Upload!</button>
             </div>
-
+            {this.state.uploading && "Uploading...."}
             {this.fileData()}
 
             <div

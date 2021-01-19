@@ -130,16 +130,15 @@ app.post(
   isAuthenticated,
   // upload.single("cover"),
   (req, res) => {
-    console.log(req.body.data);
     // res.json({ file: req.file });
 
     var cloudinary = require("cloudinary").v2;
 
     // set your env variable CLOUDINARY_URL or set the following configuration
     cloudinary.config({
-      cloud_name: "petpedia",
-      api_key: "136744362578647",
-      api_secret: "Ru-uMn-pzoWG6eeV42h7rIF6RF4",
+      cloud_name: process.env.CLOUD_NAME,
+      api_key: process.env.API_KEY,
+      api_secret: process.env.API_SECRET,
     });
 
     // const path = req.file.path
@@ -151,7 +150,6 @@ app.post(
       function (err, image) {
         if (err) return res.send(err);
         console.log("file uploaded to Cloudinary");
-        console.log(image);
         // remove file from server
         // return image details
         res.json({ file: image });
