@@ -18,9 +18,9 @@ Live at Heroku: [Take me there ✈](https://quotes-app-mern.herokuapp.com/)
 - [x] Pagination.
 - [x] Tags.
 - [ ] Facebook login.
-- [ ] Follow and followers / profile.
-- [ ] Image upload.
-- [ ] Profile view of author or user.
+- [x] Follow and followers / profile.
+- [x] Image upload.
+- [x] Profile view of author or user.
 - [ ] Themetoggle.
 
   _Have a suggestion? Create a Pull request and add here._
