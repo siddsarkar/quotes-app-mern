@@ -1,6 +1,6 @@
 # Quotes App (Full Stack)
 
-Live at Heroku: [Take me there ✈](https://quotes-app-mern.herokuapp.com/)
+Live at DigitalOcean: [Take me there ✈](https://jellyfish-app-97w3s.ondigitalocean.app/)
 
 ## Description
 
