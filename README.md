@@ -44,5 +44,5 @@ Simply create a PR (pull-request).
 
 ## Copyright
 
-_Copyright ©2020 Siddhartha Sarkar. All Rights Reserved.
+_Copyright ©2022 Siddhartha Sarkar. All Rights Reserved.
 This source code is licensed under the MIT license found in the LICENSE file in the root directory of this source tree._
